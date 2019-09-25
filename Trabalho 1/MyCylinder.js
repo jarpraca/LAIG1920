@@ -23,22 +23,24 @@ class MyCylinder extends CGFobject {
         var alphaAng = 2*Math.PI/this.slices;
         var inc_height = this.height/this.stacks;
         var inc_radius = (this.radiusTop - this.radiusBottom)/this.stacks;
+        var radius = this.radiusBottom;
 
         for(var i = 0; i < this.slices; i++){
             var sa=Math.sin(ang);
             var ca=Math.cos(ang);
 
-            this.vertices.push(ca, sa, 0);
+            this.vertices.push(ca*radius, sa*radius, 0);
             ang+=alphaAng;
         }
 
         for(var j = 1; j <= this.stacks; j++){
             ang = 0;
+            radius+=inc_radius;
             for(var i= 0; i < this.slices; i++){
                 var sa=Math.sin(ang);
                 var ca=Math.cos(ang);
 
-                this.vertices.push(ca, sa, inc_height*j);
+                this.vertices.push(ca*radius, sa*radius, inc_height*j);
 
                 var a = (j-1)*this.slices+i;
                 if(i == this.slices - 1){
