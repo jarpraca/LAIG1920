@@ -596,18 +596,33 @@ class MySceneGraph {
             }
             
             else if (primitiveType == 'cylinder') {
-                // x1
-                var x1 = this.reader.getFloat(grandChildren[0], 'slices');
-                if (!(x1 != null && !isNaN(x1)))
+                // slices
+                var slices = this.reader.getFloat(grandChildren[0], 'slices');
+                if (!(x1 != null && !isNaN(x1) && slices >= 1))
                     return "unable to parse slices of the primitive coordinates for ID = " + primitiveId;
 
-                // y1
-                var y1 = this.reader.getFloat(grandChildren[0], 'stacks');
-                if (!(y1 != null && !isNaN(y1)))
+                // stacks
+                var stacks = this.reader.getFloat(grandChildren[0], 'stacks');
+                if (!(y1 != null && !isNaN(y1) && stacks >= 1))
+                    return "unable to parse stacks of the primitive coordinates for ID = " + primitiveId;
+
+                // top
+                var radiusTop = this.reader.getFloat(grandChildren[0], 'radiusTop');
+                if (!(radiusTop != null && !isNaN(radiusTop) && radiusTop > 0))
+                    return "unable to parse stacks of the primitive coordinates for ID = " + primitiveId;
+
+                // bottom
+                var radiusBottom = this.reader.getFloat(grandChildren[0], 'radiusBottom');
+                if (!(radiusBottom != null && !isNaN(radiusBottom) && radiusBottom > 0))
+                    return "unable to parse stacks of the primitive coordinates for ID = " + primitiveId;
+
+                // height
+                var height = this.reader.getFloat(grandChildren[0], 'height');
+                if (!(height != null && !isNaN(height) && height > 0))
                     return "unable to parse stacks of the primitive coordinates for ID = " + primitiveId;
 
 
-                var cylinder = new MyCylinder(this.scene, primitiveId, 20, 20, 3, 5);
+                var cylinder = new MyCylinder(this.scene, primitiveId, slices, stacks, radiusBottom, radiusTop, height);
 
                 this.primitives[primitiveId] = cylinder;
             }
@@ -792,8 +807,8 @@ class MySceneGraph {
         //To do: Create display loop for transversing the scene graph
 
         //To test the parsing/creation of the primitives, call the display function directly
-        this.primitives['demoRectangle'].display();
-        this.primitives['demoTriangle'].display();
+        //this.primitives['demoRectangle'].display();
+        //this.primitives['demoTriangle'].display();
         this.primitives['demoCylinder'].display();
     }
 }

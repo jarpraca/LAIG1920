@@ -9,7 +9,7 @@
     </views>
 
     <ambient>
-        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+        <ambient r="0.6" g="0.6" b="0.6" a="1.0" />
         <background r="0.0" g="0.0" b="0.0" a="1.0" />
     </ambient>
 
@@ -49,11 +49,11 @@
         </primitive>
 
         <primitive id="demoTriangle">
-            <triangle x1="0" y1="0" x2="2" y2="0" x3="1" y3="2"/>
+            <triangle x1="0" y1="0" x2="2" y2="0" x3="1" y3="3"/>
         </primitive>
 
         <primitive id="demoCylinder">
-            <cylinder slices="20" stacks="20" radiusBottom="3" radiusTop="5"/>
+            <cylinder slices="6" stacks="10" radiusBottom="3" radiusTop="5" height="4"/>
         </primitive>
 
 

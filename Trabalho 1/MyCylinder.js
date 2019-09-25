@@ -20,70 +20,39 @@ class MyCylinder extends CGFobject {
         this.texCoords = [];
 
         var ang = 0;
-
         var alphaAng = 2*Math.PI/this.slices;
+        var inc_height = this.height/this.stacks;
+        var inc_radius = (this.radiusTop - this.radiusBottom)/this.stacks;
 
-        var inc = this.height/this.stacks;
-       
-        
-        for(var j = 0; j < 13; j++){
-            
-            console.log("stacks "+j);
-            ang = 0;
+        for(var i = 0; i < this.slices; i++){
+            var sa=Math.sin(ang);
+            var ca=Math.cos(ang);
 
-            for(var i = 0; i < this.slices; i++){
-                // All vertices have to be declared for a given face
-                // even if they are shared with others, as the normals 
-                // in each face will be different
-
-                var sa=Math.sin(ang);
-                var saa=Math.sin(ang+alphaAng);
-                var ca=Math.cos(ang);
-                var caa=Math.cos(ang+alphaAng);
-                if(j==0){
-                    console.log("slice "+i);
-                }
-
-                if(i == 0)
-                {
-                    this.vertices.push(ca, -sa, j);     // 0
-                    this.vertices.push(ca, -sa, j+1);     // 1
-                    this.vertices.push(caa,-saa, j);   // 2
-                    this.vertices.push(caa, -saa, j+1);   // 3
-
-                    // push normal once for each vertex of this triangle
-                    this.normals.push(ca, j, -sa);
-                    this.normals.push(ca, j+1, -sa);
-                    this.normals.push(caa, j, -saa);
-                    this.normals.push(caa, j+1, -saa);
-
-                    this.indices.push(0+ this.slices * j, 1+ this.slices * j, 2+ this.slices * j);
-                    this.indices.push(2+ this.slices * j, 1+ this.slices * j, 3+ this.slices * j);
-
-                    this.texCoords.push(0, 1);
-                    this.texCoords.push(0 ,0);
-                    this.texCoords.push(1/this.slices, 1);
-                    this.texCoords.push(1/this.slices, 0);
-                }
-                else
-                {
-                    this.vertices.push(caa, -saa, j);   // 4
-                    this.vertices.push(caa, -saa, j+1);   // 5
-
-                    // push normal once for each vertex of this triangle
-                    this.normals.push(caa, 0, -saa);
-                    this.normals.push(caa, 1, -saa);
-
-                    this.indices.push((2*i)+ this.slices * j, (2*i+1)+ this.slices * j , (2*i+2)+ this.slices * j );
-                    this.indices.push((2*i+2)+ this.slices * j, (2*i+1) + this.slices * j, (2*i+3)+ this.slices * j );
-
-                    this.texCoords.push((i+1)/this.slices, 1);
-                    this.texCoords.push((i+1)/this.slices, 0);
-                }
-
+            this.vertices.push(ca, sa, 0);
             ang+=alphaAng;
         }
-    }
+
+        for(var j = 1; j <= this.stacks; j++){
+            ang = 0;
+            for(var i= 0; i < this.slices; i++){
+                var sa=Math.sin(ang);
+                var ca=Math.cos(ang);
+
+                this.vertices.push(ca, sa, inc_height*j);
+
+                var a = (j-1)*this.slices+i;
+                if(i == this.slices - 1){
+                    this.indices.push(a, a+1-this.slices, a+1);
+                    this.indices.push(a, a+1, a+this.slices);
+                }
+                else{
+                    this.indices.push(a, a+1, a+this.slices+1);
+                    this.indices.push(a, a+this.slices+1, a+this.slices);
+                }
+                
+                ang+=alphaAng;
+            }
+        }
 
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
