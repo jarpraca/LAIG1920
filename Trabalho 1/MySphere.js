@@ -18,43 +18,68 @@ class MySphere extends CGFobject {
         this.texCoords = [];
 
         var alpha = 0; //slices
-        var theta = 0; //stacks
+        var theta = Math.PI/2; //stacks
         var inc_alpha = 2*Math.PI/this.slices; //slices
-        var inc_theta = (Math.PI/2)/this.stacks; //stacks
+        var inc_theta = Math.PI/(this.stacks*2); //stacks
 
-        //first vertice
-        this.vertices.push(0, 0, this.radius);
-        this.normals.push(0, 0, 1);
+        // First pole
+        for(var i=0; i <= this.slices;i++){
+            this.vertices.push(0, 0, this.radius);
+            this.normals.push(0, 0, 1);
+            this.texCoords.push(i/this.slices, 0);
+        }
 
         theta+=inc_theta;
-        for(var i = 0; i < this.slices; i++){
-            this.vertices.push(this.radius*Math.cos(alpha)*Math.cos(theta), this.radius*Math.cos(theta)*Math.sin(alpha), this.radius*Math.sin(theta));
-            this.normals.push(Math.cos(alpha)*Math.cos(theta), Math.cos(theta)*Math.sin(alpha), Math.sin(theta));
 
-            this.indices.push(i+1, i+2, 0);
+        // First stack
+        for(var i = 0; i < this.slices; i++){
+            this.vertices.push(this.radius*Math.cos(theta)*Math.cos(alpha), this.radius*Math.cos(theta)*Math.sin(alpha), this.radius*Math.sin(theta));
+            this.normals.push(Math.cos(theta)*Math.cos(alpha), Math.cos(theta)*Math.sin(alpha), Math.sin(theta));
+            this.texCoords.push(i/this.slices, 1/(this.stacks*2));
+
+            var a = this.slices + 1 + i;
+            this.indices.push(a, a+1, i);
 
             alpha+=inc_alpha;
         }
 
-        for(var j = 1; j < this.stacks; j++){
+        // Last vertice of the first stack
+        this.vertices.push(this.radius*Math.cos(theta)*Math.cos(alpha), this.radius*Math.cos(theta)*Math.sin(alpha), this.radius*Math.sin(theta));
+        this.normals.push(Math.cos(theta)*Math.cos(alpha), Math.cos(theta)*Math.sin(alpha), Math.sin(theta));
+        this.texCoords.push(1, 1/(this.stacks*2));
+
+        // Remainder stacks
+        for(var j = 2; j < (this.stacks*2); j++){
             alpha = 0;
+            theta+=inc_theta;
+
             for(var i = 0; i < this.slices; i++){
 
-                this.vertices.push(this.radius*Math.cos(alpha)*Math.cos(theta), this.radius*Math.cos(theta)*Math.sin(alpha), this.radius*Math.sin(theta));
-                this.normals.push(Math.cos(alpha)*Math.cos(theta), Math.cos(theta)*Math.sin(alpha), Math.sin(theta));
+                this.vertices.push(this.radius*Math.cos(theta)*Math.cos(alpha), this.radius*Math.cos(theta)*Math.sin(alpha), this.radius*Math.sin(theta));
+                this.normals.push(Math.cos(theta)*Math.cos(alpha), Math.cos(theta)*Math.sin(alpha), Math.sin(theta));
+                this.texCoords.push(i/this.slices, j/(this.stacks*2));
 
-                this.indices.push(j*this.slices+i+1, j*this.slices+i+2, j*this.slices+i+2-this.slices);
-                this.indices.push(j*this.slices+i+1, j*this.slices+i+2-this.slices, j*this.slices+i+1-this.slices);
+                var a = j*(this.slices+1)+i;
+                this.indices.push(a, a+1, a-this.slices);
+                this.indices.push(a, a-this.slices, a-this.slices-1);
                 
                 alpha+=inc_alpha;
             }
-            theta+=inc_theta;
+
+            // Last vertice of the stack
+            this.vertices.push(this.radius*Math.cos(theta)*Math.cos(alpha), this.radius*Math.cos(theta)*Math.sin(alpha), this.radius*Math.sin(theta));
+            this.normals.push(Math.cos(theta)*Math.cos(alpha), Math.cos(theta)*Math.sin(alpha), Math.sin(theta));
         }
 
-        //last vertice
-        /*
-        this.vertices.push(0, 0, -this.radius);
-        this.normals.push(0, 0, -1);*/
+        // Last stack; Second pole
+        for(var i=0; i < this.slices;i++){
+            this.vertices.push(0, 0, -this.radius);
+            this.normals.push(0, 0, -1);
+            this.texCoords.push(i/this.slices, 1);
+
+            var a = (this.slices+1)*(this.stacks*2)+i;
+            this.indices.push(a, a-this.slices, a-this.slices-1);
+        }
 
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
