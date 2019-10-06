@@ -23,18 +23,26 @@ class MyTriangle extends CGFobject {
 		this.vertices = [
 			this.x1, this.y1, this.z1,	//0
 			this.x2, this.y2, this.z2,	//1
-			this.x3, this.y3, this.z3	//2
+			this.x3, this.y3, this.z3,	//2
+
+			this.x1, this.y1, this.z1,	//3
+			this.x2, this.y2, this.z2,	//4
+			this.x3, this.y3, this.z3	//5
 		];
 		
 		//Counter-clockwise reference of vertices
 		this.indices = [
-			0, 1, 2
+			0, 1, 2,
+			3, 5, 4
 		];
 
 		this.normals = [
 			0, 0, 1,
 			0, 0, 1,
-			0, 0, 1
+			0, 0, 1,
+			0, 0, -1,
+			0, 0, -1,
+			0, 0, -1
 		]
 
 		var a = Math.sqrt(Math.pow(this.x2 - this.x3,2) + Math.pow(this.y2 - this.y3,2) + Math.pow(this.z2 - this.z3,2));
@@ -45,6 +53,9 @@ class MyTriangle extends CGFobject {
 		var sinB = Math.sin(Math.acos(cosB));
 		
 		this.texCoords = [			
+			0, 1,
+			c, 1,
+			c - a*cosB, 1 - a*sinB,
 			0, 1,
 			c, 1,
 			c - a*cosB, 1 - a*sinB
