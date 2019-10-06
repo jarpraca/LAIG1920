@@ -15,7 +15,7 @@
 
     <lights>
         <omni id="main_light" enabled="1">
-            <location x="9.8" y="11.9" z="10" w="1.0" />
+            <location x="20" y="20" z="0" w="1.0" />
             <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
             <specular r="0.5" g="0.5" b="0.5" a="1.0" />
