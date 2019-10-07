@@ -112,15 +112,15 @@ class MySceneGraph {
                 return error;
         }
 
-        // <ambient>
-        if ((index = nodeNames.indexOf("ambient")) == -1)
-            return "tag <ambient> missing";
+        // <globals>
+        if ((index = nodeNames.indexOf("globals")) == -1)
+            return "tag <globals> missing";
         else {
             if (index != AMBIENT_INDEX)
-                this.onXMLMinorError("tag <ambient> out of order");
+                this.onXMLMinorError("tag <globals> out of order");
 
-            //Parse ambient block
-            if ((error = this.parseAmbient(nodes[index])) != null)
+            //Parse globals block
+            if ((error = this.parseGlobals(nodes[index])) != null)
                 return error;
         }
 
@@ -233,10 +233,10 @@ class MySceneGraph {
     }
 
     /**
-     * Parses the <ambient> node.
-     * @param {ambient block element} ambientsNode
+     * Parses the <globals> node.
+     * @param {globals block element} globalsNode
      */
-    parseAmbient(ambientsNode) {
+    parseGlobals(globalsNode) {
 
         var children = ambientsNode.children;
 
@@ -392,8 +392,38 @@ class MySceneGraph {
      */
     parseTextures(texturesNode) {
 
-        //For each texture in textures block, check ID and file URL
-        this.onXMLMinorError("To do: Parse textures.");
+        var children = texturesNode.children;
+
+        this.textures = [];
+
+        // Any number of textures.
+        for (var i = 0; i < children.length; i++) {
+
+            if (children[i].nodeName != "texture") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            // Get id of the current material.
+            var textureID = this.reader.getString(children[i], 'id');
+            if (textureID == null)
+                return "no ID defined for material";
+
+            // Checks for repeated IDs.
+            if (this.texture[textureID] != null)
+                return "ID must be unique for each light (conflict: ID = " + textureID + ")";
+
+
+            this.texture = new CGFappearance(this.scene);
+
+            this.texture.loadTexture(this.reader.getString(children[i], 'file'));
+
+            this.textures[textureID] = this.texture;
+        }
+
+
+
+        //this.log("Parsed materials");
         return null;
     }
 
@@ -426,8 +456,58 @@ class MySceneGraph {
             if (this.materials[materialID] != null)
                 return "ID must be unique for each light (conflict: ID = " + materialID + ")";
 
-            //Continue here
-            this.onXMLMinorError("To do: Parse materials.");
+
+            this.material = new CGFappearance(this.scene);
+
+            this.material.setShininess(this.reader.getFloat(children[i], 'shininess'));
+
+            grandChildren = children[i].children;
+
+            if (grandChildren[0].nodeName != "emission") {
+                this.onXMLMinorError("unknown tag <" + grandChildren[0].nodeName + ">");
+                continue;
+            }
+            else{
+                this.material.setEmission(this.reader.getFloat(grandChildren[0], 'r'),
+                                        this.reader.getFloat(grandChildren[0], 'g'),
+                                        this.reader.getFloat(grandChildren[0], 'b'),
+                                        this.reader.getFloat(grandChildren[0], 'a'));                                  
+            }
+
+            if (grandChildren[1].nodeName != "ambient") {
+                this.onXMLMinorError("unknown tag <" + grandChildren[1].nodeName + ">");
+                continue;
+            }
+            else{
+                this.material.setAmbient(this.reader.getFloat(grandChildren[1], 'r'),
+                                        this.reader.getFloat(grandChildren[1], 'g'),
+                                        this.reader.getFloat(grandChildren[1], 'b'),
+                                        this.reader.getFloat(grandChildren[1], 'a'));                                  
+            }
+
+            if (grandChildren[2].nodeName != "diffuse") {
+                this.onXMLMinorError("unknown tag <" + grandChildren[2].nodeName + ">");
+                continue;
+            }
+            else{
+                this.material.setDiffuse(this.reader.getFloat(grandChildren[2], 'r'),
+                                        this.reader.getFloat(grandChildren[2], 'g'),
+                                        this.reader.getFloat(grandChildren[2], 'b'),
+                                        this.reader.getFloat(grandChildren[2], 'a'));                                  
+            }
+
+            if (grandChildren[3].nodeName != "specular") {
+                this.onXMLMinorError("unknown tag <" + grandChildren[3].nodeName + ">");
+                continue;
+            }
+            else{
+                this.material.setSpecular(this.reader.getFloat(grandChildren[3], 'r'),
+                                        this.reader.getFloat(grandChildren[3], 'g'),
+                                        this.reader.getFloat(grandChildren[3], 'b'),
+                                        this.reader.getFloat(grandChildren[3], 'a'));                                  
+            }
+
+            this.materials[materialID] = this.material;
         }
 
         //this.log("Parsed materials");
@@ -477,11 +557,27 @@ class MySceneGraph {
                         transfMatrix = mat4.translate(transfMatrix, transfMatrix, coordinates);
                         break;
                     case 'scale':                        
-                        this.onXMLMinorError("To do: Parse scale transformations.");
+                        var coordinates = this.parseCoordinates3D(grandChildren[j], "translate transformation for ID " + transformationID);
+                        if (!Array.isArray(coordinates))
+                            return coordinates;
+
+                        transfMatrix = mat4.scale(transfMatrix, transfMatrix, coordinates);
                         break;
                     case 'rotate':
-                        // angle
-                        this.onXMLMinorError("To do: Parse rotate transformations.");
+                        var axis = this.reader.getString(grandChildren[j], 'axis');
+                        var angle = this.reader.getString(grandChildren[j], 'angle');
+
+                        switch(axis){
+                            case 'x':
+                                transfMatrix = mat4.rotateX(transfMatrix, transfMatrix, angle*Math.PI/180);
+                                break;
+                            case 'y':
+                                    transfMatrix = mat4.rotateY(transfMatrix, transfMatrix, angle*Math.PI/180);
+                                    break;
+                            case 'z':
+                                transfMatrix = mat4.rotateZ(transfMatrix, transfMatrix, angle*Math.PI/180);
+                                break;
+                        }
                         break;
                 }
             }
@@ -672,10 +768,6 @@ class MySceneGraph {
 
                 this.primitives[primitiveId] = torus;
             }
-
-            else {
-                console.warn("To do: Parse other primitives.");
-            }
         }
 
         this.log("Parsed primitives");
@@ -852,6 +944,7 @@ class MySceneGraph {
      */
     displayScene() {
         //To do: Create display loop for transversing the scene graph
+       
 
         //To test the parsing/creation of the primitives, call the display function directly
         this.scene.pushMatrix();
@@ -860,8 +953,8 @@ class MySceneGraph {
         //this.primitives['demoRectangle'].display();
         //this.primitives['demoTriangle'].display();
         //this.primitives['demoCylinder'].display();
-        //this.primitives['demoSphere'].display();
-        this.primitives['demoTorus'].display();
+        this.primitives['demoSphere'].display();
+        //this.primitives['demoTorus'].display();
         this.scene.popMatrix();
     }
 }
