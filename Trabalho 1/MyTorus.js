@@ -46,8 +46,8 @@ class MyTorus extends CGFobject {
 
                 var a = (j-1)*(this.slices+1)+i;
 
-                this.indices.push(a, a+1, a+this.slices+2);
-                this.indices.push(a, a+this.slices+2, a+this.slices+1);
+                this.indices.push(a, a+this.slices+2, a+1);
+                this.indices.push(a, a+this.slices+1, a+this.slices+2);
                 
                 theta+=inc_theta;
             }

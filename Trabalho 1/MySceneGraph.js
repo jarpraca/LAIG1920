@@ -855,13 +855,13 @@ class MySceneGraph {
 
         //To test the parsing/creation of the primitives, call the display function directly
         this.scene.pushMatrix();
-        this.scene.translate(2,1,-1);
-        this.scene.rotate(-Math.PI/2, 1, 0, 0);
+        //this.scene.translate(2,1,-1);
+        //this.scene.rotate(-Math.PI/2, 1, 0, 0);
         //this.primitives['demoRectangle'].display();
-        this.primitives['demoTriangle'].display();
+        //this.primitives['demoTriangle'].display();
         //this.primitives['demoCylinder'].display();
         //this.primitives['demoSphere'].display();
-        //this.primitives['demoTorus'].display();
+        this.primitives['demoTorus'].display();
         this.scene.popMatrix();
     }
 }
