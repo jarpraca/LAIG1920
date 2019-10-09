@@ -3,18 +3,20 @@
 * @constructor
 */
 class MyComponent extends CGFobject {
-    constructor(scene, id) {
+    constructor(scene, id, transfMatrix, materials, texture, length_s, length_t, children) {
         super(scene);
+
+        this.transformations = transfMatrix;
+        this.materials = materials;
+        this.texture = texture;
+        this.length_s = length_s;
+        this.length_t = length_t;
+        this.children = children;
 
         this.initBuffers();
     }
 
     initBuffers() {
-        this.transformations = [];
-        this.materials = [];
-        this.texture;
-        this.children = [];
-
         this.primitiveType = this.scene.gl.TRIANGLES;
         this.initGLBuffers();
     }

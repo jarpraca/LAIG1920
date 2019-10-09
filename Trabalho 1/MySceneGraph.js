@@ -227,10 +227,77 @@ class MySceneGraph {
      * @param {view block element} viewsNode
      */
     parseView(viewsNode) {
-        this.onXMLMinorError("To do: Parse views and create cameras.");
+
+        this.views = [];
+        
+        if (viewsNode.nodeName != "views")
+            return "root tag <views> missing";
+
+        this.defaultID = this.reader.getString(viewsNode,'default');
+
+        this.defaultView;
+
+        this.children = viewsNode.children;
+
+        var grandChildren;
+
+        if(children.length == 0)
+            return "No views created";
+
+        for (var i = 0; i < children.length; i++) {
+
+            if (children[i].nodeName != "perspective") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            // Get id of the current view.
+            var viewID = this.reader.getString(children[i], 'id');
+            if (viewID == null)
+                return "no ID defined for material";
+
+            // Checks for repeated IDs.
+            if (this.views[viewID] != null)
+                return "ID must be unique for each light (conflict: ID = " + viewID + ")";
+
+            var near = this.reader.getFloat(children[i], 'near');
+            var far = this.reader.getFloat(children[i], 'far');
+            var angle = this.reader.getFloat(children[i], 'angle');
+
+            grandChildren = children[i].children;
+
+            if (grandChildren[0].nodeName != "from") {
+                this.onXMLMinorError("unknown tag <" + grandChildren[0].nodeName + ">");
+                continue;
+            }
+            else{
+                var x_from = this.reader.getFloat(grandChildren[0], 'x');
+                var y_from = this.reader.getFloat(grandChildren[0], 'y');
+                var z_from = this.reader.getFloat(grandChildren[0], 'z');
+            }
+
+            if (grandChildren[1].nodeName != "to") {
+                this.onXMLMinorError("unknown tag <" + grandChildren[1].nodeName + ">");
+                continue;
+            }
+            else{
+                var x_to = this.reader.getFloat(grandChildren[1], 'x');
+                var y_to = this.reader.getFloat(grandChildren[1], 'y');
+                var z_to = this.reader.getFloat(grandChildren[1], 'z');
+            }
+
+            this.camera = new CGFcamera(angle*Math.PI/180, near, far, vec3.fromValues(x_from, y_from, z_from), vec3.fromValues(x_to, y_to, z_to));
+
+            if(viewID == this.defaultID){
+                this.defaultView = this.camera;
+            }
+
+            this.views[viewID] = this.camera;
+        }
 
         return null;
     }
+
 
     /**
      * Parses the <globals> node.
@@ -404,10 +471,10 @@ class MySceneGraph {
                 continue;
             }
 
-            // Get id of the current material.
+            // Get id of the current texture.
             var textureID = this.reader.getString(children[i], 'id');
             if (textureID == null)
-                return "no ID defined for material";
+                return "no ID defined for texture";
 
             // Checks for repeated IDs.
             if (this.texture[textureID] != null)
@@ -421,9 +488,6 @@ class MySceneGraph {
             this.textures[textureID] = this.texture;
         }
 
-
-
-        //this.log("Parsed materials");
         return null;
     }
 
@@ -572,8 +636,8 @@ class MySceneGraph {
                                 transfMatrix = mat4.rotateX(transfMatrix, transfMatrix, angle*Math.PI/180);
                                 break;
                             case 'y':
-                                    transfMatrix = mat4.rotateY(transfMatrix, transfMatrix, angle*Math.PI/180);
-                                    break;
+                                transfMatrix = mat4.rotateY(transfMatrix, transfMatrix, angle*Math.PI/180);
+                                break;
                             case 'z':
                                 transfMatrix = mat4.rotateZ(transfMatrix, transfMatrix, angle*Math.PI/180);
                                 break;
@@ -816,14 +880,81 @@ class MySceneGraph {
             var textureIndex = nodeNames.indexOf("texture");
             var childrenIndex = nodeNames.indexOf("children");
 
-            this.onXMLMinorError("To do: Parse components.");
             // Transformations
+
+            var Ctransformations = grandChildren[transformationIndex];
+
+            var transfMatrix;
+
+            for (var j = 0; j < Ctransformations.length; j++) {
+                switch (Ctransformations[j].nodeName) {
+                    case 'translate':
+                        var coordinates = this.parseCoordinates3D(Ctransformations[j]);
+                        if (!Array.isArray(coordinates))
+                            return coordinates;
+
+                        transfMatrix = mat4.translate(transfMatrix, transfMatrix, coordinates);
+                        break;
+                    case 'scale':                        
+                        var coordinates = this.parseCoordinates3D(Ctransformations[j]);
+                        if (!Array.isArray(coordinates))
+                            return coordinates;
+
+                        transfMatrix = mat4.scale(transfMatrix, transfMatrix, coordinates);
+                        break;
+                    case 'rotate':
+                        var axis = this.reader.getString(Ctransformations[j], 'axis');
+                        var angle = this.reader.getString(Ctransformations[j], 'angle');
+
+                        switch(axis){
+                            case 'x':
+                                transfMatrix = mat4.rotateX(transfMatrix, transfMatrix, angle*Math.PI/180);
+                                break;
+                            case 'y':
+                                transfMatrix = mat4.rotateY(transfMatrix, transfMatrix, angle*Math.PI/180);
+                                break;
+                            case 'z':
+                                transfMatrix = mat4.rotateZ(transfMatrix, transfMatrix, angle*Math.PI/180);
+                                break;
+                        }
+                        break;
+                    case 'transformationref':
+                        transfMatrix = transfMatrix * this.transformations[this.reader.getString(Ctransformations[j], 'id')];
+                        break;
+                }
+            }
 
             // Materials
 
+            var Cmaterials = grandChildren[materialsIndex];
+
+            var materialIDs = [];
+
+            for (var j = 0; j < Cmaterials.length; j++) {
+                materialIDs[j] = this.reader.getString(Cmaterials[j], 'id');
+            }
+
             // Texture
 
+            var textureID = this.reader.getString(Cmaterials[j], 'id');
+
+            var length_s = this.reader.getString(Cmaterials[j], 'length_s');
+
+            var length_t = this.reader.getString(Cmaterials[j], 'length_t');
+
             // Children
+
+            var grandgrandChildren = grandChildren[childrenIndex];
+
+            var childrenIDs = [];
+
+            for (var j = 0; j < grandgrandChildren.length; j++) {
+                childrenIDs[j] = this.reader.getString(grandgrandChildren[j], 'id');
+            }
+
+            var component = new MyComponent(this.scene, componentID, transfMatrix, materialIDs, textureID, length_s, length_t, childrenIDs);
+
+            this.components[componentID] = component;
         }
     }
 
