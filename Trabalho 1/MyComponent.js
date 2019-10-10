@@ -6,6 +6,7 @@ class MyComponent extends CGFobject {
     constructor(scene, id, transfMatrix, materials, texture, length_s, length_t, children) {
         super(scene);
 
+        this.id=id;
         this.transformations = transfMatrix;
         this.materials = materials;
         this.texture = texture;
@@ -18,7 +19,6 @@ class MyComponent extends CGFobject {
 
     initBuffers() {
         this.primitiveType = this.scene.gl.TRIANGLES;
-        this.initGLBuffers();
     }
     
     updateBuffers(complexity){
