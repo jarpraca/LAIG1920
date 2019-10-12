@@ -471,7 +471,7 @@
             <materials>
                 <material id="plane_white" />
             </materials>
-            <texture id="none"/>
+            <texture id="demoTexture"/>
             <children>
                 <componentref id="body" />
                 <componentref id="wings" />
