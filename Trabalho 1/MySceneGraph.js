@@ -1080,7 +1080,9 @@ class MySceneGraph {
     parseTree(componentID, textureID, materialID){
 
         // Transformations
-        this.scene.pushMatrix(this.components[componentID].transformations);
+        this.scene.pushMatrix();
+        this.scene.multMatrix(this.components[componentID].transformations);
+
         
         // Texture
         var newTextureID;
@@ -1118,6 +1120,8 @@ class MySceneGraph {
         for(var i=0; i < this.components[componentID].children.length; i++){
             if(this.components[this.components[componentID].children[i]] == null){
                 this.primitives[this.components[componentID].children[i]].display();
+                this.scene.popMatrix();
+                return;
             }
             else{
                 this.parseTree(this.components[componentID].children[i], newTextureID, newMaterialID);
