@@ -888,7 +888,7 @@ class MySceneGraph {
 
             var Ctransformations = grandChildren[transformationIndex];
 
-            var transfMatrix;
+            var transfMatrix = mat4.create();
 
             for (var j = 0; j < Ctransformations.length; j++) {
                 switch (Ctransformations[j].nodeName) {
