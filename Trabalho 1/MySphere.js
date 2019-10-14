@@ -69,6 +69,7 @@ class MySphere extends CGFobject {
             // Last vertice of the stack
             this.vertices.push(this.radius*Math.cos(theta)*Math.cos(alpha), this.radius*Math.cos(theta)*Math.sin(alpha), this.radius*Math.sin(theta));
             this.normals.push(Math.cos(theta)*Math.cos(alpha), Math.cos(theta)*Math.sin(alpha), Math.sin(theta));
+            this.texCoords.push(1, j/(this.stacks*2));
         }
 
         // Last stack; Second pole

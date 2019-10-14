@@ -3,27 +3,27 @@
 
     <views default="defaultCamera">
         <perspective id="defaultCamera" near="0.1" far="500" angle="45">
-            <from x="50" y="25" z="50" />
+            <from x="200" y="100" z="200" />
             <to x="0" y="-2" z="0" />
         </perspective>
     </views>
 
     <globals>
-        <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
-        <background r="0.0" g="0.0" b="0.0" a="1.0" />
+        <ambient r="0.9" g="0.9" b="0.9" a="1.0" />
+        <background r="0.0" g="0.5" b="0.9" a="1.0" />
     </globals>
 
     <lights>
         <omni id="main_light" enabled="1">
             <location x="20" y="20" z="0" w="1.0" />
-            <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+            <ambient r="1" g="1" b="1" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
             <specular r="0.5" g="0.5" b="0.5" a="1.0" />
         </omni>
     </lights>
 
     <textures>
-        <texture id="demoTexture" file="scenes/images/vidral.jpg" />
+        <texture id="demoTexture" file="scenes/images/rocks.jpg" />
     </textures>
 
     <materials>
@@ -101,7 +101,7 @@
         </primitive>
 
         <primitive id="torus_engine">
-            <torus slices="20" loops="20" inner="0.5" outer="6"/>
+            <torus slices="20" loops="20" inner="2" outer="6"/>
         </primitive>
 
         <primitive id="torus_wheel">
@@ -165,7 +165,7 @@
 
         <component id="tail">
             <transformation>
-
+                <translate x="0" y="0" z="0" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -196,7 +196,7 @@
         <!-- WINGS--> 
         <component id="wing_side_right">
             <transformation>
-            <translate x="22" y="8" z="4" />
+                <translate x="22" y="8" z="4" />
                 <rotate axis="x" angle="90" />
             </transformation>
             <materials>
@@ -333,7 +333,7 @@
 
         <component id="wings">
             <transformation>
-                
+                <translate x="0" y="0" z="0" />                
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -379,7 +379,6 @@
         <component id="wheel_back_right">
             <transformation>
                 <translate x="17" y="1" z="2" />
-                <transformationref id="rotate_to_x" />
             </transformation>
             <materials>
                 <material id="plane_black" />
@@ -419,7 +418,6 @@
         <component id="wheel_back_left">
             <transformation>
                 <translate x="17" y="1" z="-2" />
-                <transformationref id="rotate_to_x" />
             </transformation>
             <materials>
                 <material id="plane_black" />
@@ -445,8 +443,7 @@
 
         <component id="wheel_front">
             <transformation>
-                <translate x="37" y="1" z="0" />
-                <transformationref id="rotate_to_x" />
+                <translate x="38" y="1" z="0" />
             </transformation>
             <materials>
                 <material id="plane_black" />
@@ -459,7 +456,7 @@
 
         <component id="wheels">
             <transformation>
-                
+                <translate x="0" y="0" z="0" />                
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -480,15 +477,16 @@
         <!-- PLANE -->
         <component id="plane">
             <transformation>
+                <translate x="0" y="0" z="0" />
             </transformation>
             <materials>
                 <material id="plane_white" />
             </materials>
             <texture id="demoTexture"/>
             <children>
+                <componentref id="wheels" />
                 <componentref id="body" />
                 <componentref id="wings" />
-                <componentref id="wheels" />
             </children>
         </component>
     </components>

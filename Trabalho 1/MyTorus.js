@@ -28,7 +28,7 @@ class MyTorus extends CGFobject {
 
             this.vertices.push((this.outer+this.inner*Math.cos(theta))*Math.cos(alpha), (this.outer+this.inner*Math.cos(theta))*Math.sin(alpha), this.inner*Math.sin(theta));
             this.normals.push(Math.cos(theta)*Math.cos(alpha), Math.cos(theta)*Math.sin(alpha), Math.sin(theta));
-            this.texCoords.push(0, 1-i/this.slices);
+            this.texCoords.push(0, i/this.slices);
 
             theta+=inc_theta;
         }
@@ -42,7 +42,7 @@ class MyTorus extends CGFobject {
 
                 this.vertices.push((this.outer+this.inner*Math.cos(theta))*Math.cos(alpha), (this.outer+this.inner*Math.cos(theta))*Math.sin(alpha), this.inner*Math.sin(theta));
                 this.normals.push(Math.cos(theta)*Math.cos(alpha), Math.cos(theta)*Math.sin(alpha), Math.sin(theta));
-                this.texCoords.push(j/this.loops, 1-i/this.slices);
+                this.texCoords.push(j/this.loops, i/this.slices);
 
                 var a = (j-1)*(this.slices+1)+i;
 

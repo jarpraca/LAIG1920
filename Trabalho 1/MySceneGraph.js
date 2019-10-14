@@ -287,13 +287,13 @@ class MySceneGraph {
                 var z_to = this.reader.getFloat(grandChildren[1], 'z');
             }
 
-            this.camera = new CGFcamera(angle*Math.PI/180, near, far, vec3.fromValues(x_from, y_from, z_from), vec3.fromValues(x_to, y_to, z_to));
+            var camera = new CGFcamera(angle*Math.PI/180, near, far, vec3.fromValues(x_from, y_from, z_from), vec3.fromValues(x_to, y_to, z_to));
 
             if(viewID == this.defaultID){
-                this.defaultView = this.camera;
+                this.defaultView = camera;
             }
 
-            this.views[viewID] = this.camera;
+            this.views[viewID] = camera;
         }
 
         return null;
@@ -577,7 +577,7 @@ class MySceneGraph {
             this.materials[materialID] = this.material;
         }
 
-        //this.log("Parsed materials");
+        this.log("Parsed materials");
         return null;
     }
 
@@ -856,12 +856,10 @@ class MySceneGraph {
 
         // Any number of components.
         for (var i = 0; i < children.length; i++) {
-
             if (children[i].nodeName != "component") {
                 this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
                 continue;
             }
-
 
             // Get id of the current component.
             var componentID = this.reader.getString(children[i], 'id');
@@ -886,7 +884,7 @@ class MySceneGraph {
 
             // Transformations
 
-            var Ctransformations = grandChildren[transformationIndex];
+            var Ctransformations = grandChildren[transformationIndex].children;
 
             var transfMatrix = mat4.create();
 
@@ -923,14 +921,14 @@ class MySceneGraph {
                         }
                         break;
                     case 'transformationref':
-                        transfMatrix = transfMatrix * this.transformations[this.reader.getString(Ctransformations[j], 'id')];
+                        mat4.multiply(transfMatrix, this.transformations[this.reader.getString(Ctransformations[j], 'id')], transfMatrix);
                         break;
                 }
             }
 
             // Materials
 
-            var Cmaterials = grandChildren[materialsIndex];
+            var Cmaterials = grandChildren[materialsIndex].children;
 
             var materialIDs = [];
 
@@ -950,7 +948,7 @@ class MySceneGraph {
 
             // Children
 
-            var grandgrandChildren = grandChildren[childrenIndex];
+            var grandgrandChildren = grandChildren[childrenIndex].children;
 
             var childrenIDs = [];
 
@@ -962,6 +960,8 @@ class MySceneGraph {
 
             this.components[componentID] = component;
         }
+        this.log("Parsed components");
+        return null;
     }
 
 
@@ -1093,7 +1093,6 @@ class MySceneGraph {
         else
             newTextureID = this.components[componentID].texture;
 
-        console.log(newTextureID);
         if(newTextureID == "none")
             this.textures[newTextureID].unbind(0);
         else
@@ -1119,6 +1118,7 @@ class MySceneGraph {
         // Children
         for(var i=0; i < this.components[componentID].children.length; i++){
             if(this.components[this.components[componentID].children[i]] == null){
+                var primitive = this.components[componentID].children[i];
                 this.primitives[this.components[componentID].children[i]].display();
                 this.scene.popMatrix();
                 return;
@@ -1127,11 +1127,9 @@ class MySceneGraph {
                 this.parseTree(this.components[componentID].children[i], newTextureID, newMaterialID);
             }
         }
-
+        this.scene.popMatrix();
+        return;
     }
-
-
-
 
     /**
      * Displays the scene, processing each node, starting in the root node.
@@ -1150,11 +1148,12 @@ class MySceneGraph {
         //this.scene.pushMatrix();
         //this.scene.translate(2,1,-1);
         //this.scene.rotate(-Math.PI/2, 1, 0, 0);
-        //this.primitives['demoRectangle'].display();
-        //this.primitives['demoTriangle'].display();
-        //this.primitives['demoCylinder'].display();
+        //this.primitives['rectangle'].display();
+        //this.primitives['triangle_wheel_back'].display();
+        //this.primitives['cylinder_main'].display();
         //this.primitives['sphere'].display();
-        //this.primitives['demoTorus'].display();
+        //this.primitives['torus_engine'].display();
+        //this.primitives['triangle_wing_back'].display();
         //this.scene.popMatrix();
     }
 }
