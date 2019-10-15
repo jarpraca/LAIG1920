@@ -950,13 +950,17 @@ class MySceneGraph {
 
             var grandgrandChildren = grandChildren[childrenIndex].children;
 
-            var childrenIDs = [];
+            var componentIDs = [];
+            var primitiveIDs = [];
 
             for (var j = 0; j < grandgrandChildren.length; j++) {
-                childrenIDs[j] = this.reader.getString(grandgrandChildren[j], 'id');
+                if(grandgrandChildren[j].nodeName == "componentref")
+                    componentIDs.push(this.reader.getString(grandgrandChildren[j], 'id'));
+                else if(grandgrandChildren[j].nodeName == "primitiveref")
+                    primitiveIDs.push(this.reader.getString(grandgrandChildren[j], 'id'));
             }
 
-            var component = new MyComponent(this.scene, componentID, transfMatrix, materialIDs, textureID, 1, 1, childrenIDs);
+            var component = new MyComponent(this.scene, componentID, transfMatrix, materialIDs, textureID, 1, 1, componentIDs, primitiveIDs);
 
             this.components[componentID] = component;
         }
@@ -1081,6 +1085,7 @@ class MySceneGraph {
 
         // Transformations
         this.scene.pushMatrix();
+        this.push++;
         this.scene.multMatrix(this.components[componentID].transformations);
 
         
@@ -1116,18 +1121,16 @@ class MySceneGraph {
         }
 
         // Children
-        for(var i=0; i < this.components[componentID].children.length; i++){
-            if(this.components[this.components[componentID].children[i]] == null){
-                var primitive = this.components[componentID].children[i];
-                this.primitives[this.components[componentID].children[i]].display();
-                this.scene.popMatrix();
-                return;
-            }
-            else{
-                this.parseTree(this.components[componentID].children[i], newTextureID, newMaterialID);
-            }
+        for(var i=0; i < this.components[componentID].components.length; i++){
+            this.parseTree(this.components[componentID].components[i], newTextureID, newMaterialID);
         }
+
+        for(var i=0; i < this.components[componentID].primitives.length; i++){
+            this.primitives[this.components[componentID].primitives[i]].display();
+        }
+
         this.scene.popMatrix();
+        this.pop++;
         return;
     }
 
@@ -1141,8 +1144,11 @@ class MySceneGraph {
             console.log("Root component is null");
             return null;
         }
-
+        this.push = 0;
+        this.pop = 0;
         this.parseTree(this.idRoot, "none", "none");
+        console.log("push "+this.push);
+        console.log("pop "+this.pop);
 
         //To test the parsing/creation of the primitives, call the display function directly
         //this.scene.pushMatrix();

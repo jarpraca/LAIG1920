@@ -93,15 +93,15 @@
         </primitive>
 
         <primitive id="cylinder_engine">
-            <cylinder slices="20" stacks="10" radiusBottom="4" radiusTop="6" height="2"/>
+            <cylinder slices="20" stacks="10" radiusBottom="2" radiusTop="4" height="6"/>
         </primitive>
 
         <primitive id="sphere">
-            <sphere slices="50" stacks="50" radius="2"/>
+            <sphere slices="50" stacks="50" radius="4"/>
         </primitive>
 
         <primitive id="torus_engine">
-            <torus slices="20" loops="20" inner="2" outer="6"/>
+            <torus slices="20" loops="20" inner="0.5" outer="4"/>
         </primitive>
 
         <primitive id="torus_wheel">
@@ -113,7 +113,7 @@
         <!-- BODY -->
         <component id="main">
             <transformation>
-                <translate x="0" y="0" z="14" />
+                <translate x="0" y="11" z="14" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -126,12 +126,12 @@
 
         <component id="front">
             <transformation>
-                <translate x="0" y="0" z="34" />
+                <translate x="0" y="11" z="34" />
             </transformation>
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1" length_t="1"/>
+            <texture id="inherit" length_s="1" length_t="1"/> <!-- quando e inherit/none nao precisa de length-->
             <children>
                 <primitiveref id="cylinder_front" />
             </children>
@@ -139,7 +139,7 @@
 
         <component id="back">
             <transformation>
-                <translate x="0" y="0" z="2" />
+                <translate x="0" y="11" z="2" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -152,7 +152,7 @@
 
         <component id="tip">
             <transformation>
-                <translate x="0" y="0" z="42" />
+                <translate x="0" y="11" z="42" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -165,7 +165,7 @@
 
         <component id="tail">
             <transformation>
-                <translate x="0" y="0" z="0" />
+                <translate x="0" y="11" z="0" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -265,7 +265,7 @@
 
         <component id="engine_right">
             <transformation>
-                <translate x="24" y="6" z="9" />
+                <translate x="9" y="6" z="24" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -278,7 +278,7 @@
 
         <component id="engine_left">
             <transformation>
-                <translate x="24" y="6" z="-9" />
+                <translate x="-9" y="6" z="24" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -291,7 +291,7 @@
 
         <component id="engine_border_right">
             <transformation>
-                <translate x="30" y="6" z="9" />
+                <translate x="9" y="6" z="30" />
             </transformation>
             <materials>
                 <material id="plane_blue" />
@@ -304,7 +304,7 @@
 
         <component id="engine_border_left">
             <transformation>
-                <translate x="30" y="6" z="-9" />
+                <translate x="-9" y="6" z="30" />
             </transformation>
             <materials>
                 <material id="plane_blue" />
