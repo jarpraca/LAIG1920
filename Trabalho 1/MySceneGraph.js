@@ -1124,8 +1124,10 @@ class MySceneGraph {
         }
         else{
             newTextureID = this.components[componentID].texture;
-            newLength_s = this.components[componentID].length_s;
-            newLength_t = this.components[componentID].length_t;
+            if(newTextureID != "none"){
+                newLength_s = this.components[componentID].length_s;
+                newLength_t = this.components[componentID].length_t;
+            }
         }
 
         if(newTextureID == "none"){
@@ -1133,6 +1135,7 @@ class MySceneGraph {
         }
         else{
             this.materials[newMaterialID].setTexture(this.textures[newTextureID]);
+            this.materials[newMaterialID].apply();
         }
 
         // Children
