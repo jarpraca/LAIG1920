@@ -23,6 +23,10 @@
     </lights>
 
     <textures>
+        <texture id="backTexture" file="scenes/images/back.png" />
+        <texture id="mainTexture" file="scenes/images/plane.png" />
+        <texture id="cockpitTexture" file="scenes/images/window.png" />
+        <texture id="tailTexture" file="scenes/images/tail.png" />
         <texture id="planeTexture" file="scenes/images/plane2.png" />
         <texture id="groundTexture" file="scenes/images/road.jpg" />
     </textures>
@@ -113,7 +117,7 @@
         </primitive>
 
         <primitive id="cylinder_tail">
-            <cylinder slices="20" stacks="10" base="0.5" top="1" height="2"/>
+            <cylinder slices="20" stacks="10" base="0.7" top="2" height="4"/>
         </primitive>
 
         <primitive id="cylinder_engine">
@@ -142,7 +146,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="planeTexture"/>
             <children>
                 <primitiveref id="cylinder_main" />
             </children>
@@ -155,7 +159,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="cockpitTexture"/>
             <children>
                 <primitiveref id="cylinder_front" />
             </children>
@@ -168,7 +172,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="backTexture"/>
             <children>
                 <primitiveref id="cylinder_back" />
             </children>
@@ -189,7 +193,7 @@
 
         <component id="tail">
             <transformation>
-                <translate x="0" y="7" z="0" />
+                <translate x="0" y="7" z="-2" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -221,7 +225,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="mainTexture"/>
             <children>
                 <componentref id="main" />
                 <componentref id="front" />
@@ -378,7 +382,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="tailTexture"/>
             <children>
                 <primitiveref id="cylinder_engine" />
             </children>
@@ -391,7 +395,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="tailTexture"/>
             <children>
                 <primitiveref id="cylinder_engine" />
             </children>
@@ -404,7 +408,7 @@
             <materials>
                 <material id="plane_blue" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="backTexture"/>
             <children>
                 <primitiveref id="torus_engine" />
             </children>
@@ -417,7 +421,7 @@
             <materials>
                 <material id="plane_blue" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="backTexture"/>
             <children>
                 <primitiveref id="torus_engine" />
             </children>
