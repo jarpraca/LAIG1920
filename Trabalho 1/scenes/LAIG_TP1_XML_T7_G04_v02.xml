@@ -117,7 +117,7 @@
         </primitive>
 
         <primitive id="cylinder_tail">
-            <cylinder slices="20" stacks="10" base="0.7" top="2" height="4"/>
+            <cylinder slices="20" stacks="10" base="1" top="2" height="4"/>
         </primitive>
 
         <primitive id="cylinder_engine">
@@ -206,8 +206,8 @@
 
         <component id="cover">
             <transformation>
-                <translate x="0" y="7" z="2" />
-                <scale x="1" y="1" z="0.01" />
+                <translate x="0" y="7" z="-2" />
+                <scale x="0.5" y="0.5" z="0.5" />
             </transformation>
             <materials>
                 <material id="inherit" />
