@@ -21,19 +21,13 @@ class MyRectangle extends CGFobject {
 			this.x1, this.y1, 0,	//0
 			this.x2, this.y1, 0,	//1
 			this.x1, this.y2, 0,	//2
-			this.x2, this.y2, 0,	//3
-			this.x1, this.y1, 0,	//4
-			this.x2, this.y1, 0,	//5
-			this.x1, this.y2, 0,	//6
-			this.x2, this.y2, 0		//7
+			this.x2, this.y2, 0		//3
 		];
 
 		//Counter-clockwise reference of vertices
 		this.indices = [
 			0, 1, 2,
-			1, 3, 2,
-			4, 6, 5,
-			5, 6, 7
+			1, 3, 2
 		];
 
 		//Facing Z positive
@@ -41,11 +35,7 @@ class MyRectangle extends CGFobject {
 			0, 0, 1,
 			0, 0, 1,
 			0, 0, 1,
-			0, 0, 1,
-			0, 0, -1,
-			0, 0, -1,
-			0, 0, -1,
-			0, 0, -1
+			0, 0, 1
 		];
 		
 		/*
@@ -57,7 +47,7 @@ class MyRectangle extends CGFobject {
 		v
         t
         */
-
+/*
 		this.texCoords = [
 			0, 1,
 			1, 1,
@@ -67,7 +57,8 @@ class MyRectangle extends CGFobject {
 			1, 1,
 			0, 0,
 			1, 0
-		]
+		];*/
+		this.updateTexCoords(1,1);
 		this.primitiveType = this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
 	}
@@ -77,8 +68,13 @@ class MyRectangle extends CGFobject {
 	 * Updates the list of texture coordinates of the rectangle
 	 * @param {Array} coords - Array of texture coordinates
 	 */
-	updateTexCoords(coords) {
-		this.texCoords = [...coords];
+	updateTexCoords(s,t) {
+		this.texCoords = [
+			0, Math.abs(this.y2 - this.y1)/ t,
+			0, 0,
+			Math.abs(this.x2 - this.x1) / s, 0,
+			Math.abs(this.x2 - this.x1) / s, Math.abs(this.y2 - this.y1)/ t
+		];
 		this.updateTexCoordsGLBuffers();
 	}
 }
