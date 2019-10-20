@@ -831,17 +831,17 @@ class MySceneGraph {
 
                 // top
                 var top = this.reader.getFloat(grandChildren[0], 'top');
-                if (!(top != null && !isNaN(top) && top > 0))
+                if (!(top != null && !isNaN(top) && top >= 0))
                     return "unable to parse stacks of the primitive coordinates for ID = " + primitiveId;
 
                 // bottom
                 var base = this.reader.getFloat(grandChildren[0], 'base');
-                if (!(base != null && !isNaN(base) && base > 0))
+                if (!(base != null && !isNaN(base) && base >= 0))
                     return "unable to parse stacks of the primitive coordinates for ID = " + primitiveId;
 
                 // height
                 var height = this.reader.getFloat(grandChildren[0], 'height');
-                if (!(height != null && !isNaN(height) && height > 0))
+                if (!(height != null && !isNaN(height) && height >= 0))
                     return "unable to parse stacks of the primitive coordinates for ID = " + primitiveId;
 
                 var cylinder = new MyCylinder(this.scene, primitiveId, slices, stacks, base, top, height);
@@ -862,7 +862,7 @@ class MySceneGraph {
 
                 // radius
                 var radius = this.reader.getFloat(grandChildren[0], 'radius');
-                if (!(radius != null && !isNaN(radius) && radius > 0))
+                if (!(radius != null && !isNaN(radius) && radius >= 0))
                     return "unable to parse stacks of the primitive coordinates for ID = " + primitiveId;
 
                 var sphere = new MySphere(this.scene, primitiveId, slices, stacks, radius);
@@ -883,12 +883,12 @@ class MySceneGraph {
 
                 // inner
                 var inner = this.reader.getFloat(grandChildren[0], 'inner');
-                if (!(inner != null && !isNaN(inner) && inner > 0))
+                if (!(inner != null && !isNaN(inner) && inner >= 0))
                     return "unable to parse stacks of the primitive coordinates for ID = " + primitiveId;
 
                 // outer
                 var outer = this.reader.getFloat(grandChildren[0], 'outer');
-                if (!(outer != null && !isNaN(outer) && outer > 0))
+                if (!(outer != null && !isNaN(outer) && outer >= 0))
                     return "unable to parse stacks of the primitive coordinates for ID = " + primitiveId;
 
                 var torus = new MyTorus(this.scene, primitiveId, slices, loops, inner, outer);
