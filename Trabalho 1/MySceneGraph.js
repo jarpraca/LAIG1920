@@ -27,6 +27,8 @@ class MySceneGraph {
 
         this.nodes = [];
 
+        this.materialCount = 0;
+
         this.idRoot = null;                    // The id of the root element.
 
         this.axisCoords = [];
@@ -1109,7 +1111,6 @@ class MySceneGraph {
         console.log("   " + message);
     }
 
-
     parseTree(componentID, textureID, materialID, length_s, length_t){
 
         // Transformations
@@ -1118,15 +1119,14 @@ class MySceneGraph {
         
         // Material
         var newMaterialID;
+        var defaultMaterial = this.materialCount % this.components[componentID].materials.length;
 
-        if(this.components[componentID].materials[0] == "inherit"){
+        if(this.components[componentID].materials[defaultMaterial] == "inherit"){
             newMaterialID = materialID;
         }
         else
-            newMaterialID = this.components[componentID].materials[0];
+            newMaterialID = this.components[componentID].materials[defaultMaterial];
         
-        this.materials[newMaterialID].apply();
-
         // Texture
         var newTextureID;
         var newLength_s = 0;
@@ -1150,8 +1150,9 @@ class MySceneGraph {
         }
         else{
             this.materials[newMaterialID].setTexture(this.textures[newTextureID]);
-            this.materials[newMaterialID].apply();
         }
+
+        this.materials[newMaterialID].apply();
 
         // Children
         for(var i=0; i < this.components[componentID].components.length; i++){
@@ -1172,6 +1173,12 @@ class MySceneGraph {
         return;
     }
 
+    checkKeys(){
+        if (this.scene.interface.isKeyPressed("KeyM")) {
+            this.materialCount++;
+        }
+    }
+
     /**
      * Displays the scene, processing each node, starting in the root node.
      */
@@ -1182,19 +1189,9 @@ class MySceneGraph {
             console.log("Root component is null");
             return null;
         }
+        
+        this.checkKeys();
 
         this.parseTree(this.idRoot, "none", "none", 0, 0);
-
-        //To test the parsing/creation of the primitives, call the display function directly
-        //this.scene.pushMatrix();
-        //this.scene.translate(2,1,-1);
-        //this.scene.rotate(-Math.PI/2, 1, 0, 0);
-        //this.primitives['rectangle'].display();
-        //this.primitives['triangle_wheel_back'].display();
-        //this.primitives['cylinder_main'].display();
-        //this.primitives['sphere'].display();
-        //this.primitives['torus_engine'].display();
-        //this.primitives['triangle_wing_back'].display();
-        //this.scene.popMatrix();
     }
 }

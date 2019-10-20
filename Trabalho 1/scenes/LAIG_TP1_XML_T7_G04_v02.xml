@@ -245,7 +245,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="20" length_t="8"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="triangle_wing_main" />
             </children>
@@ -259,7 +259,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="20" length_t="8"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="triangle_wing_main_reversed" />
             </children>
@@ -273,7 +273,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="20" length_t="8"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="triangle_wing_main" />
             </children>
@@ -287,7 +287,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="20" length_t="8"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="triangle_wing_main_reversed" />
             </children>
@@ -301,7 +301,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="8" length_t="8"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="triangle_wing_back" />
             </children>
@@ -315,7 +315,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="8" length_t="8"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="triangle_wing_back_reversed" />
             </children>
@@ -329,7 +329,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="8" length_t="8"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="triangle_wing_back" />
             </children>
@@ -343,7 +343,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="8" length_t="8"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="triangle_wing_back_reversed" />
             </children>
@@ -356,7 +356,7 @@
             <materials>
                 <material id="plane_blue" />
             </materials>
-            <texture id="inherit" length_s="8" length_t="8"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="triangle_wing_back" />
             </children>
@@ -369,7 +369,7 @@
             <materials>
                 <material id="plane_blue" />
             </materials>
-            <texture id="inherit" length_s="8" length_t="8"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="triangle_wing_back_reversed" />
             </children>
@@ -407,8 +407,9 @@
             </transformation>
             <materials>
                 <material id="plane_blue" />
+                <material id="plane_white" />
             </materials>
-            <texture id="backTexture"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="torus_engine" />
             </children>
@@ -420,8 +421,9 @@
             </transformation>
             <materials>
                 <material id="plane_blue" />
+                <material id="plane_white" />
             </materials>
-            <texture id="backTexture"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="torus_engine" />
             </children>
@@ -463,7 +465,7 @@
             <materials>
                 <material id="plane_white" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -477,7 +479,7 @@
             <materials>
                 <material id="plane_white" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -489,9 +491,9 @@
                 <scale x="1" y="1" z="0.01" />
             </transformation>
             <materials>
-                <material id="plane_white" />
+                <material id="plane_blue" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -503,9 +505,9 @@
                 <scale x="1" y="1" z="0.01" />
             </transformation>
             <materials>
-                <material id="plane_white" />
+                <material id="plane_blue" />
             </materials>
-            <texture id="inherit"/>
+            <texture id="none"/>
             <children>
                 <primitiveref id="sphere" />
             </children>
@@ -518,7 +520,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1" length_t="1"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="engine_main_right" />
                 <componentref id="engine_border_right" />
@@ -535,7 +537,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1" length_t="1"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="engine_main_left" />
                 <componentref id="engine_border_left" />
@@ -552,7 +554,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1" length_t="1"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="engine_right" />
                 <componentref id="engine_left" />
@@ -566,7 +568,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1" length_t="1"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="wing_side_right" />
                 <componentref id="wing_side_left" />
@@ -590,7 +592,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="4" length_t="1"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -605,7 +607,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="4" length_t="1"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -618,7 +620,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="4" length_t="1"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="triangle_wheel_back" />
             </children>
@@ -633,7 +635,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="4" length_t="1"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="triangle_wheel_back" />
             </children>
@@ -659,7 +661,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1" length_t="1"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -674,7 +676,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="4" length_t="1"/>
+            <texture id="inherit" />
             <children>
                 <primitiveref id="rectangle" />
             </children>
@@ -687,7 +689,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="4" length_t="1"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="triangle_wheel_back" />
             </children>
@@ -702,7 +704,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="4" length_t="1"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="triangle_wheel_back" />
             </children>
@@ -728,7 +730,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="2" length_t="4"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="triangle_wheel_front" />
             </children>
@@ -743,7 +745,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="2" length_t="4"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="triangle_wheel_front" />
             </children>
@@ -769,7 +771,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="inherit" length_s="1" length_t="1"/>
+            <texture id="inherit"/>
             <children>
                 <componentref id="holder_back_top_right" />
                 <componentref id="holder_back_top_right_reversed" />
