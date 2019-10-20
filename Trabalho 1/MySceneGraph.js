@@ -249,7 +249,7 @@ class MySceneGraph {
 
         for (var i = 0; i < this.children.length; i++) {
 
-            if (this.children[i].nodeName != "perspective") {
+            if (this.children[i].nodeName != "perspective" && this.children[i].nodeName != "ortho") {
                 this.onXMLMinorError("unknown tag <" + this.children[i].nodeName + ">");
                 continue;
             }
@@ -263,33 +263,80 @@ class MySceneGraph {
             if (this.views[viewID] != null)
                 return "ID must be unique for each light (conflict: ID = " + viewID + ")";
 
-            var near = this.reader.getFloat(this.children[i], 'near');
-            var far = this.reader.getFloat(this.children[i], 'far');
-            var angle = this.reader.getFloat(this.children[i], 'angle');
+            var camera;
 
-            grandChildren = this.children[i].children;
+            if(this.children[i].nodeName == "perspective"){
+                var near = this.reader.getFloat(this.children[i], 'near');
+                var far = this.reader.getFloat(this.children[i], 'far');
+                var angle = this.reader.getFloat(this.children[i], 'angle');
 
-            if (grandChildren[0].nodeName != "from") {
-                this.onXMLMinorError("unknown tag <" + grandChildren[0].nodeName + ">");
-                continue;
-            }
-            else{
-                var x_from = this.reader.getFloat(grandChildren[0], 'x');
-                var y_from = this.reader.getFloat(grandChildren[0], 'y');
-                var z_from = this.reader.getFloat(grandChildren[0], 'z');
-            }
+                grandChildren = this.children[i].children;
 
-            if (grandChildren[1].nodeName != "to") {
-                this.onXMLMinorError("unknown tag <" + grandChildren[1].nodeName + ">");
-                continue;
-            }
-            else{
-                var x_to = this.reader.getFloat(grandChildren[1], 'x');
-                var y_to = this.reader.getFloat(grandChildren[1], 'y');
-                var z_to = this.reader.getFloat(grandChildren[1], 'z');
-            }
+                if (grandChildren[0].nodeName != "from") {
+                    this.onXMLMinorError("unknown tag <" + grandChildren[0].nodeName + ">");
+                    continue;
+                }
+                else{
+                    var x_from = this.reader.getFloat(grandChildren[0], 'x');
+                    var y_from = this.reader.getFloat(grandChildren[0], 'y');
+                    var z_from = this.reader.getFloat(grandChildren[0], 'z');
+                }
 
-            var camera = new CGFcamera(angle*Math.PI/180, near, far, vec3.fromValues(x_from, y_from, z_from), vec3.fromValues(x_to, y_to, z_to));
+                if (grandChildren[1].nodeName != "to") {
+                    this.onXMLMinorError("unknown tag <" + grandChildren[1].nodeName + ">");
+                    continue;
+                }
+                else{
+                    var x_to = this.reader.getFloat(grandChildren[1], 'x');
+                    var y_to = this.reader.getFloat(grandChildren[1], 'y');
+                    var z_to = this.reader.getFloat(grandChildren[1], 'z');
+                }
+
+                camera = new CGFcamera(angle*Math.PI/180, near, far, vec3.fromValues(x_from, y_from, z_from), vec3.fromValues(x_to, y_to, z_to));
+            }
+            else if(this.children[i].nodeName == "ortho"){
+                var near = this.reader.getFloat(this.children[i], 'near');
+                var far = this.reader.getFloat(this.children[i], 'far');
+                var left = this.reader.getFloat(this.children[i], 'left');
+                var right = this.reader.getFloat(this.children[i], 'right');
+                var top = this.reader.getFloat(this.children[i], 'top');
+                var bottom = this.reader.getFloat(this.children[i], 'bottom');
+
+                grandChildren = this.children[i].children;
+
+                if (grandChildren[0].nodeName != "from") {
+                    this.onXMLMinorError("unknown tag <" + grandChildren[0].nodeName + ">");
+                    continue;
+                }
+                else{
+                    var x_from = this.reader.getFloat(grandChildren[0], 'x');
+                    var y_from = this.reader.getFloat(grandChildren[0], 'y');
+                    var z_from = this.reader.getFloat(grandChildren[0], 'z');
+                }
+
+                if (grandChildren[1].nodeName != "to") {
+                    this.onXMLMinorError("unknown tag <" + grandChildren[1].nodeName + ">");
+                    continue;
+                }
+                else{
+                    var x_to = this.reader.getFloat(grandChildren[1], 'x');
+                    var y_to = this.reader.getFloat(grandChildren[1], 'y');
+                    var z_to = this.reader.getFloat(grandChildren[1], 'z');
+                }
+
+                if (grandChildren[2].nodeName != "up") {
+                    var x_up = 0;
+                    var y_up = 1;
+                    var z_up = 0;
+                }
+                else{
+                    var x_up = this.reader.getFloat(grandChildren[1], 'x');
+                    var y_up = this.reader.getFloat(grandChildren[1], 'y');
+                    var z_up = this.reader.getFloat(grandChildren[1], 'z');
+                }
+
+                camera = new CGFcameraOrtho(left, right, bottom, top, near, far, vec3.fromValues(x_from, y_from, z_from), vec3.fromValues(x_to, y_to, z_to), vec3.fromValues(x_up, y_up, z_up));
+            }
 
             if(viewID == this.defaultID){
                 this.defaultCamera = camera;
