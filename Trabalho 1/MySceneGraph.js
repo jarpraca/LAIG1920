@@ -236,9 +236,7 @@ class MySceneGraph {
         if (viewsNode.nodeName != "views")
             return "root tag <views> missing";
 
-        this.defaultID = this.reader.getString(viewsNode,'default');
-
-        this.defaultView;
+        this.defaultCameraID = this.reader.getString(viewsNode,'default');
 
         this.children = viewsNode.children;
 
@@ -324,12 +322,12 @@ class MySceneGraph {
                     var z_to = this.reader.getFloat(grandChildren[1], 'z');
                 }
 
-                if (grandChildren[2].nodeName != "up") {
+                if (grandChildren[2] == null) {
                     var x_up = 0;
                     var y_up = 1;
                     var z_up = 0;
                 }
-                else{
+                else if (grandChildren[2].nodeName == "up"){
                     var x_up = this.reader.getFloat(grandChildren[1], 'x');
                     var y_up = this.reader.getFloat(grandChildren[1], 'y');
                     var z_up = this.reader.getFloat(grandChildren[1], 'z');
@@ -338,7 +336,7 @@ class MySceneGraph {
                 camera = new CGFcameraOrtho(left, right, bottom, top, near, far, vec3.fromValues(x_from, y_from, z_from), vec3.fromValues(x_to, y_to, z_to), vec3.fromValues(x_up, y_up, z_up));
             }
 
-            if(viewID == this.defaultID){
+            if(viewID == this.defaultCameraID){
                 this.defaultCamera = camera;
             }
 
@@ -412,8 +410,8 @@ class MySceneGraph {
                 continue;
             }
             else {
-                attributeNames.push(...["location", "ambient", "diffuse", "specular"]);
-                attributeTypes.push(...["position", "color", "color", "color"]);
+                attributeNames.push(...["location", "ambient", "diffuse", "specular", "attenuation"]);
+                attributeTypes.push(...["position", "color", "color", "color", "attenuation"]);
             }
 
             // Get id of the current light.
@@ -431,7 +429,7 @@ class MySceneGraph {
             if (!(aux != null && !isNaN(aux) && (aux == true || aux == false)))
                 this.onXMLMinorError("unable to parse value component of the 'enable light' field for ID = " + lightId + "; assuming 'value = 1'");
 
-            enableLight = aux || 1;
+            enableLight = aux;// || 1;
 
             //Add enabled boolean and type name to light info
             global.push(enableLight);
@@ -447,10 +445,11 @@ class MySceneGraph {
 
             for (var j = 0; j < attributeNames.length; j++) {
                 var attributeIndex = nodeNames.indexOf(attributeNames[j]);
-
                 if (attributeIndex != -1) {
                     if (attributeTypes[j] == "position")
                         var aux = this.parseCoordinates4D(grandChildren[attributeIndex], "light position for ID" + lightId);
+                    else if (attributeTypes[j] == "attenuation")
+                        var aux = this.parseAttenuation(grandChildren[attributeIndex], "light attenuation for ID" + lightId);
                     else
                         var aux = this.parseColor(grandChildren[attributeIndex], attributeNames[j] + " illumination for ID" + lightId);
 
@@ -531,7 +530,6 @@ class MySceneGraph {
             if (this.textures[textureID] != null){
                 return "ID must be unique for each light (conflict: ID = " + textureID + ")";
             }
-
 
             var texture = new CGFtexture(this.scene, this.reader.getString(children[i], 'file'));
 
@@ -1135,6 +1133,29 @@ class MySceneGraph {
         return color;
     }
 
+    parseAttenuation(node, messageError){
+        var attenuation = [];
+
+        // constant
+        var constant = this.reader.getFloat(node, 'constant');
+        if (!(constant != null && !isNaN(constant) && constant >= 0 && constant <= 1))
+            return "unable to parse constant component of the " + messageError;
+
+        // linear
+        var linear = this.reader.getFloat(node, 'linear');
+        if (!(linear != null && !isNaN(linear) && linear >= 0 && linear <= 1))
+            return "unable to parse linear component of the " + messageError;
+
+        // quadratic
+        var quadratic = this.reader.getFloat(node, 'quadratic');
+        if (!(quadratic != null && !isNaN(quadratic) && quadratic >= 0 && quadratic <= 1))
+            return "unable to parse quadratic component of the " + messageError;
+
+        attenuation.push(...[constant, linear, quadratic]);
+
+        return attenuation;
+    }
+
     /*
      * Callback to be executed on any read error, showing an error on the console.
      * @param {string} message
@@ -1232,8 +1253,6 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        //To do: Create display loop for transversing the scene graph
-
         if(this.components[this.idRoot] == null){
             console.log("Root component is null");
             return null;

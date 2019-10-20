@@ -23,6 +23,10 @@ class XMLscene extends CGFscene {
 
         this.sceneInited = false;
 
+        this.cameras = [];
+        this.camerasIDs = {};
+        this.selectedCamera = 0;
+
         this.initCameras();
 
         this.enableTextures(true);
@@ -40,8 +44,19 @@ class XMLscene extends CGFscene {
      * Initializes the scene cameras.
      */
     initCameras() {
-        this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
-        //this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(100, 50, 100), vec3.fromValues(0, 0, 0));
+        var i = 0;
+        if(this.sceneInited){
+            for(var key in this.graph.views){
+                this.cameras[i] = this.graph.views[key];
+                this.camerasIDs[key] = i;
+                i++;
+            }
+            this.selectedCamera = this.camerasIDs[this.graph.defaultCameraID];
+            this.camera = this.cameras[this.selectedCamera];
+            this.interface.setActiveCamera(this.camera);
+        }
+        else
+            this.camera = new CGFcamera(0.4, 0.1, 500, vec3.fromValues(15, 15, 15), vec3.fromValues(0, 0, 0));
     }
     /**
      * Initializes the scene lights with the values read from the XML file.
@@ -62,6 +77,9 @@ class XMLscene extends CGFscene {
                 this.lights[i].setAmbient(light[3][0], light[3][1], light[3][2], light[3][3]);
                 this.lights[i].setDiffuse(light[4][0], light[4][1], light[4][2], light[4][3]);
                 this.lights[i].setSpecular(light[5][0], light[5][1], light[5][2], light[5][3]);
+                this.lights[i].setConstantAttenuation(light[6][0]);
+                this.lights[i].setLinearAttenuation(light[6][1]);
+                this.lights[i].setQuadraticAttenuation(light[6][2]);
 
                 if (light[1] == "spot") {
                     this.lights[i].setSpotCutOff(light[6]);
@@ -101,8 +119,12 @@ class XMLscene extends CGFscene {
         this.initLights();
 
         this.sceneInited = true;
+        this.initCameras();
+        this.interface.addCamerasInterface();
+    }
 
-        this.camera = this.graph.defaultCamera;
+    updateCamera(){
+        this.camera = this.cameras[this.selectedCamera];
         this.interface.setActiveCamera(this.camera);
     }
 

@@ -27,6 +27,10 @@ class MyInterface extends CGFinterface {
         return true;
     }
 
+    addCamerasInterface(){
+        this.gui.add(this.scene, 'selectedCamera', this.scene.camerasIDs).name('Selected Camera').onChange(this.scene.updateCamera.bind(this.scene));
+    }
+
     /**
      * initKeys
      */
