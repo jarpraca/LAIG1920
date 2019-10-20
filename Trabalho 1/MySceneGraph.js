@@ -882,8 +882,10 @@ class MySceneGraph {
                 return "no ID defined for componentID";
 
             // Checks for repeated IDs.
-            if (this.components[componentID] != null)
+            if (this.components[componentID] != null){
+                console.log("line :"+i);
                 return "ID must be unique for each component (conflict: ID = " + componentID + ")";
+            }
 
             grandChildren = children[i].children;
 
@@ -951,32 +953,6 @@ class MySceneGraph {
                 materialIDs[j] = this.reader.getString(Cmaterials[j], 'id');
             }
 
-            // Texture
-
-            var Ctexture = grandChildren[textureIndex];
-
-            var textureID = this.reader.getString(Ctexture, 'id');
-
-            var length_s;
-            var length_t;
-
-            if(textureID == "none" || textureID == "inherit"){
-                length_s = 0;
-                length_t = 0;
-            }
-            else {
-                length_s = this.reader.getString(Ctexture, 'length_s');
-                length_t = this.reader.getString(Ctexture, 'length_t');
-
-                if(length_s == null)
-                    length_s = 0;
-                
-                if(length_t == null)
-                    length_t = 0;
-
-                console.log(length_s);
-            }
-
             // Children
 
             var grandgrandChildren = grandChildren[childrenIndex].children;
@@ -989,6 +965,32 @@ class MySceneGraph {
                     componentIDs.push(this.reader.getString(grandgrandChildren[j], 'id'));
                 else if(grandgrandChildren[j].nodeName == "primitiveref")
                     primitiveIDs.push(this.reader.getString(grandgrandChildren[j], 'id'));
+            }
+
+            // Texture
+
+            var Ctexture = grandChildren[textureIndex];
+
+            var textureID = this.reader.getString(Ctexture, 'id');
+
+            var length_s;
+            var length_t;
+            var hasLength = false;
+
+            for(var z=0;z<primitiveIDs.length;z++){
+                if(primitiveIDs[z] == "triangle" || primitiveIDs[z] == "rectangle"){
+                    hasLength = true;
+                    break;
+                }
+            }
+
+            if(textureID == "none" || textureID == "inherit"){
+                length_s = 0;
+                length_t = 0;
+            }
+            else if(hasLength){
+                length_s = this.reader.getString(Ctexture, 'length_s');
+                length_t = this.reader.getString(Ctexture, 'length_t');
             }
 
             var component = new MyComponent(this.scene, componentID, transfMatrix, materialIDs, textureID, length_s, length_t, componentIDs, primitiveIDs);
@@ -1189,7 +1191,7 @@ class MySceneGraph {
             console.log("Root component is null");
             return null;
         }
-        
+
         this.checkKeys();
 
         this.parseTree(this.idRoot, "none", "none", 0, 0);
