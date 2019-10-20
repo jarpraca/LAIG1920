@@ -97,11 +97,11 @@
         </primitive>
 
         <primitive id="triangle_wing_back">
-            <triangle x1="0" y1="0" z1="0" x2="0" y2="8" z2="0" x3="8" y3="0" z3="0"/>
+            <triangle x1="0" y1="0" z1="0" x2="0" y2="8" z2="0" x3="7" y3="0" z3="0"/>
         </primitive>
 
         <primitive id="triangle_wing_back_reversed">
-            <triangle x1="0" y1="0" z1="0" x2="8" y2="0" z2="0" x3="0" y3="8" z3="0"/>
+            <triangle x1="0" y1="0" z1="0" x2="7" y2="0" z2="0" x3="0" y3="8" z3="0"/>
         </primitive>
 
         <primitive id="cylinder_main">
@@ -295,7 +295,7 @@
 
         <component id="wing_back_right">
             <transformation>
-                <translate x="6" y="7" z="2" />
+                <translate x="2" y="7" z="2" />
                 <rotate axis="x" angle="90" />
             </transformation>
             <materials>
@@ -309,7 +309,7 @@
 
         <component id="wing_back_right_reversed">
             <transformation>
-                <translate x="6" y="7" z="2" />
+                <translate x="2" y="7" z="2" />
                 <rotate axis="x" angle="90" />
             </transformation>
             <materials>
@@ -323,7 +323,7 @@
 
         <component id="wing_back_left">
             <transformation>
-                <translate x="6" y="7" z="-2" />
+                <translate x="2" y="7" z="-2" />
                 <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
@@ -337,7 +337,7 @@
 
         <component id="wing_back_left_reversed">
             <transformation>
-                <translate x="6" y="7" z="-2" />
+                <translate x="2" y="7" z="-2" />
                 <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
@@ -351,7 +351,7 @@
 
         <component id="wing_back_top">
             <transformation>
-                <translate x="6" y="9" z="0" />
+                <translate x="2" y="9" z="0" />
             </transformation>
             <materials>
                 <material id="plane_blue" />
@@ -364,7 +364,7 @@
 
         <component id="wing_back_top_reversed">
             <transformation>
-                <translate x="6" y="9" z="0" />
+                <translate x="2" y="9" z="0" />
             </transformation>
             <materials>
                 <material id="plane_blue" />
