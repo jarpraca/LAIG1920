@@ -31,7 +31,7 @@ class MyCylinder extends CGFobject {
             var ca=Math.cos(ang);
 
             this.vertices.push(ca*radius, sa*radius, 0);
-            this.normals.push(ca, sa, Math.abs(this.radiusBottom-this.radiusTop)/this.height);
+            this.normals.push(ca, sa, this.height/Math.abs(this.radiusBottom-this.radiusTop));
             this.texCoords.push(i/this.slices, 1);
 
             ang+=alphaAng;
@@ -49,7 +49,7 @@ class MyCylinder extends CGFobject {
                 ca=Math.cos(ang);
 
                 this.vertices.push(ca*radius, sa*radius, inc_height*j);
-                this.normals.push(ca, sa, Math.abs(this.radiusBottom-this.radiusTop)/this.height);
+                this.normals.push(ca, sa, this.height/Math.abs(this.radiusBottom-this.radiusTop));
                 this.texCoords.push(i/this.slices, 1 - inc_height*j/this.height);
 
                 var a = (j-1)*(this.slices+1)+i;
@@ -64,7 +64,7 @@ class MyCylinder extends CGFobject {
             ca=Math.cos(ang);
 
             this.vertices.push(ca*radius, sa*radius, inc_height*j);
-            this.normals.push(ca, sa, Math.abs(this.radiusBottom-this.radiusTop)/this.height);
+            this.normals.push(ca, sa, this.height/Math.abs(this.radiusBottom-this.radiusTop));
             this.texCoords.push(1, 1 - inc_height*j/this.height);
         }
 
