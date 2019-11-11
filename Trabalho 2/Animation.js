@@ -2,18 +2,14 @@
 * Animation
 * @constructor
 */
-class Animation {
-    constructor(scene, id) {
-        super(scene);
-
-        this.id=id;
-
-        this.initBuffers();
+class Animation extends CGFobject {
+    constructor(id) {
+        this.id = id;
     }
 
-    update();
+    update(t){}
 
-    apply();
+    apply(){}
 }
 
 

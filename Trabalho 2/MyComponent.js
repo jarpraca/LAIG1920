@@ -3,11 +3,12 @@
 * @constructor
 */
 class MyComponent extends CGFobject {
-    constructor(scene, id, transfMatrix, materials, texture, length_s, length_t, components, primitives) {
+    constructor(scene, id, transfMatrix, animation, materials, texture, length_s, length_t, components, primitives) {
         super(scene);
 
         this.id=id;
         this.transformations = transfMatrix;
+        this.animation = animation;
         this.materials = materials;
         this.texture = texture;
         this.length_s = length_s;

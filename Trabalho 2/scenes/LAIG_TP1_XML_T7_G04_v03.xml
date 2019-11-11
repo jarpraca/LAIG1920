@@ -7,6 +7,11 @@
             <to x="10" y="0" z="0" />
         </perspective>
 
+        <perspective id="secondCamera" near="0.1" far="500" angle="30">
+            <from x="20" y="50" z="100" />
+            <to x="20" y="0" z="0" />
+        </perspective>
+
         <ortho id="orthoCamera"  near="0.1" far="500" left="-95" right="95" top="45" bottom="-45" >
             <from x="20" y="50" z="100" />
             <to x="20" y="0" z="0" />
@@ -83,11 +88,16 @@
     </transformations>
 
     <animations>
-        <animation id=“example” >
-            <keyframe instant=“ff” >
-                <translate x=“ff” y=“ff” z=“ff” />
-                <rotate angle_x="ff" angle_y="ff" angle_z="ff" />
-                <scale x=“ff” y=“ff” z=“ff” />
+        <animation id="translate_x_20">
+            <keyframe instant="5">
+                <translate x="0" y="0" z="0"/>
+                <rotate angle_x="0" angle_y="0" angle_z="0"/>
+                <scale x="0.8" y="0.8" z="0.8"/>
+            </keyframe>
+            <keyframe instant="10">
+                <translate x="0" y="0" z="0"/>
+                <rotate angle_x="0" angle_y="0" angle_z="0"/>
+                <scale x="1" y="1" z="1"/>
             </keyframe>
         </animation>
     </animations>
@@ -160,13 +170,6 @@
         <primitive id="torus_wheel">
             <torus slices="20" loops="20" inner="0.25" outer="0.75"/>
         </primitive>
-
-        <primitive id="nurbs">
-            <plane npartsU=“ii” npartsV=“ii” />
-            <patch npointsU=“ii” npointsV=“ii” npartsU=“ii” npartsV=“ii” >
-                <controlpoint xx=“ff” yy=“ff” zz=“ff” />
-            </patch>
-            <cylinder2 base=“ff” top=“ff” height=“ff” slices=“ii” stacks=“ii” />
     </primitives>
 
     <components>
@@ -826,6 +829,7 @@
             <transformation>
                 <translate x="0" y="0" z="0" />
             </transformation>
+            <animationref id="translate_x_20" />
             <materials>
                 <material id="plane_white" />
             </materials>

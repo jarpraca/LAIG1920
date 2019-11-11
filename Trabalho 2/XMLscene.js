@@ -26,6 +26,7 @@ class XMLscene extends CGFscene {
         this.cameras = [];
         this.camerasIDs = {};
         this.selectedCamera = 0;
+        this.t=0;
 
         this.initCameras();
 
@@ -37,7 +38,7 @@ class XMLscene extends CGFscene {
         this.gl.depthFunc(this.gl.LEQUAL);
 
         this.axis = new CGFaxis(this);
-        this.setUpdatePeriod(100);
+        this.setUpdatePeriod(50);
     }
 
     /**
@@ -126,6 +127,11 @@ class XMLscene extends CGFscene {
     updateCamera(){
         this.camera = this.cameras[this.selectedCamera];
         this.interface.setActiveCamera(this.camera);
+    }
+
+    update(t){
+        this.graph.checkKeys();
+        this.graph.updateAnimations(t/1000);
     }
 
     /**

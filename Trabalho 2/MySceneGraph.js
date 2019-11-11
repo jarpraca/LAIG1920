@@ -3,13 +3,14 @@ var DEGREE_TO_RAD = Math.PI / 180;
 // Order of the groups in the XML document.
 var SCENE_INDEX = 0;
 var VIEWS_INDEX = 1;
-var AMBIENT_INDEX = 2;
+var GLOBALS_INDEX = 2;
 var LIGHTS_INDEX = 3;
 var TEXTURES_INDEX = 4;
 var MATERIALS_INDEX = 5;
 var TRANSFORMATIONS_INDEX = 6;
-var PRIMITIVES_INDEX = 7;
-var COMPONENTS_INDEX = 8;
+var ANIMATIONS_INDEX = 7;
+var PRIMITIVES_INDEX = 8;
+var COMPONENTS_INDEX = 9;
 
 /**
  * MySceneGraph class, representing the scene graph.
@@ -119,7 +120,7 @@ class MySceneGraph {
         if ((index = nodeNames.indexOf("globals")) == -1)
             return "tag <globals> missing";
         else {
-            if (index != AMBIENT_INDEX)
+            if (index != GLOBALS_INDEX)
                 this.onXMLMinorError("tag <globals> out of order");
 
             //Parse globals block
@@ -171,6 +172,18 @@ class MySceneGraph {
 
             //Parse transformations block
             if ((error = this.parseTransformations(nodes[index])) != null)
+                return error;
+        }
+
+        // <animations>
+        if ((index = nodeNames.indexOf("animations")) == -1)
+            return "tag <animations> missing";
+        else {
+            if (index != ANIMATIONS_INDEX)
+                this.onXMLMinorError("tag <animations> out of order");
+
+            //Parse animations block
+            if ((error = this.parseAnimations(nodes[index])) != null)
                 return error;
         }
 
@@ -701,6 +714,108 @@ class MySceneGraph {
     }
 
     /**
+     * Parses the <animations> block.
+     * @param {animations block element} animationsNode
+     */
+    parseAnimations(animationsNode) {
+        var children = animationsNode.children;
+
+        this.animations = [];
+
+        var grandChildren = [];
+
+        // Any number of animations.
+        for (var i = 0; i < children.length; i++) {
+
+            if (children[i].nodeName != "animation") {
+                this.onXMLMinorError("unknown tag <" + children[i].nodeName + ">");
+                continue;
+            }
+
+            // Get id of the current animation.
+            var animationID = this.reader.getString(children[i], 'id');
+            if (animationID == null)
+                return "no ID defined for animation";
+
+            // Checks for repeated IDs.
+            if (this.animations[animationID] != null)
+                return "ID must be unique for each animation (conflict: ID = " + animationID + ")";
+
+            grandChildren = children[i].children;
+
+            if(grandChildren.length < 1)
+                return "Animation must have at least 1 keyframe (confict: ID = " + animationID + ")";
+
+            // Keyframes
+            var keyframes = [];
+
+            for (var j = 0; j < grandChildren.length; j++) {
+
+                // Check tag keyframe
+                if (grandChildren[j].nodeName != "keyframe") {
+                    this.onXMLMinorError("unknown tag <" + grandChildren[j].nodeName + ">");
+                    continue;
+                }
+
+                // Instant of keyframe
+                var instant = this.reader.getFloat(grandChildren[j], 'instant');
+
+                var transf = grandChildren[j].children;
+
+                // Translate of keyframe
+                if (transf[0].nodeName != "translate") {
+                    this.onXMLMinorError("unknown tag or tag out of order <" + transf[0].nodeName + ">");
+                    continue;
+                }
+
+                var translate = this.parseCoordinates3D(transf[0], "translate transformation for keyframe " + j + " of animation " + animationID);
+
+                // Rotate of keyframe
+                if (transf[1].nodeName != "rotate") {
+                    this.onXMLMinorError("unknown tag or tag out of order <" + transf[1].nodeName + ">");
+                    continue;
+                }
+                
+                var angle_x = this.reader.getFloat(transf[1], 'angle_x');
+                if (!(angle_x != null && !isNaN(angle_x)))
+                    return "unable to parse x-coordinate of the rotate transformation for keyframe " + j + " of animation " + animationID;
+
+                var angle_y = this.reader.getFloat(transf[1], 'angle_y');
+                if (!(angle_y != null && !isNaN(angle_y)))
+                    return "unable to parse y-coordinate of the rotate transformation for keyframe " + j + " of animation " + animationID;
+
+                var angle_z = this.reader.getFloat(transf[1], 'angle_z');
+                if (!(angle_z != null && !isNaN(angle_z)))
+                    return "unable to parse z-coordinate of the rotate transformation for keyframe " + j + " of animation " + animationID;
+
+                var rotate = [angle_x, angle_y, angle_z];
+
+                // Scale of keyframe
+                if (transf[2].nodeName != "scale") {
+                    this.onXMLMinorError("unknown tag or tag out of order <" + transf[2].nodeName + ">");
+                    continue;
+                }
+
+                var scale = this.parseCoordinates3D(transf[2], "scale transformation for keyframe " + j + " of animation " + animationID);
+                
+                var keyframe = new Keyframe(instant);
+                keyframe.addTranslate(translate);
+                keyframe.addRotate(rotate);
+                keyframe.addScale(scale);
+
+                keyframes.push(keyframe);
+            }
+
+            var animation = new KeyframeAnimation(animationID, keyframes);
+
+            this.animations[animationID] = animation;
+        }
+
+        this.log("Parsed animations");
+        return null;
+    }
+
+    /**
      * Parses the <primitives> block.
      * @param {primitives block element} primitivesNode
      */
@@ -940,6 +1055,7 @@ class MySceneGraph {
             }
 
             var transformationIndex = nodeNames.indexOf("transformation");
+            var animationIndex = nodeNames.indexOf("animationref");
             var materialsIndex = nodeNames.indexOf("materials");
             var textureIndex = nodeNames.indexOf("texture");
             var childrenIndex = nodeNames.indexOf("children");
@@ -987,6 +1103,14 @@ class MySceneGraph {
                         break;
                 }
             }
+
+            // Animation
+
+            var Canimation = grandChildren[animationIndex];
+            var animationID = null;
+
+            if(Canimation != null)
+                animationID = this.reader.getString(Canimation, 'id');
 
             // Materials
 
@@ -1038,7 +1162,7 @@ class MySceneGraph {
                 length_t = this.reader.getString(Ctexture, 'length_t');
             }
 
-            var component = new MyComponent(this.scene, componentID, transfMatrix, materialIDs, textureID, length_s, length_t, componentIDs, primitiveIDs);
+            var component = new MyComponent(this.scene, componentID, transfMatrix, animationID, materialIDs, textureID, length_s, length_t, componentIDs, primitiveIDs);
 
             this.components[componentID] = component;
         }
@@ -1181,11 +1305,15 @@ class MySceneGraph {
         console.log("   " + message);
     }
 
-    parseTree(componentID, textureID, materialID, length_s, length_t){
+    parseNode(componentID, textureID, materialID, length_s, length_t){
+        this.scene.pushMatrix();
 
         // Transformations
-        this.scene.pushMatrix();
         this.scene.multMatrix(this.components[componentID].transformations);
+        
+        // Animations
+        if(this.components[componentID].animation != null)
+            this.animations[this.components[componentID].animation].apply(this.scene);
         
         // Material
         var newMaterialID;
@@ -1226,7 +1354,7 @@ class MySceneGraph {
 
         // Children
         for(var i=0; i < this.components[componentID].components.length; i++){
-            this.parseTree(this.components[componentID].components[i], newTextureID, newMaterialID, newLength_s, newLength_t);
+            this.parseNode(this.components[componentID].components[i], newTextureID, newMaterialID, newLength_s, newLength_t);
         }
 
         for(var i=0; i < this.components[componentID].primitives.length; i++){
@@ -1240,12 +1368,17 @@ class MySceneGraph {
         }
 
         this.scene.popMatrix();
-        return;
     }
 
     checkKeys(){
         if (this.scene.interface.isKeyPressed("KeyM")) {
             this.materialCount++;
+        }
+    }
+
+    updateAnimations(t){
+        for (var key in this.animations){
+            this.animations[key].update(t);
         }
     }
 
@@ -1258,8 +1391,6 @@ class MySceneGraph {
             return null;
         }
 
-        this.checkKeys();
-
-        this.parseTree(this.idRoot, "none", "none", 0, 0);
+        this.parseNode(this.idRoot, "none", "none", 0, 0);
     }
 }
