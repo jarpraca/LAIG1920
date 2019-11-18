@@ -140,7 +140,7 @@
         </primitive>
 
         <primitive id="cylinder_main">
-            <cylinder slices="20" stacks="10" base="4" top="4" height="20"/>
+            <cylinder2 slices="20" stacks="10" base="4" top="4" height="20"/>
         </primitive>
 
         <primitive id="cylinder_front">
