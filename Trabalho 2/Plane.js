@@ -2,79 +2,39 @@
  * Plane
  * @constructor
  * @param scene - Reference to MyScene object
- * @param x - Scale of rectangle in X
- * @param y - Scale of rectangle in Y
+ * @param npartsU - Divisions in U
+ * @param npartsV - Divisions in V
  */
 class Plane extends CGFobject {
-	constructor(scene, id, x1, x2, y1, y2) {
+	constructor(scene, id, npartsU, npartsV) {
 		super(scene);
-		this.x1 = x1;
-		this.x2 = x2;
-		this.y1 = y1;
-		this.y2 = y2;
+		this.id = id;
+		this.npartsU = npartsU;
+		this.npartsV = npartsV;
 
 		this.initBuffers();
 	}
 	
 	initBuffers() {
-		this.vertices = [
-			this.x1, this.y1, 0,	//0
-			this.x2, this.y1, 0,	//1
-			this.x1, this.y2, 0,	//2
-			this.x2, this.y2, 0		//3
-		];
+		var controlvertexes = [	// U = 0
+								[ // V = 0..1;
+									[-0.5, 0.0, 0.5, 1 ],
+									[-0.5,  0.0, -0.5, 1 ]
+									
+								],
+								// U = 1
+								[ // V = 0..1
+									[ 0.5, 0.0, 0.5, 1 ],
+									[ 0.5,  0.0, -0.5, 1 ]							 
+								]
+							];
 
-		//Counter-clockwise reference of vertices
-		this.indices = [
-			0, 1, 2,
-			1, 3, 2
-		];
+		var nurbsSurface = new CGFnurbsSurface(1, 1, controlvertexes);
 
-		//Facing Z positive
-		this.normals = [
-			0, 0, 1,
-			0, 0, 1,
-			0, 0, 1,
-			0, 0, 1
-		];
-		
-		/*
-		Texture coords (s,t)
-		+----------> s
-        |
-        |
-		|
-		v
-        t
-        */
-/*
-		this.texCoords = [
-			0, 1,
-			1, 1,
-			0, 0,
-			1, 0,
-			0, 1,
-			1, 1,
-			0, 0,
-			1, 0
-		];*/
-		this.updateTexCoords(1,1);
-		this.primitiveType = this.scene.gl.TRIANGLES;
-		this.initGLBuffers();
+		this.nurbsObj = new CGFnurbsObject(this.scene, this.npartsU, this.npartsV, nurbsSurface ); // must provide an object with the function getPoint(u, v) (CGFnurbsSurface has it)
 	}
 
-	/**
-	 * @method updateTexCoords
-	 * Updates the list of texture coordinates of the rectangle
-	 * @param {Array} coords - Array of texture coordinates
-	 */
-	updateTexCoords(s,t) {
-		this.texCoords = [
-			0, Math.abs(this.y2 - this.y1)/ t,
-			0, 0,
-			Math.abs(this.x2 - this.x1) / s, 0,
-			Math.abs(this.x2 - this.x1) / s, Math.abs(this.y2 - this.y1)/ t
-		];
-		this.updateTexCoordsGLBuffers();
+	display(){
+		this.nurbsObj.display();
 	}
 }

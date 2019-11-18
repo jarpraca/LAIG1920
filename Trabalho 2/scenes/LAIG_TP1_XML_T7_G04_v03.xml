@@ -170,6 +170,10 @@
         <primitive id="torus_wheel">
             <torus slices="20" loops="20" inner="0.25" outer="0.75"/>
         </primitive>
+
+        <primitive id="plane_prim">
+            <plane npartsU="5" npartsV="8" />
+        </primitive>
     </primitives>
 
     <components>
@@ -869,6 +873,7 @@
             <children>
                 <componentref id="plane" />
                 <componentref id="ground" />
+                <primitiveref id="plane_prim" />
             </children>
         </component>
     </components>
