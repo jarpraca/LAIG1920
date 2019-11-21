@@ -26,7 +26,6 @@ class XMLscene extends CGFscene {
         this.cameras = [];
         this.camerasIDs = {};
         this.selectedCamera = 0;
-        this.t=0;
 
         this.initCameras();
 
@@ -39,6 +38,18 @@ class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(50);
+
+        this.securityTexture = new CGFtextureRTT(this, this.gl.canvas.width, this.gl.canvas.height);
+
+        this.texture = new CGFtexture(this,"road.jpg");
+
+        this.securityCamera = new MySecurityCamera(this, this.securityTexture);
+
+        this.shader = new CGFshader(this.gl, "shaders/vertex_shader.vert", "shaders/fragment_shader.frag");
+        
+        this.shader.setUniformsValues({camera: 1});
+        
+        this.time = 0.1;
     }
 
     /**
@@ -134,10 +145,32 @@ class XMLscene extends CGFscene {
         this.graph.updateAnimations(t/1000);
     }
 
+    display(){
+        // Renders Security Camera texture
+        this.interface.setActiveCamera(this.camera);
+        this.securityTexture.attachToFrameBuffer();
+        this.render(this.camera);
+        this.securityTexture.detachFromFrameBuffer();
+        
+        // Displays scene
+        this.render(this.camera);
+
+        // Displays Security Camera
+        this.gl.disable(this.gl.DEPTH_TEST);
+        this.setActiveShader(this.shader);
+        this.securityTexture.bind(1);
+        this.time += 1;
+        this.shader.setUniformsValues({time: this.time});
+        this.securityCamera.display();
+        this.setActiveShader(this.defaultShader);
+        this.gl.enable(this.gl.DEPTH_TEST);
+
+    }
+
     /**
      * Displays the scene.
      */
-    display() {
+    render(camera) {
         // ---- BEGIN Background, camera and axis setup
 
         // Clear image and depth buffer everytime we update the scene
@@ -147,7 +180,9 @@ class XMLscene extends CGFscene {
         // Initialize Model-View matrix as identity (no transformation
         this.updateProjectionMatrix();
         this.loadIdentity();
-
+ 
+        this.camera = camera;
+        
         // Apply transformations corresponding to the camera position relative to the origin
         this.applyViewMatrix();
 

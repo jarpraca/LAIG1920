@@ -8,6 +8,7 @@
 class MyRectangle extends CGFobject {
 	constructor(scene, id, x1, x2, y1, y2) {
 		super(scene);
+		this.id = id;
 		this.x1 = x1;
 		this.x2 = x2;
 		this.y1 = y1;
@@ -47,7 +48,7 @@ class MyRectangle extends CGFobject {
 		v
         t
         */
-/*
+
 		this.texCoords = [
 			0, 1,
 			1, 1,
@@ -57,8 +58,8 @@ class MyRectangle extends CGFobject {
 			1, 1,
 			0, 0,
 			1, 0
-		];*/
-		this.updateTexCoords(1,1);
+		]
+		//this.updateTexCoords(Math.abs(this.y2 - this.y1),Math.abs(this.y2 - this.y1));
 		this.primitiveType = this.scene.gl.TRIANGLES;
 		this.initGLBuffers();
 	}
@@ -75,6 +76,8 @@ class MyRectangle extends CGFobject {
 			Math.abs(this.x2 - this.x1) / s, 0,
 			Math.abs(this.x2 - this.x1) / s, Math.abs(this.y2 - this.y1)/ t
 		];
+		//console.log(this.id);
+		//console.log(this.texCoords);
 		this.updateTexCoordsGLBuffers();
 	}
 }
