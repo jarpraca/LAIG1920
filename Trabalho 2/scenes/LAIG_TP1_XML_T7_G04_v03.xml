@@ -2,8 +2,8 @@
     <scene root="scene" axis_length="5"/>
 
     <views default="defaultCamera">
-        <perspective id="defaultCamera" near="0.1" far="500" angle="30">
-            <from x="100" y="50" z="100" />
+        <perspective id="defaultCamera" near="0.1" far="800" angle="30">
+            <from x="300" y="60" z="100" />
             <to x="10" y="0" z="0" />
         </perspective>
 
@@ -94,14 +94,45 @@
 
     <animations>
         <animation id="translate_x_20">
+            
+            <keyframe instant="2">
+                <translate x="60" y="30" z="-30"/>
+                <rotate angle_x="10" angle_y="20" angle_z="20"/>
+                <scale x="1" y="1" z="1"/>
+            </keyframe>
+            <keyframe instant="4">
+                <translate x="80" y="60" z="-80"/>
+                <rotate angle_x="20" angle_y="90" angle_z="0"/>
+                <scale x="1" y="1" z="1"/>
+            </keyframe>
             <keyframe instant="5">
-                <translate x="0" y="0" z="0"/>
-                <rotate angle_x="0" angle_y="0" angle_z="0"/>
-                <scale x="0.8" y="0.8" z="0.8"/>
+                <translate x="60" y="60" z="-130"/>
+                <rotate angle_x="20" angle_y="135" angle_z="0"/>
+                <scale x="1" y="1" z="1"/>
+            </keyframe>
+            <keyframe instant="6">
+                <translate x="0" y="60" z="-170"/>
+                <rotate angle_x="20" angle_y="180" angle_z="0"/>
+                <scale x="1" y="1" z="1"/>
+            </keyframe>
+            <keyframe instant="8">
+                <translate x="-70" y="60" z="-130"/>
+                <rotate angle_x="20" angle_y="225" angle_z="0"/>
+                <scale x="1" y="1" z="1"/>
+            </keyframe>
+            <keyframe instant="9">
+                <translate x="-80" y="45" z="-80"/>
+                <rotate angle_x="0" angle_y="270" angle_z="0"/>
+                <scale x="1" y="1" z="1"/>
             </keyframe>
             <keyframe instant="10">
+                <translate x="-60" y="30" z="-30"/>
+                <rotate angle_x="-20" angle_y="330" angle_z="0"/>
+                <scale x="1" y="1" z="1"/>
+            </keyframe>
+            <keyframe instant="12">
                 <translate x="0" y="0" z="0"/>
-                <rotate angle_x="0" angle_y="0" angle_z="0"/>
+                <rotate angle_x="0" angle_y="360" angle_z="0"/>
                 <scale x="1" y="1" z="1"/>
             </keyframe>
         </animation>
@@ -185,7 +216,7 @@
         <!-- BODY -->
         <component id="main">
             <transformation>
-                <translate x="0" y="7" z="14" />
+                <translate x="0" y="7" z="-6" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -198,7 +229,7 @@
 
         <component id="front">
             <transformation>
-                <translate x="0" y="7" z="34" />
+                <translate x="0" y="7" z="14" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -211,7 +242,7 @@
 
         <component id="back">
             <transformation>
-                <translate x="0" y="7" z="2" />
+                <translate x="0" y="7" z="-18" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -224,7 +255,7 @@
 
         <component id="tip">
             <transformation>
-                <translate x="0" y="7" z="42" />
+                <translate x="0" y="7" z="22" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -237,7 +268,7 @@
 
         <component id="tail">
             <transformation>
-                <translate x="0" y="7" z="-2" />
+                <translate x="0" y="7" z="-22" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -250,7 +281,7 @@
 
         <component id="cover">
             <transformation>
-                <translate x="0" y="7" z="-2" />
+                <translate x="0" y="7" z="-22" />
                 <scale x="0.5" y="0.5" z="0.5" />
             </transformation>
             <materials>
@@ -283,7 +314,7 @@
         <!-- WINGS--> 
         <component id="wing_side_right">
             <transformation>
-                <translate x="22" y="7" z="4" />
+                <translate x="2" y="7" z="4" />
                 <rotate axis="x" angle="90" />
             </transformation>
             <materials>
@@ -297,7 +328,7 @@
 
         <component id="wing_side_right_reversed">
             <transformation>
-                <translate x="22" y="7" z="4" />
+                <translate x="2" y="7" z="4" />
                 <rotate axis="x" angle="90" />
             </transformation>
             <materials>
@@ -311,7 +342,7 @@
 
         <component id="wing_side_left">
             <transformation>
-                <translate x="22" y="7" z="-4" />
+                <translate x="2" y="7" z="-4" />
                 <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
@@ -325,7 +356,7 @@
 
         <component id="wing_side_left_reversed">
             <transformation>
-                <translate x="22" y="7" z="-4" />
+                <translate x="2" y="7" z="-4" />
                 <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
@@ -339,7 +370,7 @@
 
         <component id="wing_back_right">
             <transformation>
-                <translate x="6" y="7" z="2" />
+                <translate x="-14" y="7" z="2" />
                 <rotate axis="x" angle="90" />
             </transformation>
             <materials>
@@ -353,7 +384,7 @@
 
         <component id="wing_back_right_reversed">
             <transformation>
-                <translate x="6" y="7" z="2" />
+                <translate x="-14" y="7" z="2" />
                 <rotate axis="x" angle="90" />
             </transformation>
             <materials>
@@ -367,7 +398,7 @@
 
         <component id="wing_back_left">
             <transformation>
-                <translate x="6" y="7" z="-2" />
+                <translate x="-14" y="7" z="-2" />
                 <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
@@ -381,7 +412,7 @@
 
         <component id="wing_back_left_reversed">
             <transformation>
-                <translate x="6" y="7" z="-2" />
+                <translate x="-14" y="7" z="-2" />
                 <rotate axis="x" angle="-90" />
             </transformation>
             <materials>
@@ -395,7 +426,7 @@
 
         <component id="wing_back_top">
             <transformation>
-                <translate x="6" y="9" z="0" />
+                <translate x="-14" y="9" z="0" />
             </transformation>
             <materials>
                 <material id="plane_blue" />
@@ -408,7 +439,7 @@
 
         <component id="wing_back_top_reversed">
             <transformation>
-                <translate x="6" y="9" z="0" />
+                <translate x="-14" y="9" z="0" />
             </transformation>
             <materials>
                 <material id="plane_blue" />
@@ -421,7 +452,7 @@
 
         <component id="engine_main_right">
             <transformation>
-                <translate x="9" y="5" z="24" />
+                <translate x="9" y="5" z="4" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -434,7 +465,7 @@
 
         <component id="engine_main_left">
             <transformation>
-                <translate x="-9" y="5" z="24" />
+                <translate x="-9" y="5" z="4" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -447,7 +478,7 @@
 
         <component id="engine_border_right">
             <transformation>
-                <translate x="9" y="5" z="30" />
+                <translate x="9" y="5" z="10" />
             </transformation>
             <materials>
                 <material id="plane_blue" />
@@ -461,7 +492,7 @@
 
         <component id="engine_border_left">
             <transformation>
-                <translate x="-9" y="5" z="30" />
+                <translate x="-9" y="5" z="10" />
             </transformation>
             <materials>
                 <material id="plane_blue" />
@@ -475,7 +506,7 @@
 
         <component id="engine_cover_right">
             <transformation>
-                <translate x="9" y="5" z="30" />
+                <translate x="9" y="5" z="10" />
                 <scale x="1.25" y="1.25" z="0.01" />
             </transformation>
             <materials>
@@ -489,7 +520,7 @@
 
         <component id="engine_cover_left">
             <transformation>
-                <translate x="-9" y="5" z="30" />
+                <translate x="-9" y="5" z="10" />
                 <scale x="1.25" y="1.25" z="0.01" />
             </transformation>
             <materials>
@@ -503,7 +534,7 @@
 
         <component id="engine_center_right">
             <transformation>
-                <translate x="9" y="5" z="30" />
+                <translate x="9" y="5" z="10" />
                 <scale x="0.25" y="0.25" z="0.25" />
             </transformation>
             <materials>
@@ -517,7 +548,7 @@
 
         <component id="engine_center_left">
             <transformation>
-                <translate x="-9" y="5" z="30" />
+                <translate x="-9" y="5" z="10" />
                 <scale x="0.25" y="0.25" z="0.25" />
             </transformation>
             <materials>
@@ -531,7 +562,7 @@
 
         <component id="engine_back_right">
             <transformation>
-                <translate x="9" y="5" z="24" />
+                <translate x="9" y="5" z="4" />
                 <scale x="1" y="1" z="0.01" />
             </transformation>
             <materials>
@@ -545,7 +576,7 @@
 
         <component id="engine_back_left">
             <transformation>
-                <translate x="-9" y="5" z="24" />
+                <translate x="-9" y="5" z="4" />
                 <scale x="1" y="1" z="0.01" />
             </transformation>
             <materials>
@@ -631,7 +662,7 @@
         <!-- WHEELS-->
         <component id="holder_back_top_right">
             <transformation>
-                <translate x="15" y="3" z="2" />
+                <translate x="-5" y="3" z="2" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -644,7 +675,7 @@
 
         <component id="holder_back_top_right_reversed">
             <transformation>
-                <translate x="17" y="3" z="2" />
+                <translate x="-3" y="3" z="2" />
                 <rotate axis="y" angle="180" />
                 <translate x="-2" y="0" z="0" />
             </transformation>
@@ -659,7 +690,7 @@
 
         <component id="holder_back_bottom_right">
             <transformation>
-                <translate x="15" y="3" z="2" />
+                <translate x="-5" y="3" z="2" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -672,7 +703,7 @@
 
         <component id="holder_back_bottom_right_reversed">
             <transformation>
-                <translate x="17" y="3" z="2" />
+                <translate x="-3" y="3" z="2" />
                 <rotate axis="y" angle="180" />
                 <translate x="-2" y="0" z="0" />
             </transformation>
@@ -687,7 +718,7 @@
 
         <component id="wheel_back_right">
             <transformation>
-                <translate x="17" y="1" z="2" />
+                <translate x="-3" y="1" z="2" />
             </transformation>
             <materials>
                 <material id="plane_black" />
@@ -700,7 +731,7 @@
 
         <component id="holder_back_top_left">
             <transformation>
-                <translate x="15" y="3" z="-2" />
+                <translate x="-5" y="3" z="-2" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -713,7 +744,7 @@
 
         <component id="holder_back_top_left_reversed">
             <transformation>
-                <translate x="17" y="3" z="-2" />
+                <translate x="-3" y="3" z="-2" />
                 <rotate axis="y" angle="180" />
                 <translate x="-2" y="0" z="0" />
             </transformation>
@@ -728,7 +759,7 @@
 
         <component id="holder_back_bottom_left">
             <transformation>
-                <translate x="15" y="3" z="-2" />
+                <translate x="-5" y="3" z="-2" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -741,7 +772,7 @@
 
         <component id="holder_back_bottom_left_reversed">
             <transformation>
-                <translate x="17" y="3" z="-2" />
+                <translate x="-3" y="3" z="-2" />
                 <rotate axis="y" angle="180" />
                 <translate x="-2" y="0" z="0" />
             </transformation>
@@ -756,7 +787,7 @@
 
         <component id="wheel_back_left">
             <transformation>
-                <translate x="17" y="1" z="-2" />
+                <translate x="-3" y="1" z="-2" />
             </transformation>
             <materials>
                 <material id="plane_black" />
@@ -769,7 +800,7 @@
 
         <component id="holder_front">
             <transformation>
-                <translate x="37" y="6" z="0" />
+                <translate x="17" y="6" z="0" />
             </transformation>
             <materials>
                 <material id="inherit" />
@@ -782,7 +813,7 @@
 
         <component id="holder_front_reversed">
             <transformation>
-                <translate x="38" y="6" z="0" />
+                <translate x="18" y="6" z="0" />
                 <rotate axis="y" angle="180" />
                 <translate x="-1" y="0" z="0" />
             </transformation>
@@ -797,7 +828,7 @@
 
         <component id="wheel_front">
             <transformation>
-                <translate x="38" y="1" z="0" />
+                <translate x="18" y="1" z="0" />
             </transformation>
             <materials>
                 <material id="plane_black" />
@@ -853,7 +884,7 @@
         <!-- GROUND -->
         <component id="ground">
             <transformation>
-                <translate x="-10" y="0" z="30" />
+                <translate x="-30" y="0" z="30" />
                 <rotate axis="x" angle="-90" />
                 <scale x="15" y="60" z="1" />
             </transformation>
