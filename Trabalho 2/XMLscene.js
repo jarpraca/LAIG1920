@@ -25,7 +25,8 @@ class XMLscene extends CGFscene {
 
         this.cameras = [];
         this.camerasIDs = {};
-        this.selectedCamera = 0;
+        // this.selectedCamera = 0;
+        // this.securityCameraID = 0;
 
         this.initCameras();
 
@@ -41,15 +42,11 @@ class XMLscene extends CGFscene {
 
         this.securityTexture = new CGFtextureRTT(this, this.gl.canvas.width, this.gl.canvas.height);
 
-        this.texture = new CGFtexture(this,"road.jpg");
-
         this.securityCamera = new MySecurityCamera(this, this.securityTexture);
 
         this.shader = new CGFshader(this.gl, "shaders/vertex_shader.vert", "shaders/fragment_shader.frag");
         
         this.shader.setUniformsValues({camera: 1});
-        
-        this.time = 0.1;
     }
 
     /**
@@ -64,7 +61,9 @@ class XMLscene extends CGFscene {
                 i++;
             }
             this.selectedCamera = this.camerasIDs[this.graph.defaultCameraID];
+            this.securityCameraID = this.camerasIDs[this.graph.defaultCameraID];
             this.camera = this.cameras[this.selectedCamera];
+            this.sec_camera = this.cameras[this.securityCameraID];
             this.interface.setActiveCamera(this.camera);
         }
         else
@@ -140,38 +139,42 @@ class XMLscene extends CGFscene {
         this.interface.setActiveCamera(this.camera);
     }
 
+    updateSecurityCamera(){
+        this.sec_camera = this.cameras[this.securityCameraID];
+        this.interface.setActiveCamera(this.sec_camera);
+    }
+
     update(t){
         this.graph.checkKeys();
         this.graph.updateAnimations(t/1000);
+        this.shader.setUniformsValues({time: (t/5000)%1000});
     }
 
     display(){
-        // Renders Security Camera texture
-        this.interface.setActiveCamera(this.camera);
-        this.securityTexture.attachToFrameBuffer();
-        this.render(this.camera);
-        this.securityTexture.detachFromFrameBuffer();
-        
         // Displays scene
         this.render(this.camera);
 
+        // Renders Security Camera texture
+        this.securityTexture.attachToFrameBuffer();
+        this.render(this.sec_camera);
+        this.securityTexture.detachFromFrameBuffer();
+        
         // Displays Security Camera
-        this.gl.disable(this.gl.DEPTH_TEST);
         this.setActiveShader(this.shader);
         this.securityTexture.bind(1);
-        this.time += 1;
-        this.shader.setUniformsValues({time: this.time});
+        this.gl.disable(this.gl.DEPTH_TEST);
         this.securityCamera.display();
-        this.setActiveShader(this.defaultShader);
         this.gl.enable(this.gl.DEPTH_TEST);
-
+        this.setActiveShader(this.defaultShader);
     }
 
     /**
-     * Displays the scene.
+     * Renders the scene in 'camera' perspective.
      */
     render(camera) {
         // ---- BEGIN Background, camera and axis setup
+        this.camera = camera;
+        this.interface.setActiveCamera(this.camera);
 
         // Clear image and depth buffer everytime we update the scene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
@@ -180,8 +183,6 @@ class XMLscene extends CGFscene {
         // Initialize Model-View matrix as identity (no transformation
         this.updateProjectionMatrix();
         this.loadIdentity();
- 
-        this.camera = camera;
         
         // Apply transformations corresponding to the camera position relative to the origin
         this.applyViewMatrix();
@@ -204,5 +205,9 @@ class XMLscene extends CGFscene {
 
         this.popMatrix();
         // ---- END Background, camera and axis setup
+        
+        // Restores active camera
+        this.updateCamera();
+        this.interface.setActiveCamera(this.camera);
     }
 }

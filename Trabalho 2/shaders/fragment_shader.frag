@@ -9,9 +9,9 @@ uniform sampler2D camera;
 uniform float time;
 
 void main() {
-    vec2 new = vec2(vTextureCoord.x, 1.0-vTextureCoord.y);
+    vec2 mirrored_coords = vec2(vTextureCoord.x, 1.0-vTextureCoord.y);
     
-	gl_FragColor = texture2D(camera, new);
+	gl_FragColor = texture2D(camera, mirrored_coords);
 
     vec4 gradient = vec4(0.0, 0.0, 0.0, 1.0);
 
@@ -21,7 +21,7 @@ void main() {
 
     
     gl_FragColor = mix(gl_FragColor, white_stripes,  
-            (sin((vTextureCoord.y - time) * 25.0) * sin((vTextureCoord.y - time) * 25.0) * sin((vTextureCoord.y - time) * 25.0) * sin((vTextureCoord.y - time) * 25.0))/2.0 - 0.05
+            (sin((vTextureCoord.y - time) * 20.0) * sin((vTextureCoord.y - time) * 20.0) * sin((vTextureCoord.y - time) * 20.0) * sin((vTextureCoord.y - time) * 20.0))/2.0 - 0.05
     );
     
 }
