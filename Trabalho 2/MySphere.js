@@ -1,6 +1,11 @@
 /**
-* MySphere
-* @constructor
+ * MySphere
+ * @constructor
+ * @param scene - Reference to MyScene object
+ * @param id - id of the object
+ * @param slices - number of slices
+ * @param stacks - number of stacks
+ * @param radius - radius of the sphere
 */
 class MySphere extends CGFobject {
     constructor(scene, id, slices, stacks, radius) {

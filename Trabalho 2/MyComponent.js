@@ -1,7 +1,17 @@
 /**
-* MyComponent
-* @constructor
-*/
+ * MyComponent
+ * @constructor
+ * @param scene - Reference to MyScene object
+ * @param id - id of the object
+ * @param transfMatrix - transformation matrix
+ * @param animation - animation's id
+ * @param materials - materials of the component
+ * @param texture - texture of the component
+ * @param length_s - s coordinate of texture
+ * @param length_t - t coordinate of texture
+ * @param components - children components
+ * @param primitives - children primitives
+ */
 class MyComponent extends CGFobject {
     constructor(scene, id, transfMatrix, animation, materials, texture, length_s, length_t, components, primitives) {
         super(scene);

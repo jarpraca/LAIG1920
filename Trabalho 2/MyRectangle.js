@@ -2,8 +2,11 @@
  * MyRectangle
  * @constructor
  * @param scene - Reference to MyScene object
- * @param x - Scale of rectangle in X
- * @param y - Scale of rectangle in Y
+ * @param id - id of the object
+ * @param x1 - x coordinate of point 1
+ * @param x2 - x coordinate of point 2
+ * @param y1 - y coordinate of point 1
+ * @param y2 - y coordinate of point 2
  */
 class MyRectangle extends CGFobject {
 	constructor(scene, id, x1, x2, y1, y2) {

@@ -1,7 +1,8 @@
 /**
-* Keyframe
-* @constructor
-*/
+ * Keyframe
+ * @constructor
+ * @param instant - instant of the keyframe
+ */
 class Keyframe {
     constructor(instant) {
         this.instant = instant;

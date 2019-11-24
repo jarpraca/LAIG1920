@@ -27,11 +27,17 @@ class MyInterface extends CGFinterface {
         return true;
     }
 
+    /**
+     * Adds two dropdown menus to choose the main camera and the security camera.
+     */
     addCamerasInterface(){
-        this.gui.add(this.scene, 'selectedCamera', this.scene.camerasIDs).name('Selected Camera').onChange(this.scene.updateCamera.bind(this.scene));
+        this.gui.add(this.scene, 'selectedCamera', this.scene.camerasIDs).name('Main Camera').onChange(this.scene.updateCamera.bind(this.scene));
         this.gui.add(this.scene, 'securityCameraID', this.scene.camerasIDs).name('Security Camera').onChange(this.scene.updateSecurityCamera.bind(this.scene));
     }
 
+    /**
+     * Adds a folder cointaining checkboxes to toggle each light
+     */
     addLightsInterface(){
         var lights = this.gui.addFolder("Lights");
 

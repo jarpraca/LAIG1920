@@ -2,6 +2,16 @@
  * MyTriangle
  * @constructor
  * @param scene - Reference to MyScene object
+ * @param id - id of the object
+ * @param x1 - x coordinate of point 1
+ * @param y1 - y coordinate of point 1
+ * @param z1 - z coordinate of point 1
+ * @param x2 - x coordinate of point 2
+ * @param y2 - y coordinate of point 2
+ * @param z2 - z coordinate of point 2
+ * @param x3 - x coordinate of point 3
+ * @param y3 - y coordinate of point 3
+ * @param z3 - z coordinate of point 3
  */
 class MyTriangle extends CGFobject {
 	

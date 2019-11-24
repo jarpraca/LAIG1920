@@ -1,6 +1,13 @@
 /**
-* MyCylinder2
-* @constructor
+ * MyCylinder2 (using NURBS)
+ * @constructor
+ * @param scene - Reference to MyScene object
+ * @param id - id of the object
+ * @param slices - number of slices
+ * @param stacks - number of stacks
+ * @param radiusBottom - radius of the cylinder's bottom
+ * @param radiusTop - radius of the cylinder's top
+ * @param height - cylinder's height
 */
 class MyCylinder2 extends CGFobject {
     constructor(scene, id, slices, stacks, radiusBottom, radiusTop, height) {

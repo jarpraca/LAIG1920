@@ -12,6 +12,11 @@
             <to x="0" y="0" z="0" />
         </perspective>
 
+        <perspective id="upCamera" near="0.1" far="800" angle="30">
+            <from x="10" y="600" z="10" />
+            <to x="0" y="0" z="0" />
+        </perspective>
+
         <ortho id="orthoCamera"  near="0.1" far="500" left="-95" right="95" top="45" bottom="-45" >
             <from x="0" y="50" z="100" />
             <to x="0" y="0" z="0" />
@@ -93,7 +98,7 @@
     </transformations>
 
     <animations>
-        <animation id="take_off_and_landing">
+        <animation id="take_off_landing_resize">
             <keyframe instant="2">
                 <translate x="60" y="30" z="-30"/>
                 <rotate angle_x="10" angle_y="20" angle_z="20"/>
@@ -126,10 +131,20 @@
             </keyframe>
             <keyframe instant="10">
                 <translate x="-60" y="30" z="-30"/>
-                <rotate angle_x="-20" angle_y="330" angle_z="0"/>
+                <rotate angle_x="-20" angle_y="330" angle_z="10"/>
                 <scale x="1" y="1" z="1"/>
             </keyframe>
             <keyframe instant="12">
+                <translate x="0" y="0" z="0"/>
+                <rotate angle_x="0" angle_y="360" angle_z="0"/>
+                <scale x="1" y="1" z="1"/>
+            </keyframe>
+            <keyframe instant="14">
+                <translate x="0" y="0" z="0"/>
+                <rotate angle_x="0" angle_y="360" angle_z="0"/>
+                <scale x="0.5" y="0.5" z="0.5"/>
+            </keyframe>
+            <keyframe instant="16">
                 <translate x="0" y="0" z="0"/>
                 <rotate angle_x="0" angle_y="360" angle_z="0"/>
                 <scale x="1" y="1" z="1"/>
@@ -868,7 +883,7 @@
             <transformation>
                 <translate x="0" y="0" z="0" />
             </transformation>
-            <animationref id="take_off_and_landing" />
+            <animationref id="take_off_landing_resize" />
             <materials>
                 <material id="plane_white" />
             </materials>

@@ -1,5 +1,5 @@
 /**
- * Plane
+ * Plane (using NURBS)
  * @constructor
  * @param scene - Reference to MyScene object
  * @param npartsU - Divisions in U

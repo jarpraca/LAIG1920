@@ -26,8 +26,6 @@ class XMLscene extends CGFscene {
         this.cameras = [];
         this.camerasIDs = {};
         this.lightToggles = [];
-        // this.selectedCamera = 0;
-        // this.securityCameraID = 0;
 
         this.initCameras();
 
@@ -140,15 +138,24 @@ class XMLscene extends CGFscene {
         this.interface.addLightsInterface();
     }
 
+    /**
+     * Updates the main camera to the one selected in the interface and sets it as the active camera
+     */
     updateCamera(){
         this.camera = this.cameras[this.selectedCamera];
         this.interface.setActiveCamera(this.camera);
     }
 
+    /**
+     * Updates the security camera to the one selected in the interface
+     */
     updateSecurityCamera(){
         this.sec_camera = this.cameras[this.securityCameraID];
     }
 
+    /**
+     * Updates the lights state (on/off)
+     */
     updateLights(){
         for(var key in this.lights){
             if(this.lights.hasOwnProperty(key)){
@@ -168,6 +175,9 @@ class XMLscene extends CGFscene {
         this.shader.setUniformsValues({time: (t/5000)%1000});
     }
 
+    /**
+     * Renders and displays both the main camera and the security camera
+     */
     display(){
         if(this.sceneInited){
             // Displays scene

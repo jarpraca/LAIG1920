@@ -1,5 +1,7 @@
 /**
  * MySecurityCamera
+ * @param scene - Reference to MyScene object
+ * @param texture - texture to apply to security camera
  */
 class MySecurityCamera extends CGFobject {
 	constructor(scene, texture) {

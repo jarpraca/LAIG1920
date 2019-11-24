@@ -2,8 +2,12 @@
  * Patch
  * @constructor
  * @param scene - Reference to MyScene object
- * @param npartsU - Divisions in U
- * @param npartsV - Divisions in V
+ * @param id - id of the object
+ * @param npointsU - number of points in U
+ * @param npointsV - number of points in V
+ * @param npartsU - divisions in U
+ * @param npartsV - divisions in V
+ * @param controlvertexes - points of the NURB surface
  */
 class Patch extends CGFobject {
 	constructor(scene, id, npointsU, npointsV, npartsU, npartsV, controlvertexes) {

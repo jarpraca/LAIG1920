@@ -1,7 +1,9 @@
 /**
-* KeyframeAnimation
-* @constructor
-*/
+ * KeyframeAnimation
+ * @constructor
+ * @param id - id of the animation
+ * @param keyframes - array of keyframes of the animation
+ */
 class KeyframeAnimation{
     constructor(id, keyframes) {
         this.id = id;
@@ -38,8 +40,6 @@ class KeyframeAnimation{
         var delta_t = t - this.initial_t;
 
         if(this.nextKeyframe <= this.finalKeyframe){
-            console.log("c: "+ this.currentKeyframe + " n: "+this.nextKeyframe);
-
             this.animMatrix = mat4.create();
 
             // Translate
@@ -74,6 +74,10 @@ class KeyframeAnimation{
         }
     }
 
+    /**
+     * Applies the animation matrix to the scene
+     * @param {XMLscene} scene 
+     */
     apply(scene){
         scene.multMatrix(this.animMatrix);
     }
