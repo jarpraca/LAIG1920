@@ -21,7 +21,7 @@ void main() {
 
     
     gl_FragColor = mix(gl_FragColor, white_stripes,  
-            (sin((vTextureCoord.y - time) * 20.0) * sin((vTextureCoord.y - time) * 20.0) * sin((vTextureCoord.y - time) * 20.0) * sin((vTextureCoord.y - time) * 20.0))/2.0 - 0.05
+            (sin(-(vTextureCoord.y + time) * 20.0) * sin(-(vTextureCoord.y + time) * 20.0) * sin(-(vTextureCoord.y + time) * 20.0) * sin(-(vTextureCoord.y + time) * 20.0))/2.0 - 0.05
     );
     
 }

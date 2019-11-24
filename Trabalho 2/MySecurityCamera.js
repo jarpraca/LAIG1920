@@ -13,9 +13,11 @@ class MySecurityCamera extends CGFobject {
         }
 
         display(){
+                this.scene.pushMatrix();
                 this.texture.bind();
                 this.rectangle.display();
                 this.texture.unbind();
+                this.scene.popMatrix();
         }
 
 }

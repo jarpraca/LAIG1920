@@ -8,13 +8,13 @@
         </perspective>
 
         <perspective id="secondCamera" near="0.1" far="500" angle="30">
-            <from x="20" y="50" z="100" />
-            <to x="20" y="0" z="0" />
+            <from x="0" y="50" z="100" />
+            <to x="0" y="0" z="0" />
         </perspective>
 
         <ortho id="orthoCamera"  near="0.1" far="500" left="-95" right="95" top="45" bottom="-45" >
-            <from x="20" y="50" z="100" />
-            <to x="20" y="0" z="0" />
+            <from x="0" y="50" z="100" />
+            <to x="0" y="0" z="0" />
         </ortho>
         
         <perspective id="securityCamera" near="0.1" far="500" angle="30">
@@ -93,8 +93,7 @@
     </transformations>
 
     <animations>
-        <animation id="translate_x_20">
-            
+        <animation id="take_off_and_landing">
             <keyframe instant="2">
                 <translate x="60" y="30" z="-30"/>
                 <rotate angle_x="10" angle_y="20" angle_z="20"/>
@@ -869,7 +868,7 @@
             <transformation>
                 <translate x="0" y="0" z="0" />
             </transformation>
-            <animationref id="translate_x_20" />
+            <animationref id="take_off_and_landing" />
             <materials>
                 <material id="plane_white" />
             </materials>
@@ -884,16 +883,15 @@
         <!-- GROUND -->
         <component id="ground">
             <transformation>
-                <translate x="-30" y="0" z="30" />
-                <rotate axis="x" angle="-90" />
-                <scale x="15" y="60" z="1" />
+                <rotate axis="y" angle="90" />
+                <scale x="60" y="1" z="60" />
             </transformation>
             <materials>
                 <material id="ground_dark" />
             </materials>
-            <texture id="groundTexture" length_s="4" length_t="1"/>
+            <texture id="groundTexture" length_s="1" length_t="1"/>
             <children>
-                <primitiveref id="rectangle" />
+                <primitiveref id="plane_prim" />
             </children>
         </component>
 
@@ -909,7 +907,6 @@
             <children>
                 <componentref id="plane" />
                 <componentref id="ground" />
-                <primitiveref id="plane_prim" />
             </children>
         </component>
     </components>

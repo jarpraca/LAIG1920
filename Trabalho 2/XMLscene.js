@@ -141,7 +141,11 @@ class XMLscene extends CGFscene {
 
     updateSecurityCamera(){
         this.sec_camera = this.cameras[this.securityCameraID];
-        this.interface.setActiveCamera(this.sec_camera);
+        //this.interface.setActiveCamera(this.sec_camera);
+    }
+
+    updateRenderCamera(camera){
+        this.camera = camera;
     }
 
     update(t){
@@ -156,7 +160,9 @@ class XMLscene extends CGFscene {
 
         // Renders Security Camera texture
         this.securityTexture.attachToFrameBuffer();
+        var main_cam = this.camera;
         this.render(this.sec_camera);
+        this.camera = main_cam;
         this.securityTexture.detachFromFrameBuffer();
         
         // Displays Security Camera
@@ -173,8 +179,7 @@ class XMLscene extends CGFscene {
      */
     render(camera) {
         // ---- BEGIN Background, camera and axis setup
-        this.camera = camera;
-        this.interface.setActiveCamera(this.camera);
+        this.updateRenderCamera(camera);
 
         // Clear image and depth buffer everytime we update the scene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);
@@ -205,9 +210,5 @@ class XMLscene extends CGFscene {
 
         this.popMatrix();
         // ---- END Background, camera and axis setup
-        
-        // Restores active camera
-        this.updateCamera();
-        this.interface.setActiveCamera(this.camera);
     }
 }
