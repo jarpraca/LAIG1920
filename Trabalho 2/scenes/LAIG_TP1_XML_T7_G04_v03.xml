@@ -25,11 +25,11 @@
 
     <globals>
         <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
-        <background r="0.4" g="0.4" b="0.8" a="1.0" />
+        <background r="0.0" g="0.0" b="0.0" a="1.0" />
     </globals>
 
     <lights>
-        <omni id="main_light" enabled="1">
+        <omni id="main" enabled="1">
             <location x="20" y="50" z="0" w="1.0" />
             <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
             <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
@@ -37,7 +37,7 @@
             <attenuation constant="0.4" linear="0" quadratic="0" />
         </omni>
 
-        <spot id="spot_light" enabled="1" angle="20" exponent="10">
+        <spot id="spot" enabled="1" angle="20" exponent="10">
             <location x="0" y="20" z="0" w="1.0" />
             <target x="20" y="0" z="0" />
             <ambient r="0.2" g="0.2" b="0.2" a="1.0" />

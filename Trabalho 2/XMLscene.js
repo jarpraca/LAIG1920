@@ -25,6 +25,7 @@ class XMLscene extends CGFscene {
 
         this.cameras = [];
         this.camerasIDs = {};
+        this.lightToggles = [];
         // this.selectedCamera = 0;
         // this.securityCameraID = 0;
 
@@ -99,10 +100,14 @@ class XMLscene extends CGFscene {
                 }
 
                 this.lights[i].setVisible(true);
-                if (light[0])
+                if (light[0]){
                     this.lights[i].enable();
-                else
+                    this.lightToggles[i] = true;
+                }
+                else{
                     this.lights[i].disable();
+                    this.lightToggles[i] = false;
+                }
 
                 this.lights[i].update();
 
@@ -132,6 +137,7 @@ class XMLscene extends CGFscene {
         this.sceneInited = true;
         this.initCameras();
         this.interface.addCamerasInterface();
+        this.interface.addLightsInterface();
     }
 
     updateCamera(){
@@ -141,11 +147,19 @@ class XMLscene extends CGFscene {
 
     updateSecurityCamera(){
         this.sec_camera = this.cameras[this.securityCameraID];
-        //this.interface.setActiveCamera(this.sec_camera);
     }
 
-    updateRenderCamera(camera){
-        this.camera = camera;
+    updateLights(){
+        for(var key in this.lights){
+            if(this.lights.hasOwnProperty(key)){
+                if(this.lightToggles[key])
+                    this.lights[key].enable();
+                else
+                    this.lights[key].disable();
+                
+                this.lights[key].update();
+            }
+        }
     }
 
     update(t){
@@ -155,23 +169,24 @@ class XMLscene extends CGFscene {
     }
 
     display(){
-        // Displays scene
-        this.render(this.camera);
+        if(this.sceneInited){
+            // Displays scene
+            this.render(this.camera);
 
-        // Renders Security Camera texture
-        this.securityTexture.attachToFrameBuffer();
-        var main_cam = this.camera;
-        this.render(this.sec_camera);
-        this.camera = main_cam;
-        this.securityTexture.detachFromFrameBuffer();
-        
-        // Displays Security Camera
-        this.setActiveShader(this.shader);
-        this.securityTexture.bind(1);
-        this.gl.disable(this.gl.DEPTH_TEST);
-        this.securityCamera.display();
-        this.gl.enable(this.gl.DEPTH_TEST);
-        this.setActiveShader(this.defaultShader);
+            // Renders Security Camera texture
+            this.securityTexture.attachToFrameBuffer();
+            this.render(this.sec_camera);
+            this.updateCamera();
+            this.securityTexture.detachFromFrameBuffer();
+            
+            // Displays Security Camera
+            this.setActiveShader(this.shader);
+            this.securityTexture.bind(1);
+            this.gl.disable(this.gl.DEPTH_TEST);
+            this.securityCamera.display();
+            this.gl.enable(this.gl.DEPTH_TEST);
+            this.setActiveShader(this.defaultShader);
+        }
     }
 
     /**
@@ -179,7 +194,7 @@ class XMLscene extends CGFscene {
      */
     render(camera) {
         // ---- BEGIN Background, camera and axis setup
-        this.updateRenderCamera(camera);
+        this.camera = camera;
 
         // Clear image and depth buffer everytime we update the scene
         this.gl.viewport(0, 0, this.gl.canvas.width, this.gl.canvas.height);

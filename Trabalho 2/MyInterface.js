@@ -32,6 +32,24 @@ class MyInterface extends CGFinterface {
         this.gui.add(this.scene, 'securityCameraID', this.scene.camerasIDs).name('Security Camera').onChange(this.scene.updateSecurityCamera.bind(this.scene));
     }
 
+    addLightsInterface(){
+        var lights = this.gui.addFolder("Lights");
+
+        lights.open();
+
+        var i = 0;
+        for (var key in this.scene.graph.lights) {
+            if(i >= 8)
+                break;
+            if (this.scene.lights.hasOwnProperty(i)) {
+                lights.add(this.scene.lightToggles, i).name('Light ' + key).onChange(this.scene.updateLights.bind(this.scene));
+                i++;
+            }
+        }
+
+        lights.close();
+    }
+
     /**
      * initKeys
      */
