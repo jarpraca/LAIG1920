@@ -1,0 +1,928 @@
+<lxs>
+    <scene root="scene" axis_length="5"/>
+
+    <views default="defaultCamera">
+        <perspective id="defaultCamera" near="0.1" far="800" angle="30">
+            <from x="300" y="100" z="100" />
+            <to x="10" y="40" z="0" />
+        </perspective>
+
+        <perspective id="secondCamera" near="0.1" far="500" angle="30">
+            <from x="0" y="50" z="100" />
+            <to x="0" y="0" z="0" />
+        </perspective>
+
+        <perspective id="upCamera" near="0.1" far="800" angle="30">
+            <from x="10" y="600" z="10" />
+            <to x="0" y="0" z="0" />
+        </perspective>
+
+        <ortho id="orthoCamera"  near="0.1" far="500" left="-95" right="95" top="45" bottom="-45" >
+            <from x="0" y="50" z="100" />
+            <to x="0" y="0" z="0" />
+        </ortho>
+        
+        <perspective id="securityCamera" near="0.1" far="500" angle="30">
+            <from x="120" y="60" z="0" />
+            <to x="10" y="0" z="0" />
+        </perspective>
+    </views>
+
+    <globals>
+        <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+        <background r="0.0" g="0.0" b="0.0" a="1.0" />
+    </globals>
+
+    <lights>
+        <omni id="main" enabled="1">
+            <location x="20" y="50" z="0" w="1.0" />
+            <ambient r="0.5" g="0.5" b="0.5" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+            <attenuation constant="0.4" linear="0" quadratic="0" />
+        </omni>
+
+        <spot id="spot" enabled="1" angle="20" exponent="10">
+            <location x="0" y="20" z="0" w="1.0" />
+            <target x="20" y="0" z="0" />
+            <ambient r="0.2" g="0.2" b="0.2" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.5" g="0.5" b="0.5" a="1.0" />
+            <attenuation constant="0.1" linear="0" quadratic="0" />
+        </spot>
+    </lights>
+
+    <textures>
+        <texture id="backTexture" file="scenes/images/back.png" />
+        <texture id="mainTexture" file="scenes/images/plane.png" />
+        <texture id="cockpitTexture" file="scenes/images/window.png" />
+        <texture id="tailTexture" file="scenes/images/tail.png" />
+        <texture id="planeTexture" file="scenes/images/plane2.png" />
+        <texture id="groundTexture" file="scenes/images/road.jpg" />
+    </textures>
+
+    <materials>
+        <material id="plane_white" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.3" g="0.3" b="0.3" a="1.0" />
+            <diffuse r="0.3" g="0.3" b="0.3" a="1.0" />
+            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
+        </material>
+
+        <material id="plane_blue" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.1" g="0.1" b="0.3" a="1.0" />
+            <diffuse r="0.1" g="0.1" b="0.3" a="1.0" />
+            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
+        </material>
+
+        <material id="plane_black" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.05" g="0.05" b="0.05" a="1.0" />
+            <diffuse r="0.1" g="0.1" b="0.1" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+
+        <material id="ground_dark" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.1" g="0.1" b="0.1" a="1.0" />
+            <diffuse r="0.4" g="0.4" b="0.4" a="1.0" />
+            <specular r="0.0" g="0.0" b="0.0" a="1.0" />
+        </material>
+    </materials>
+
+    <transformations>
+        <transformation id="rotate_to_x">
+            <rotate axis="y" angle="90" />
+        </transformation>
+    </transformations>
+
+    <animations>
+        <animation id="take_off_landing_resize">
+            <keyframe instant="2">
+                <translate x="60" y="30" z="-30"/>
+                <rotate angle_x="10" angle_y="20" angle_z="20"/>
+                <scale x="1" y="1" z="1"/>
+            </keyframe>
+            <keyframe instant="4">
+                <translate x="80" y="60" z="-80"/>
+                <rotate angle_x="20" angle_y="90" angle_z="0"/>
+                <scale x="1" y="1" z="1"/>
+            </keyframe>
+            <keyframe instant="5">
+                <translate x="60" y="60" z="-130"/>
+                <rotate angle_x="20" angle_y="135" angle_z="0"/>
+                <scale x="1" y="1" z="1"/>
+            </keyframe>
+            <keyframe instant="6">
+                <translate x="0" y="60" z="-170"/>
+                <rotate angle_x="20" angle_y="180" angle_z="0"/>
+                <scale x="1" y="1" z="1"/>
+            </keyframe>
+            <keyframe instant="8">
+                <translate x="-70" y="60" z="-130"/>
+                <rotate angle_x="20" angle_y="225" angle_z="0"/>
+                <scale x="1" y="1" z="1"/>
+            </keyframe>
+            <keyframe instant="9">
+                <translate x="-80" y="45" z="-80"/>
+                <rotate angle_x="0" angle_y="270" angle_z="0"/>
+                <scale x="1" y="1" z="1"/>
+            </keyframe>
+            <keyframe instant="10">
+                <translate x="-60" y="30" z="-30"/>
+                <rotate angle_x="-20" angle_y="330" angle_z="10"/>
+                <scale x="1" y="1" z="1"/>
+            </keyframe>
+            <keyframe instant="12">
+                <translate x="0" y="0" z="0"/>
+                <rotate angle_x="0" angle_y="360" angle_z="0"/>
+                <scale x="1" y="1" z="1"/>
+            </keyframe>
+            <keyframe instant="14">
+                <translate x="0" y="0" z="0"/>
+                <rotate angle_x="0" angle_y="360" angle_z="0"/>
+                <scale x="0.5" y="0.5" z="0.5"/>
+            </keyframe>
+            <keyframe instant="16">
+                <translate x="0" y="0" z="0"/>
+                <rotate angle_x="0" angle_y="360" angle_z="0"/>
+                <scale x="1" y="1" z="1"/>
+            </keyframe>
+        </animation>
+    </animations>
+
+    <primitives>
+        <primitive id="rectangle">
+            <rectangle x1="0" y1="0" x2="4" y2="1" />
+        </primitive>
+
+        <primitive id="triangle_wheel_back">
+            <triangle x1="0" y1="0" z1="0" x2="4" y2="0" z2="0" x3="2" y3="-1" z3="0"/>
+        </primitive>
+
+        <primitive id="triangle_wheel_back_reversed">
+            <triangle x1="0" y1="0" z1="0" x2="2" y2="-1" z2="0" x3="4" y3="0" z3="0"/>
+        </primitive>
+
+        <primitive id="triangle_wheel_front">
+            <triangle x1="0" y1="0" z1="0" x2="2" y2="0" z2="0" x3="1" y3="-4" z3="0"/>
+        </primitive>
+
+        <primitive id="triangle_wheel_front_reversed">
+            <triangle x1="0" y1="0" z1="0" x2="1" y2="-4" z2="0" x3="2" y3="0" z3="0"/>
+        </primitive>
+
+        <primitive id="triangle_wing_main">
+            <triangle x1="0" y1="0" z1="0" x2="0" y2="20" z2="0" x3="8" y3="0" z3="0"/>
+        </primitive>
+
+        <primitive id="triangle_wing_main_reversed">
+            <triangle x1="0" y1="0" z1="0" x2="8" y2="0" z2="0" x3="0" y3="20" z3="0"/>
+        </primitive>
+
+        <primitive id="triangle_wing_back">
+            <triangle x1="0" y1="0" z1="0" x2="0" y2="8" z2="0" x3="8" y3="0" z3="0"/>
+        </primitive>
+
+        <primitive id="triangle_wing_back_reversed">
+            <triangle x1="0" y1="0" z1="0" x2="8" y2="0" z2="0" x3="0" y3="8" z3="0"/>
+        </primitive>
+
+        <primitive id="cylinder_main">
+            <cylinder slices="20" stacks="10" base="4" top="4" height="20"/>
+        </primitive>
+
+        <primitive id="cylinder_front">
+            <cylinder slices="20" stacks="10" base="4" top="2" height="8"/>
+        </primitive>
+
+        <primitive id="cylinder_back">
+            <cylinder slices="20" stacks="10" base="2" top="4" height="12"/>
+        </primitive>
+
+        <primitive id="cylinder_tail">
+            <cylinder2 slices="20" stacks="10" base="1" top="2" height="4"/>
+        </primitive>
+
+        <primitive id="cylinder_engine">
+            <cylinder slices="20" stacks="10" base="2" top="3" height="6"/>
+        </primitive>
+
+        <primitive id="sphere">
+            <sphere slices="50" stacks="50" radius="2"/>
+        </primitive>
+
+        <primitive id="torus_engine">
+            <torus slices="20" loops="20" inner="0.5" outer="3"/>
+        </primitive>
+
+        <primitive id="torus_wheel">
+            <torus slices="20" loops="20" inner="0.25" outer="0.75"/>
+        </primitive>
+
+        <primitive id="plane_prim">
+            <plane npartsU="5" npartsV="8" />
+        </primitive>
+    </primitives>
+
+    <components>
+        <!-- BODY -->
+        <component id="main">
+            <transformation>
+                <translate x="0" y="7" z="-6" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="planeTexture"/>
+            <children>
+                <primitiveref id="cylinder_main" />
+            </children>
+        </component> 
+
+        <component id="front">
+            <transformation>
+                <translate x="0" y="7" z="14" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="cockpitTexture"/>
+            <children>
+                <primitiveref id="cylinder_front" />
+            </children>
+        </component> 
+
+        <component id="back">
+            <transformation>
+                <translate x="0" y="7" z="-18" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="backTexture"/>
+            <children>
+                <primitiveref id="cylinder_back" />
+            </children>
+        </component> 
+
+        <component id="tip">
+            <transformation>
+                <translate x="0" y="7" z="22" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component> 
+
+        <component id="tail">
+            <transformation>
+                <translate x="0" y="7" z="-22" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="cylinder_tail" />
+            </children>
+        </component>
+
+        <component id="cover">
+            <transformation>
+                <translate x="0" y="7" z="-22" />
+                <scale x="0.5" y="0.5" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component> 
+
+        <component id="body">
+            <transformation>
+                <transformationref id="rotate_to_x" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="mainTexture"/>
+            <children>
+                <componentref id="main" />
+                <componentref id="front" />
+                <componentref id="back" />
+                <componentref id="tip" />
+                <componentref id="tail" />
+                <componentref id="cover" />
+            </children>
+        </component>  
+
+        <!-- WINGS--> 
+        <component id="wing_side_right">
+            <transformation>
+                <translate x="2" y="7" z="4" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle_wing_main" />
+            </children>
+        </component> 
+
+        <component id="wing_side_right_reversed">
+            <transformation>
+                <translate x="2" y="7" z="4" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle_wing_main_reversed" />
+            </children>
+        </component> 
+
+        <component id="wing_side_left">
+            <transformation>
+                <translate x="2" y="7" z="-4" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle_wing_main" />
+            </children>
+        </component> 
+
+        <component id="wing_side_left_reversed">
+            <transformation>
+                <translate x="2" y="7" z="-4" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle_wing_main_reversed" />
+            </children>
+        </component> 
+
+        <component id="wing_back_right">
+            <transformation>
+                <translate x="-14" y="7" z="2" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle_wing_back" />
+            </children>
+        </component> 
+
+        <component id="wing_back_right_reversed">
+            <transformation>
+                <translate x="-14" y="7" z="2" />
+                <rotate axis="x" angle="90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle_wing_back_reversed" />
+            </children>
+        </component> 
+
+        <component id="wing_back_left">
+            <transformation>
+                <translate x="-14" y="7" z="-2" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle_wing_back" />
+            </children>
+        </component> 
+
+        <component id="wing_back_left_reversed">
+            <transformation>
+                <translate x="-14" y="7" z="-2" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle_wing_back_reversed" />
+            </children>
+        </component> 
+
+        <component id="wing_back_top">
+            <transformation>
+                <translate x="-14" y="9" z="0" />
+            </transformation>
+            <materials>
+                <material id="plane_blue" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle_wing_back" />
+            </children>
+        </component> 
+
+        <component id="wing_back_top_reversed">
+            <transformation>
+                <translate x="-14" y="9" z="0" />
+            </transformation>
+            <materials>
+                <material id="plane_blue" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle_wing_back_reversed" />
+            </children>
+        </component> 
+
+        <component id="engine_main_right">
+            <transformation>
+                <translate x="9" y="5" z="4" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="tailTexture"/>
+            <children>
+                <primitiveref id="cylinder_engine" />
+            </children>
+        </component>
+
+        <component id="engine_main_left">
+            <transformation>
+                <translate x="-9" y="5" z="4" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="tailTexture"/>
+            <children>
+                <primitiveref id="cylinder_engine" />
+            </children>
+        </component> 
+
+        <component id="engine_border_right">
+            <transformation>
+                <translate x="9" y="5" z="10" />
+            </transformation>
+            <materials>
+                <material id="plane_blue" />
+                <material id="plane_white" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="torus_engine" />
+            </children>
+        </component> 
+
+        <component id="engine_border_left">
+            <transformation>
+                <translate x="-9" y="5" z="10" />
+            </transformation>
+            <materials>
+                <material id="plane_blue" />
+                <material id="plane_white" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="torus_engine" />
+            </children>
+        </component>
+
+        <component id="engine_cover_right">
+            <transformation>
+                <translate x="9" y="5" z="10" />
+                <scale x="1.25" y="1.25" z="0.01" />
+            </transformation>
+            <materials>
+                <material id="plane_black" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component> 
+
+        <component id="engine_cover_left">
+            <transformation>
+                <translate x="-9" y="5" z="10" />
+                <scale x="1.25" y="1.25" z="0.01" />
+            </transformation>
+            <materials>
+                <material id="plane_black" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+
+        <component id="engine_center_right">
+            <transformation>
+                <translate x="9" y="5" z="10" />
+                <scale x="0.25" y="0.25" z="0.25" />
+            </transformation>
+            <materials>
+                <material id="plane_white" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component> 
+
+        <component id="engine_center_left">
+            <transformation>
+                <translate x="-9" y="5" z="10" />
+                <scale x="0.25" y="0.25" z="0.25" />
+            </transformation>
+            <materials>
+                <material id="plane_white" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+
+        <component id="engine_back_right">
+            <transformation>
+                <translate x="9" y="5" z="4" />
+                <scale x="1" y="1" z="0.01" />
+            </transformation>
+            <materials>
+                <material id="plane_blue" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component> 
+
+        <component id="engine_back_left">
+            <transformation>
+                <translate x="-9" y="5" z="4" />
+                <scale x="1" y="1" z="0.01" />
+            </transformation>
+            <materials>
+                <material id="plane_blue" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+        </component>
+
+        <component id="engine_right">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="engine_main_right" />
+                <componentref id="engine_border_right" />
+                <componentref id="engine_cover_right" />
+                <componentref id="engine_back_right" />
+                <componentref id="engine_center_right" />
+            </children>
+        </component>
+
+        <component id="engine_left">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="engine_main_left" />
+                <componentref id="engine_border_left" />
+                <componentref id="engine_cover_left" />
+                <componentref id="engine_back_left" />
+                <componentref id="engine_center_left" />
+            </children>
+        </component>
+
+        <component id="engines">
+            <transformation>
+                <transformationref id="rotate_to_x" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="engine_right" />
+                <componentref id="engine_left" />
+            </children>
+        </component>  
+
+        <component id="wings">
+            <transformation>
+                <translate x="0" y="0" z="0" />                
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="wing_side_right" />
+                <componentref id="wing_side_left" />
+                <componentref id="wing_back_right" />
+                <componentref id="wing_back_left" />
+                <componentref id="wing_back_top" />
+                <componentref id="wing_side_right_reversed" />
+                <componentref id="wing_side_left_reversed" />
+                <componentref id="wing_back_right_reversed" />
+                <componentref id="wing_back_left_reversed" />
+                <componentref id="wing_back_top_reversed" />
+                <componentref id="engines" />
+            </children>
+        </component> 
+
+        <!-- WHEELS-->
+        <component id="holder_back_top_right">
+            <transformation>
+                <translate x="-5" y="3" z="2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="holder_back_top_right_reversed">
+            <transformation>
+                <translate x="-3" y="3" z="2" />
+                <rotate axis="y" angle="180" />
+                <translate x="-2" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="holder_back_bottom_right">
+            <transformation>
+                <translate x="-5" y="3" z="2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle_wheel_back" />
+            </children>
+        </component>
+
+        <component id="holder_back_bottom_right_reversed">
+            <transformation>
+                <translate x="-3" y="3" z="2" />
+                <rotate axis="y" angle="180" />
+                <translate x="-2" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle_wheel_back" />
+            </children>
+        </component>
+
+        <component id="wheel_back_right">
+            <transformation>
+                <translate x="-3" y="1" z="2" />
+            </transformation>
+            <materials>
+                <material id="plane_black" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="torus_wheel" />
+            </children>
+        </component>
+
+        <component id="holder_back_top_left">
+            <transformation>
+                <translate x="-5" y="3" z="-2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="holder_back_top_left_reversed">
+            <transformation>
+                <translate x="-3" y="3" z="-2" />
+                <rotate axis="y" angle="180" />
+                <translate x="-2" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit" />
+            <children>
+                <primitiveref id="rectangle" />
+            </children>
+        </component>
+
+        <component id="holder_back_bottom_left">
+            <transformation>
+                <translate x="-5" y="3" z="-2" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle_wheel_back" />
+            </children>
+        </component>
+
+        <component id="holder_back_bottom_left_reversed">
+            <transformation>
+                <translate x="-3" y="3" z="-2" />
+                <rotate axis="y" angle="180" />
+                <translate x="-2" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle_wheel_back" />
+            </children>
+        </component>
+
+        <component id="wheel_back_left">
+            <transformation>
+                <translate x="-3" y="1" z="-2" />
+            </transformation>
+            <materials>
+                <material id="plane_black" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="torus_wheel" />
+            </children>
+        </component>
+
+        <component id="holder_front">
+            <transformation>
+                <translate x="17" y="6" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle_wheel_front" />
+            </children>
+        </component>
+
+        <component id="holder_front_reversed">
+            <transformation>
+                <translate x="18" y="6" z="0" />
+                <rotate axis="y" angle="180" />
+                <translate x="-1" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <primitiveref id="triangle_wheel_front" />
+            </children>
+        </component>
+
+        <component id="wheel_front">
+            <transformation>
+                <translate x="18" y="1" z="0" />
+            </transformation>
+            <materials>
+                <material id="plane_black" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <primitiveref id="torus_wheel" />
+            </children>
+        </component>
+
+        <component id="wheels">
+            <transformation>
+                <translate x="0" y="0" z="0" />                
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="holder_back_top_right" />
+                <componentref id="holder_back_top_right_reversed" />
+                <componentref id="holder_back_bottom_right" />
+                <componentref id="holder_back_bottom_right_reversed" />
+                <componentref id="wheel_back_right" />
+                <componentref id="holder_back_top_left" />
+                <componentref id="holder_back_top_left_reversed" />
+                <componentref id="holder_back_bottom_left" />
+                <componentref id="holder_back_bottom_left_reversed" />
+                <componentref id="wheel_back_left" />
+                <componentref id="holder_front" />
+                <componentref id="holder_front_reversed" />
+                <componentref id="wheel_front" />
+            </children>
+        </component> 
+
+        <!-- PLANE -->
+        <component id="plane">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+            </transformation>
+            <animationref id="take_off_landing_resize" />
+            <materials>
+                <material id="plane_white" />
+            </materials>
+            <texture id="planeTexture" length_s="20" length_t="8"/>
+            <children>
+                <componentref id="wheels" />
+                <componentref id="body" />
+                <componentref id="wings" />
+            </children>
+        </component>
+
+        <!-- GROUND -->
+        <component id="ground">
+            <transformation>
+                <rotate axis="y" angle="90" />
+                <scale x="60" y="1" z="60" />
+            </transformation>
+            <materials>
+                <material id="ground_dark" />
+            </materials>
+            <texture id="groundTexture" length_s="1" length_t="1"/>
+            <children>
+                <primitiveref id="plane_prim" />
+            </children>
+        </component>
+
+        <!-- SCENE -->
+        <component id="scene">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="plane_white" />
+            </materials>
+            <texture id="none"/>
+            <children>
+                <componentref id="plane" />
+                <componentref id="ground" />
+            </children>
+        </component>
+    </components>
+</lxs>
