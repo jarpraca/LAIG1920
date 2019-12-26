@@ -75,6 +75,14 @@
             <diffuse r="0.7" g="0.7" b="0.7" a="1.0" />
             <specular r="0.2" g="0.2" b="0.2" a="1.0" />
         </material>
+
+        
+        <material id="selected_piece" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.15" g="0" b="0" a="1.0" />
+            <diffuse r="0.7" g="0" b="0" a="1.0" />
+            <specular r="0" g="0" b="0" a="1.0" />
+        </material>
         
     </materials>
 
@@ -1192,6 +1200,21 @@
     </component> 
 
 
+    <component id="piece">
+            <transformation>
+                <translate x="0" y="5" z="30" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="stone_wall" />
+            </materials>
+            <texture id="stone_side"/>
+            <children>
+                <primitiveref id="cylinder" />
+            </children>
+    </component> 
+
+
 
     <!-- SCENE -->
         <component id="scene">
@@ -1207,6 +1230,7 @@
                 <componentref id="table" />
                 <componentref id="viewbox" />
                 <componentref id="chair" />
+                <componentref id="piece" />
             </children>
         </component>
     

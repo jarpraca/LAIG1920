@@ -71,7 +71,15 @@ class MyInterface extends CGFinterface {
     processKeyUp(event) {
         this.activeKeys[event.code]=false;
     };
+/*
+    processMouseDown(event) {
+        this.activeKeys["mouse"]=true;
+    };
 
+    processMouseUp(event) {
+        this.activeKeys["mouse"]=false;
+    };
+*/
     isKeyPressed(keyCode) {
         return this.activeKeys[keyCode] || false;
     }

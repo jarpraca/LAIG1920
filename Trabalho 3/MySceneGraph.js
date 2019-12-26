@@ -1466,9 +1466,128 @@ class MySceneGraph {
         this.scene.popMatrix();
     }
 
+    movePieceTo(piece, quadrant, peg){
+
+        console.log("INICIA ANIMATION");
+
+
+            //var default_mat = this.components["piece"].materials[0];
+            this.components["piece"].materials[0] = "selected_piece";
+            var transfMatrix = mat4.create();
+            transfMatrix = this.components['piece'].transformations;
+            //console.log(this.components['piece'].transformations);
+
+
+            var keyframes = [];
+
+            //keyframe 1
+
+            var translate = [];
+            translate.push(...[0, 0, 0]);
+
+            var rotate = [0, 0, 0];
+
+            var scale = [];
+            scale.push(...[1, 1, 1]);
+
+            var keyframe1 = new Keyframe(0);
+            keyframe1.addTranslate(translate);
+            keyframe1.addRotate(rotate);
+            keyframe1.addScale(scale);
+
+            keyframes.push(keyframe1);
+
+            //keyframe 2
+
+            var translate = [];
+            translate.push(...[0, 20, 20]);
+
+            var rotate = [0, 0, 0];
+
+            var scale = [];
+            scale.push(...[1, 1, 1]);
+
+            var keyframe2 = new Keyframe(1);
+            keyframe2.addTranslate(translate);
+            keyframe2.addRotate(rotate);
+            keyframe2.addScale(scale);
+
+            keyframes.push(keyframe2);
+
+            //keyframe 3
+
+            
+            var translate = [];
+
+            if(quadrant == 1){
+                var quad_x = 0;
+                var quad_y = -4;
+                var quad_z = 0;
+            }
+            else if(quadrant == 2){
+                var quad_x = 20;
+                var quad_y = -1;
+                var quad_z = 0;
+            }
+            else if(quadrant == 3){
+                var quad_x = 0;
+                var quad_y = -1;
+                var quad_z = 20;
+            }
+            else if(quadrant == 4){
+                var quad_x = 20;
+                var quad_y = -1;
+                var quad_z = 20;
+            }
+
+            if(peg == 1){
+                var peg_x = 0;
+                var peg_z = 0;
+            }
+            else if(peg == 2){
+                var peg_x = 8;
+                var peg_z = 0;
+            }
+            else if(peg == 3){
+                var peg_x = 0;
+                var peg_z = 8;
+            }
+            else if(peg == 4){
+                var peg_x = 8;
+                var peg_z = 8;
+            }
+
+            translate.push(...[-14 + quad_z + peg_z, 16 + quad_x + peg_x, 0 + quad_y]);
+
+            var rotate = [0, 0, 0];
+
+            var scale = [];
+            scale.push(...[1, 1, 1]);
+
+            var keyframe3 = new Keyframe(2);
+            keyframe3.addTranslate(translate);
+            keyframe3.addRotate(rotate);
+            keyframe3.addScale(scale);
+
+            keyframes.push(keyframe3);
+            
+            //animation
+
+            var animation = new KeyframeAnimation(10, keyframes);
+            this.animations[10] = animation;
+
+            this.components[piece].animation = 10;
+
+            this.animations[this.components[piece].animation].apply(this.scene);
+
+    }
+
+
+
     checkKeys(){
-        if (this.scene.interface.isKeyPressed("KeyM")) {
-            this.materialCount++;
+        if (this.scene.interface.isKeyPressed("KeyM")) { 
+            this.movePieceTo("piece",3,2);
+
         }
     }
 
