@@ -85,11 +85,11 @@ class MyInterface extends CGFinterface {
     };
 */
 
-    processMouseMove(event){
+    /*processMouseMove(event){
 
         console.log(event.code);
 
-    }
+    }*/
     
 
 

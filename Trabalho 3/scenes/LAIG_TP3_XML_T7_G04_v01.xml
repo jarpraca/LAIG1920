@@ -1205,7 +1205,7 @@
 
     <component id="piece">
             <transformation>
-                <translate x="0" y="5" z="30" />
+                <translate x="0" y="15" z="30" />
                 <rotate axis="x" angle="-90" />
             </transformation>
             <materials>

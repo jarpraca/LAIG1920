@@ -1465,13 +1465,14 @@ class MySceneGraph {
         }
 
         for(var i=0; i < this.components[componentID].primitives.length; i++){
-            if(newTextureID != "none" && 
-                (this.primitives[this.components[componentID].primitives[i]] instanceof MyRectangle || this.primitives[this.components[componentID].primitives[i]] instanceof MyTriangle))
+            if(newTextureID != "none" &&  (this.primitives[this.components[componentID].primitives[i]] instanceof MyRectangle || this.primitives[this.components[componentID].primitives[i]] instanceof MyTriangle))
             {
                 this.primitives[this.components[componentID].primitives[i]].updateTexCoords(newLength_s, newLength_t);
             }
 
-            this.primitives[this.components[componentID].primitives[i]].display();
+            if(componentID != "piece"){
+                this.primitives[this.components[componentID].primitives[i]].display();
+            }
         }
 
         this.scene.popMatrix();

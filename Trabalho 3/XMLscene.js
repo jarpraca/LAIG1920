@@ -41,6 +41,13 @@ class XMLscene extends CGFscene {
 
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(50);
+
+        
+		this.objects = [
+			new CGFplane(this)
+		];
+		this.setPickEnabled(true);
+
     }
 
     /**
@@ -160,6 +167,25 @@ class XMLscene extends CGFscene {
         this.graph.updateAnimations(t/1000);
     }
 
+    logPicking() {
+		if (this.pickMode == false) {
+			if (this.pickResults != null && this.pickResults.length > 0) {
+				for (var i = 0; i < this.pickResults.length; i++) {
+					var obj = this.pickResults[i][0];
+					if (obj) {
+                        var customId = this.pickResults[i][1];
+
+                        
+						console.log("Picked object: " + obj + ", with pick id " + customId);						
+					}
+				}
+				this.pickResults.splice(0, this.pickResults.length);
+			}
+		}
+    }
+    
+    
+
     /**
      * Renders and displays the main camera
      */
@@ -170,10 +196,14 @@ class XMLscene extends CGFscene {
         }
     }
 
+
     /**
      * Renders the scene in 'camera' perspective.
      */
     render(camera) {
+        
+		this.logPicking();
+		this.clearPickRegistration();
         // ---- BEGIN Background, camera and axis setup
         this.camera = camera;
 
@@ -205,6 +235,20 @@ class XMLscene extends CGFscene {
         }
 
         this.popMatrix();
+
+        // draw objects
+		for (var i = 0; i < this.objects.length; i++) {
+			this.pushMatrix();
+            this.registerForPick(i + 1, this.objects[i]);
+            this.translate(0,0,30);
+            this.rotate(-Math.PI/2,1,0,0);
+            
+            for(var i=0; i < this.graph.components['piece'].primitives.length; i++){
+                this.graph.primitives[this.graph.components['piece'].primitives[i]].display();
+            }
+
+			this.popMatrix();
+		}
         // ---- END Background, camera and axis setup
     }
 }
