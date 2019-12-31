@@ -1438,6 +1438,16 @@ class MySceneGraph {
                 newLength_t = this.components[componentID].length_t;
             }
         }
+        
+        if(componentID == 'viewbox' && this.scene.selectedTheme == 'Bar'){
+            newTextureID = 'alt_side';
+        }
+        else if(componentID == 'view_back' && this.scene.selectedTheme == 'Bar'){
+            newTextureID = 'alt_back';
+        }
+        else if(componentID == 'floor' && this.scene.selectedTheme == 'Bar'){
+            newTextureID = 'alt_floor_tex';
+        }
 
         if(newTextureID == "none"){
             this.materials[newMaterialID].setTexture(null);
@@ -1445,6 +1455,7 @@ class MySceneGraph {
         else{
             this.materials[newMaterialID].setTexture(this.textures[newTextureID]);
         }
+
 
         this.materials[newMaterialID].apply();
 

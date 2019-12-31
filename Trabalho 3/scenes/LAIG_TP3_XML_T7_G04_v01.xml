@@ -58,6 +58,9 @@
         <texture id="stone_side" file="scenes/images/stone_side.jpg" />
         <texture id="stone_back" file="scenes/images/stone_back.jpg" />
         <texture id="floor_tex" file="scenes/images/floor.jpg" />
+        <texture id="alt_side" file="scenes/images/alt_side.jpg" />
+        <texture id="alt_back" file="scenes/images/alt_back.jpg" />
+        <texture id="alt_floor_tex" file="scenes/images/alt_floor.jpg" />
     </textures>
 
     <materials>
@@ -1146,7 +1149,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="stone_side"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="plane_prim" />
             </children>
@@ -1163,7 +1166,7 @@
             <materials>
                 <material id="inherit" />
             </materials>
-            <texture id="stone_side"/>
+            <texture id="inherit"/>
             <children>
                 <primitiveref id="plane_prim" />
             </children>

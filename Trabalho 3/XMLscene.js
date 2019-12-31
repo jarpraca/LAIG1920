@@ -23,6 +23,9 @@ class XMLscene extends CGFscene {
 
         this.sceneInited = false;
 
+        this.selectedTheme = 'Room';
+        this.themeIDs = ['Bar', 'Room'];
+
         this.cameras = [];
         this.camerasIDs = {};
         this.lightToggles = [];

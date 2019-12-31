@@ -23,6 +23,8 @@ class MyInterface extends CGFinterface {
         // add a group of controls (and open/expand by defult)
 
         this.initKeys();
+        
+        this.gui.add(this.scene, 'selectedTheme', this.scene.themeIDs).name('Theme');
 
         return true;
     }
@@ -69,7 +71,9 @@ class MyInterface extends CGFinterface {
     };
 
     processKeyUp(event) {
+        console.log(event.code);
         this.activeKeys[event.code]=false;
+
     };
 /*
     processMouseDown(event) {
@@ -80,6 +84,15 @@ class MyInterface extends CGFinterface {
         this.activeKeys["mouse"]=false;
     };
 */
+
+    processMouseMove(event){
+
+        console.log(event.code);
+
+    }
+    
+
+
     isKeyPressed(keyCode) {
         return this.activeKeys[keyCode] || false;
     }
