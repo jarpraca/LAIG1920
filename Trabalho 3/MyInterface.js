@@ -25,6 +25,15 @@ class MyInterface extends CGFinterface {
         this.initKeys();
         
         this.gui.add(this.scene, 'selectedTheme', this.scene.themeIDs).name('Theme');
+        var settings = this.gui.addFolder("Settings");
+        settings.open();
+
+        settings.add(this.scene, "gameMode", this.scene.modeIDs ).name("Game Mode");
+        settings.add(this.scene, "gameDifficulty", this.scene.difficultyIDs ).name("Difficulty");
+
+        this.gui.add(this.scene, "startGame").name("Start Game");
+        this.gui.add(this.scene, "undo").name("Undo");
+        this.gui.add(this.scene, "quitGame").name("Quit Game");
 
         return true;
     }

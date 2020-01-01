@@ -1217,6 +1217,20 @@
             </children>
     </component> 
 
+    <component id="piece_sphere">
+            <transformation>
+                <translate x="0" y="15" z="40" />
+                <rotate axis="x" angle="-90" />
+            </transformation>
+            <materials>
+                <material id="stone_wall" />
+            </materials>
+            <texture id="stone_side"/>
+            <children>
+                <primitiveref id="sphere" />
+            </children>
+    </component> 
+
 
 
     <!-- SCENE -->
@@ -1234,6 +1248,7 @@
                 <componentref id="viewbox" />
                 <componentref id="chair" />
                 <componentref id="piece" />
+                <componentref id="piece_sphere" />
             </children>
         </component>
     

@@ -22,7 +22,10 @@ class XMLscene extends CGFscene {
         super.init(application);
 
         this.sceneInited = false;
-
+        this.gameMode =  "Player vs Player";
+        this.modeIDs = [ "Player vs Player", "Player vs Bot", "Bot vs Bot" ];
+        this.gameDifficulty =  "Easy";
+        this.difficultyIDs = [ "Easy", "Hard"];
         this.selectedTheme = 'Room';
         this.themeIDs = ['Bar', 'Room'];
 
@@ -49,6 +52,31 @@ class XMLscene extends CGFscene {
 		this.setPickEnabled(true);
 
     }
+
+//functions portotypes for interface
+
+
+    startGame(){
+
+        console.log("GAME STARTED");
+
+    }
+
+    undo(){
+
+        console.log("MOVE UNDONE");
+
+    }
+
+    quitGame(){
+
+        console.log("GAME QUITTED");
+
+    }
+
+
+
+
 
     /**
      * Initializes the scene cameras.
@@ -175,8 +203,13 @@ class XMLscene extends CGFscene {
 					if (obj) {
                         var customId = this.pickResults[i][1];
 
+                        if(obj.id == "cylinder")
+                            this.graph.movePieceTo('piece',2,2);
+
+                        if(obj.id == "sphere")
+                            this.graph.movePieceTo('piece_sphere',2,2);
                         
-						console.log("Picked object: " + obj + ", with pick id " + customId);						
+						console.log("Picked object: " + obj.id + ", with pick id " + customId);						
 					}
 				}
 				this.pickResults.splice(0, this.pickResults.length);
@@ -226,6 +259,27 @@ class XMLscene extends CGFscene {
             this.lights[i].enable();
         }
 
+         // draw objects
+		//for (var i = 0; i < this.objects.length; i++) {
+			//this.pushMatrix();
+          //  this.registerForPick(i + 1,  this.graph.primitives[this.graph.components['piece'].primitives[i]]);
+            //this.registerForPick(i + 1,  this.graph.primitives[this.graph.components['piece_sphere'].primitives[i]]);
+            
+            /*for(var i=0; i < this.graph.components['piece'].primitives.length; i++){
+                //console.log("animation: " + this.graph.components['piece'].animation);
+                this.graph.primitives[this.graph.components['piece'].primitives[i]].display();
+            }*/
+
+			//this.popMatrix();
+        //}
+        
+        
+        this.registerForPick(1,  this.graph.primitives[this.graph.components['piece'].primitives[0]]);
+        this.registerForPick(1,  this.graph.primitives[this.graph.components['piece_sphere'].primitives[0]]);
+
+        
+
+
         if (this.sceneInited) {
             // Draw axis
             this.setDefaultAppearance();
@@ -236,19 +290,9 @@ class XMLscene extends CGFscene {
 
         this.popMatrix();
 
-        // draw objects
-		for (var i = 0; i < this.objects.length; i++) {
-			this.pushMatrix();
-            this.registerForPick(i + 1, this.objects[i]);
-            this.translate(0,0,30);
-            this.rotate(-Math.PI/2,1,0,0);
-            
-            for(var i=0; i < this.graph.components['piece'].primitives.length; i++){
-                this.graph.primitives[this.graph.components['piece'].primitives[i]].display();
-            }
+       
 
-			this.popMatrix();
-		}
+        
         // ---- END Background, camera and axis setup
     }
 }

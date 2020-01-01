@@ -1470,9 +1470,9 @@ class MySceneGraph {
                 this.primitives[this.components[componentID].primitives[i]].updateTexCoords(newLength_s, newLength_t);
             }
 
-            if(componentID != "piece"){
+            //if(componentID != "piece"){
                 this.primitives[this.components[componentID].primitives[i]].display();
-            }
+            //}
         }
 
         this.scene.popMatrix();
@@ -1484,9 +1484,9 @@ class MySceneGraph {
 
 
             //var default_mat = this.components["piece"].materials[0];
-            this.components["piece"].materials[0] = "selected_piece";
+            this.components[piece].materials[0] = "selected_piece";
             var transfMatrix = mat4.create();
-            transfMatrix = this.components['piece'].transformations;
+            transfMatrix = this.components[piece].transformations;
             //console.log(this.components['piece'].transformations);
 
 
