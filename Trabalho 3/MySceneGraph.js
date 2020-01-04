@@ -30,7 +30,19 @@ class MySceneGraph {
 
         this.materialCount = 0;
 
-        this.idRoot = null;                    // The id of the root element.
+        // this.cube = new MyPiece(this.scene, 'WC1');
+        // this.cone = new MyPiece(this.scene, 'WC2');
+        // this.cylinder = new MyPiece(this.scene, 'BY');
+        // this.sphere = new MyPiece(this.scene, 'WS');
+        //this.gameboard = new MyGameboard(this.scene, 'gameboard');
+        // this.gameboard.addPieceToTileByID(this.cube, '1a');
+        // this.gameboard.addPieceToTileByID(this.cone, '2a');
+        // this.gameboard.addPieceToTileByID(this.cylinder, '3a');
+        // this.gameboard.addPieceToTileByID(this.sphere, '4a');
+        // this.gameboard.movePiece('WS', '3c');
+
+        // The id of the root element.
+        this.idRoot = null;
 
         this.axisCoords = [];
         this.axisCoords['x'] = [1, 0, 0];
@@ -39,6 +51,8 @@ class MySceneGraph {
 
         // File reading 
         this.reader = new CGFXMLreader();
+
+        this.game = new MyGameOrchestrator(this.scene, this.filename);
 
         /*
          * Read the contents of the xml file, and refer to this class for loading and error handlers.
@@ -245,17 +259,17 @@ class MySceneGraph {
     parseView(viewsNode) {
 
         this.views = [];
-        
+
         if (viewsNode.nodeName != "views")
             return "root tag <views> missing";
 
-        this.defaultCameraID = this.reader.getString(viewsNode,'default');
+        this.defaultCameraID = this.reader.getString(viewsNode, 'default');
 
         this.children = viewsNode.children;
 
         var grandChildren;
 
-        if(this.children.length == 0)
+        if (this.children.length == 0)
             return "No views created";
 
         for (var i = 0; i < this.children.length; i++) {
@@ -276,7 +290,7 @@ class MySceneGraph {
 
             var camera;
 
-            if(this.children[i].nodeName == "perspective"){
+            if (this.children[i].nodeName == "perspective") {
                 var near = this.reader.getFloat(this.children[i], 'near');
                 var far = this.reader.getFloat(this.children[i], 'far');
                 var angle = this.reader.getFloat(this.children[i], 'angle');
@@ -287,7 +301,7 @@ class MySceneGraph {
                     this.onXMLMinorError("unknown tag <" + grandChildren[0].nodeName + ">");
                     continue;
                 }
-                else{
+                else {
                     var x_from = this.reader.getFloat(grandChildren[0], 'x');
                     var y_from = this.reader.getFloat(grandChildren[0], 'y');
                     var z_from = this.reader.getFloat(grandChildren[0], 'z');
@@ -297,15 +311,15 @@ class MySceneGraph {
                     this.onXMLMinorError("unknown tag <" + grandChildren[1].nodeName + ">");
                     continue;
                 }
-                else{
+                else {
                     var x_to = this.reader.getFloat(grandChildren[1], 'x');
                     var y_to = this.reader.getFloat(grandChildren[1], 'y');
                     var z_to = this.reader.getFloat(grandChildren[1], 'z');
                 }
 
-                camera = new CGFcamera(angle*Math.PI/180, near, far, vec3.fromValues(x_from, y_from, z_from), vec3.fromValues(x_to, y_to, z_to));
+                camera = new CGFcamera(angle * Math.PI / 180, near, far, vec3.fromValues(x_from, y_from, z_from), vec3.fromValues(x_to, y_to, z_to));
             }
-            else if(this.children[i].nodeName == "ortho"){
+            else if (this.children[i].nodeName == "ortho") {
                 var near = this.reader.getFloat(this.children[i], 'near');
                 var far = this.reader.getFloat(this.children[i], 'far');
                 var left = this.reader.getFloat(this.children[i], 'left');
@@ -319,7 +333,7 @@ class MySceneGraph {
                     this.onXMLMinorError("unknown tag <" + grandChildren[0].nodeName + ">");
                     continue;
                 }
-                else{
+                else {
                     var x_from = this.reader.getFloat(grandChildren[0], 'x');
                     var y_from = this.reader.getFloat(grandChildren[0], 'y');
                     var z_from = this.reader.getFloat(grandChildren[0], 'z');
@@ -329,7 +343,7 @@ class MySceneGraph {
                     this.onXMLMinorError("unknown tag <" + grandChildren[1].nodeName + ">");
                     continue;
                 }
-                else{
+                else {
                     var x_to = this.reader.getFloat(grandChildren[1], 'x');
                     var y_to = this.reader.getFloat(grandChildren[1], 'y');
                     var z_to = this.reader.getFloat(grandChildren[1], 'z');
@@ -340,7 +354,7 @@ class MySceneGraph {
                     var y_up = 1;
                     var z_up = 0;
                 }
-                else if (grandChildren[2].nodeName == "up"){
+                else if (grandChildren[2].nodeName == "up") {
                     var x_up = this.reader.getFloat(grandChildren[1], 'x');
                     var y_up = this.reader.getFloat(grandChildren[1], 'y');
                     var z_up = this.reader.getFloat(grandChildren[1], 'z');
@@ -349,7 +363,7 @@ class MySceneGraph {
                 camera = new CGFcameraOrtho(left, right, bottom, top, near, far, vec3.fromValues(x_from, y_from, z_from), vec3.fromValues(x_to, y_to, z_to), vec3.fromValues(x_up, y_up, z_up));
             }
 
-            if(viewID == this.defaultCameraID){
+            if (viewID == this.defaultCameraID) {
                 this.defaultCamera = camera;
             }
 
@@ -535,12 +549,12 @@ class MySceneGraph {
 
             // Get id of the current texture.
             var textureID = this.reader.getString(children[i], 'id');
-            if (textureID == null){
+            if (textureID == null) {
                 return "no ID defined for texture";
             }
 
             // Checks for repeated IDs.
-            if (this.textures[textureID] != null){
+            if (this.textures[textureID] != null) {
                 return "ID must be unique for each light (conflict: ID = " + textureID + ")";
             }
 
@@ -592,44 +606,44 @@ class MySceneGraph {
                 this.onXMLMinorError("unknown tag <" + grandChildren[0].nodeName + ">");
                 continue;
             }
-            else{
+            else {
                 this.material.setEmission(this.reader.getFloat(grandChildren[0], 'r'),
-                                        this.reader.getFloat(grandChildren[0], 'g'),
-                                        this.reader.getFloat(grandChildren[0], 'b'),
-                                        this.reader.getFloat(grandChildren[0], 'a'));                                  
+                    this.reader.getFloat(grandChildren[0], 'g'),
+                    this.reader.getFloat(grandChildren[0], 'b'),
+                    this.reader.getFloat(grandChildren[0], 'a'));
             }
 
             if (grandChildren[1].nodeName != "ambient") {
                 this.onXMLMinorError("unknown tag <" + grandChildren[1].nodeName + ">");
                 continue;
             }
-            else{
+            else {
                 this.material.setAmbient(this.reader.getFloat(grandChildren[1], 'r'),
-                                        this.reader.getFloat(grandChildren[1], 'g'),
-                                        this.reader.getFloat(grandChildren[1], 'b'),
-                                        this.reader.getFloat(grandChildren[1], 'a'));                                  
+                    this.reader.getFloat(grandChildren[1], 'g'),
+                    this.reader.getFloat(grandChildren[1], 'b'),
+                    this.reader.getFloat(grandChildren[1], 'a'));
             }
 
             if (grandChildren[2].nodeName != "diffuse") {
                 this.onXMLMinorError("unknown tag <" + grandChildren[2].nodeName + ">");
                 continue;
             }
-            else{
+            else {
                 this.material.setDiffuse(this.reader.getFloat(grandChildren[2], 'r'),
-                                        this.reader.getFloat(grandChildren[2], 'g'),
-                                        this.reader.getFloat(grandChildren[2], 'b'),
-                                        this.reader.getFloat(grandChildren[2], 'a'));                                  
+                    this.reader.getFloat(grandChildren[2], 'g'),
+                    this.reader.getFloat(grandChildren[2], 'b'),
+                    this.reader.getFloat(grandChildren[2], 'a'));
             }
 
             if (grandChildren[3].nodeName != "specular") {
                 this.onXMLMinorError("unknown tag <" + grandChildren[3].nodeName + ">");
                 continue;
             }
-            else{
+            else {
                 this.material.setSpecular(this.reader.getFloat(grandChildren[3], 'r'),
-                                        this.reader.getFloat(grandChildren[3], 'g'),
-                                        this.reader.getFloat(grandChildren[3], 'b'),
-                                        this.reader.getFloat(grandChildren[3], 'a'));                                  
+                    this.reader.getFloat(grandChildren[3], 'g'),
+                    this.reader.getFloat(grandChildren[3], 'b'),
+                    this.reader.getFloat(grandChildren[3], 'a'));
             }
 
             this.materials[materialID] = this.material;
@@ -681,7 +695,7 @@ class MySceneGraph {
 
                         transfMatrix = mat4.translate(transfMatrix, transfMatrix, coordinates);
                         break;
-                    case 'scale':                        
+                    case 'scale':
                         var coordinates = this.parseCoordinates3D(grandChildren[j], "translate transformation for ID " + transformationID);
                         if (!Array.isArray(coordinates))
                             return coordinates;
@@ -692,15 +706,15 @@ class MySceneGraph {
                         var axis = this.reader.getString(grandChildren[j], 'axis');
                         var angle = this.reader.getString(grandChildren[j], 'angle');
 
-                        switch(axis){
+                        switch (axis) {
                             case 'x':
-                                transfMatrix = mat4.rotateX(transfMatrix, transfMatrix, angle*Math.PI/180);
+                                transfMatrix = mat4.rotateX(transfMatrix, transfMatrix, angle * Math.PI / 180);
                                 break;
                             case 'y':
-                                transfMatrix = mat4.rotateY(transfMatrix, transfMatrix, angle*Math.PI/180);
+                                transfMatrix = mat4.rotateY(transfMatrix, transfMatrix, angle * Math.PI / 180);
                                 break;
                             case 'z':
-                                transfMatrix = mat4.rotateZ(transfMatrix, transfMatrix, angle*Math.PI/180);
+                                transfMatrix = mat4.rotateZ(transfMatrix, transfMatrix, angle * Math.PI / 180);
                                 break;
                         }
                         break;
@@ -743,7 +757,7 @@ class MySceneGraph {
 
             grandChildren = children[i].children;
 
-            if(grandChildren.length < 1)
+            if (grandChildren.length < 1)
                 return "Animation must have at least 1 keyframe (confict: ID = " + animationID + ")";
 
             // Keyframes
@@ -775,7 +789,7 @@ class MySceneGraph {
                     this.onXMLMinorError("unknown tag or tag out of order <" + transf[1].nodeName + ">");
                     continue;
                 }
-                
+
                 var angle_x = this.reader.getFloat(transf[1], 'angle_x');
                 if (!(angle_x != null && !isNaN(angle_x)))
                     return "unable to parse x-coordinate of the rotate transformation for keyframe " + j + " of animation " + animationID;
@@ -797,7 +811,7 @@ class MySceneGraph {
                 }
 
                 var scale = this.parseCoordinates3D(transf[2], "scale transformation for keyframe " + j + " of animation " + animationID);
-                
+
                 var keyframe = new Keyframe(instant);
                 keyframe.addTranslate(translate);
                 keyframe.addRotate(rotate);
@@ -849,7 +863,7 @@ class MySceneGraph {
             if (grandChildren.length != 1 ||
                 (grandChildren[0].nodeName != 'rectangle' && grandChildren[0].nodeName != 'triangle' &&
                     grandChildren[0].nodeName != 'cylinder' && grandChildren[0].nodeName != 'sphere' &&
-                    grandChildren[0].nodeName != 'torus' && grandChildren[0].nodeName != 'plane' && 
+                    grandChildren[0].nodeName != 'torus' && grandChildren[0].nodeName != 'plane' &&
                     grandChildren[0].nodeName != 'patch' && grandChildren[0].nodeName != 'cylinder2')) {
                 return "There must be exactly 1 primitive type (rectangle, triangle, cylinder, sphere, torus, plane, patch or cylinder2)"
             }
@@ -885,7 +899,7 @@ class MySceneGraph {
 
                 this.primitives[primitiveId] = rect;
             }
-            
+
             // Triangle
             else if (primitiveType == 'triangle') {
                 // x1
@@ -937,7 +951,7 @@ class MySceneGraph {
 
                 this.primitives[primitiveId] = tri;
             }
-            
+
             // Cylinder
             else if (primitiveType == 'cylinder') {
                 // slices
@@ -1047,7 +1061,7 @@ class MySceneGraph {
                 var npointsV = this.reader.getFloat(grandChildren[0], 'npointsV');
                 if (!(npointsV != null && !isNaN(npointsV) && npointsV >= 1))
                     return "unable to parse npointsV of the primitive coordinates for ID = " + primitiveId;
-                
+
                 // npartsU
                 var npartsU = this.reader.getFloat(grandChildren[0], 'npartsU');
                 if (!(npartsU != null && !isNaN(npartsU) && npartsU >= 1))
@@ -1059,12 +1073,12 @@ class MySceneGraph {
                     return "unable to parse npartsV of the primitive coordinates for ID = " + primitiveId;
 
                 var controlpoints = grandChildren[0].children;
-                
+
                 var controlvertexes = [];
-                for(var u=0; u < npointsU; u++){
+                for (var u = 0; u < npointsU; u++) {
                     var pointsU = [];
-                    for(var v=0; v < npointsV; v++){
-                        var coords = this.parseCoordinates3D(controlpoints[npointsU*u + v], "controlpoint U: "+u+" V: "+v+"of patch "+primitiveId);
+                    for (var v = 0; v < npointsV; v++) {
+                        var coords = this.parseCoordinates3D(controlpoints[npointsU * u + v], "controlpoint U: " + u + " V: " + v + "of patch " + primitiveId);
                         pointsU.push(coords);
                     }
                     controlvertexes.push(pointsU);
@@ -1138,8 +1152,8 @@ class MySceneGraph {
                 return "no ID defined for componentID";
 
             // Checks for repeated IDs.
-            if (this.components[componentID] != null){
-                console.log("line :"+i);
+            if (this.components[componentID] != null) {
+                console.log("line :" + i);
                 return "ID must be unique for each component (conflict: ID = " + componentID + ")";
             }
 
@@ -1171,7 +1185,7 @@ class MySceneGraph {
 
                         transfMatrix = mat4.translate(transfMatrix, transfMatrix, coordinates);
                         break;
-                    case 'scale':                        
+                    case 'scale':
                         var coordinates = this.parseCoordinates3D(Ctransformations[j]);
                         if (!Array.isArray(coordinates))
                             return coordinates;
@@ -1182,15 +1196,15 @@ class MySceneGraph {
                         var axis = this.reader.getString(Ctransformations[j], 'axis');
                         var angle = this.reader.getString(Ctransformations[j], 'angle');
 
-                        switch(axis){
+                        switch (axis) {
                             case 'x':
-                                transfMatrix = mat4.rotateX(transfMatrix, transfMatrix, angle*Math.PI/180);
+                                transfMatrix = mat4.rotateX(transfMatrix, transfMatrix, angle * Math.PI / 180);
                                 break;
                             case 'y':
-                                transfMatrix = mat4.rotateY(transfMatrix, transfMatrix, angle*Math.PI/180);
+                                transfMatrix = mat4.rotateY(transfMatrix, transfMatrix, angle * Math.PI / 180);
                                 break;
                             case 'z':
-                                transfMatrix = mat4.rotateZ(transfMatrix, transfMatrix, angle*Math.PI/180);
+                                transfMatrix = mat4.rotateZ(transfMatrix, transfMatrix, angle * Math.PI / 180);
                                 break;
                         }
                         break;
@@ -1205,7 +1219,7 @@ class MySceneGraph {
             var Canimation = grandChildren[animationIndex];
             var animationID = null;
 
-            if(Canimation != null)
+            if (Canimation != null)
                 animationID = this.reader.getString(Canimation, 'id');
 
             // Materials
@@ -1226,9 +1240,9 @@ class MySceneGraph {
             var primitiveIDs = [];
 
             for (var j = 0; j < grandgrandChildren.length; j++) {
-                if(grandgrandChildren[j].nodeName == "componentref")
+                if (grandgrandChildren[j].nodeName == "componentref")
                     componentIDs.push(this.reader.getString(grandgrandChildren[j], 'id'));
-                else if(grandgrandChildren[j].nodeName == "primitiveref")
+                else if (grandgrandChildren[j].nodeName == "primitiveref")
                     primitiveIDs.push(this.reader.getString(grandgrandChildren[j], 'id'));
             }
 
@@ -1242,18 +1256,18 @@ class MySceneGraph {
             var length_t;
             var hasLength = false;
 
-            for(var z=0;z<primitiveIDs.length;z++){
-                if(primitiveIDs[z] == "triangle" || primitiveIDs[z] == "rectangle"){
+            for (var z = 0; z < primitiveIDs.length; z++) {
+                if (primitiveIDs[z] == "triangle" || primitiveIDs[z] == "rectangle") {
                     hasLength = true;
                     break;
                 }
             }
 
-            if(textureID == "none" || textureID == "inherit"){
+            if (textureID == "none" || textureID == "inherit") {
                 length_s = 0;
                 length_t = 0;
             }
-            else if(hasLength){
+            else if (hasLength) {
                 length_s = this.reader.getString(Ctexture, 'length_s');
                 length_t = this.reader.getString(Ctexture, 'length_t');
             }
@@ -1353,7 +1367,7 @@ class MySceneGraph {
         return color;
     }
 
-    parseAttenuation(node, messageError){
+    parseAttenuation(node, messageError) {
         var attenuation = [];
 
         // constant
@@ -1401,210 +1415,208 @@ class MySceneGraph {
         console.log("   " + message);
     }
 
-    parseNode(componentID, textureID, materialID, length_s, length_t){
+    parseNode(componentID, textureID, materialID, length_s, length_t) {
         this.scene.pushMatrix();
 
         // Transformations
         this.scene.multMatrix(this.components[componentID].transformations);
-        
+
         // Animations
-        if(this.components[componentID].animation != null)
+        if (this.components[componentID].animation != null)
             this.animations[this.components[componentID].animation].apply(this.scene);
-        
+
         // Material
         var newMaterialID;
         var defaultMaterial = this.materialCount % this.components[componentID].materials.length;
 
-        if(this.components[componentID].materials[defaultMaterial] == "inherit"){
+        if (this.components[componentID].materials[defaultMaterial] == "inherit") {
             newMaterialID = materialID;
         }
         else
             newMaterialID = this.components[componentID].materials[defaultMaterial];
-        
+
         // Texture
         var newTextureID;
         var newLength_s = 0;
         var newLength_t = 0;
 
-        if(this.components[componentID].texture == "inherit"){
+        if (this.components[componentID].texture == "inherit") {
             newTextureID = textureID;
             newLength_s = length_s;
             newLength_t = length_t;
         }
-        else{
+        else {
             newTextureID = this.components[componentID].texture;
-            if(newTextureID != "none"){
+            if (newTextureID != "none") {
                 newLength_s = this.components[componentID].length_s;
                 newLength_t = this.components[componentID].length_t;
             }
         }
-        
-        if(componentID == 'viewbox' && this.scene.selectedTheme == 'Bar'){
+
+        // Theme changes
+        if (componentID == 'viewbox' && this.scene.selectedTheme == 'Bar') {
             newTextureID = 'alt_side';
         }
-        else if(componentID == 'view_back' && this.scene.selectedTheme == 'Bar'){
+        else if (componentID == 'view_back' && this.scene.selectedTheme == 'Bar') {
             newTextureID = 'alt_back';
         }
-        else if(componentID == 'floor' && this.scene.selectedTheme == 'Bar'){
+        else if (componentID == 'floor' && this.scene.selectedTheme == 'Bar') {
             newTextureID = 'alt_floor_tex';
         }
+        else if (componentID == 'table_top' && this.scene.selectedTheme == 'Bar') {
+            newTextureID = 'velvet';
+        }
 
-        if(newTextureID == "none"){
+        if (newTextureID == "none") {
             this.materials[newMaterialID].setTexture(null);
         }
-        else{
+        else {
             this.materials[newMaterialID].setTexture(this.textures[newTextureID]);
         }
-
 
         this.materials[newMaterialID].apply();
 
         // Children
-        for(var i=0; i < this.components[componentID].components.length; i++){
+        for (var i = 0; i < this.components[componentID].components.length; i++) {
             this.parseNode(this.components[componentID].components[i], newTextureID, newMaterialID, newLength_s, newLength_t);
         }
 
-        for(var i=0; i < this.components[componentID].primitives.length; i++){
-            if(newTextureID != "none" &&  (this.primitives[this.components[componentID].primitives[i]] instanceof MyRectangle || this.primitives[this.components[componentID].primitives[i]] instanceof MyTriangle))
-            {
+        for (var i = 0; i < this.components[componentID].primitives.length; i++) {
+            if (newTextureID != "none" && (this.primitives[this.components[componentID].primitives[i]] instanceof MyRectangle || this.primitives[this.components[componentID].primitives[i]] instanceof MyTriangle)) {
                 this.primitives[this.components[componentID].primitives[i]].updateTexCoords(newLength_s, newLength_t);
             }
 
-            //if(componentID != "piece"){
-                this.primitives[this.components[componentID].primitives[i]].display();
-            //}
+            this.primitives[this.components[componentID].primitives[i]].display();
         }
 
         this.scene.popMatrix();
     }
 
-    movePieceTo(piece, quadrant, peg){
+    movePieceTo(piece, quadrant, peg) {
 
         console.log("INICIA ANIMATION");
 
 
-            //var default_mat = this.components["piece"].materials[0];
-            this.components[piece].materials[0] = "selected_piece";
-            var transfMatrix = mat4.create();
-            transfMatrix = this.components[piece].transformations;
-            //console.log(this.components['piece'].transformations);
+        //var default_mat = this.components["piece"].materials[0];
+        this.components[piece].materials[0] = "selected_piece";
+        var transfMatrix = mat4.create();
+        transfMatrix = this.components[piece].transformations;
+        //console.log(this.components['piece'].transformations);
 
 
-            var keyframes = [];
+        var keyframes = [];
 
-            //keyframe 1
+        //keyframe 1
 
-            var translate = [];
-            translate.push(...[0, 0, 0]);
+        var translate = [];
+        translate.push(...[0, 0, 0]);
 
-            var rotate = [0, 0, 0];
+        var rotate = [0, 0, 0];
 
-            var scale = [];
-            scale.push(...[1, 1, 1]);
+        var scale = [];
+        scale.push(...[1, 1, 1]);
 
-            var keyframe1 = new Keyframe(0);
-            keyframe1.addTranslate(translate);
-            keyframe1.addRotate(rotate);
-            keyframe1.addScale(scale);
+        var keyframe1 = new Keyframe(0);
+        keyframe1.addTranslate(translate);
+        keyframe1.addRotate(rotate);
+        keyframe1.addScale(scale);
 
-            keyframes.push(keyframe1);
+        keyframes.push(keyframe1);
 
-            //keyframe 2
+        //keyframe 2
 
-            var translate = [];
-            translate.push(...[0, 20, 20]);
+        var translate = [];
+        translate.push(...[0, 20, 20]);
 
-            var rotate = [0, 0, 0];
+        var rotate = [0, 0, 0];
 
-            var scale = [];
-            scale.push(...[1, 1, 1]);
+        var scale = [];
+        scale.push(...[1, 1, 1]);
 
-            var keyframe2 = new Keyframe(1);
-            keyframe2.addTranslate(translate);
-            keyframe2.addRotate(rotate);
-            keyframe2.addScale(scale);
+        var keyframe2 = new Keyframe(1);
+        keyframe2.addTranslate(translate);
+        keyframe2.addRotate(rotate);
+        keyframe2.addScale(scale);
 
-            keyframes.push(keyframe2);
+        keyframes.push(keyframe2);
 
-            //keyframe 3
+        //keyframe 3
 
-            
-            var translate = [];
 
-            if(quadrant == 1){
-                var quad_x = 0;
-                var quad_y = -4;
-                var quad_z = 0;
-            }
-            else if(quadrant == 2){
-                var quad_x = 20;
-                var quad_y = -1;
-                var quad_z = 0;
-            }
-            else if(quadrant == 3){
-                var quad_x = 0;
-                var quad_y = -1;
-                var quad_z = 20;
-            }
-            else if(quadrant == 4){
-                var quad_x = 20;
-                var quad_y = -1;
-                var quad_z = 20;
-            }
+        var translate = [];
 
-            if(peg == 1){
-                var peg_x = 0;
-                var peg_z = 0;
-            }
-            else if(peg == 2){
-                var peg_x = 8;
-                var peg_z = 0;
-            }
-            else if(peg == 3){
-                var peg_x = 0;
-                var peg_z = 8;
-            }
-            else if(peg == 4){
-                var peg_x = 8;
-                var peg_z = 8;
-            }
+        if (quadrant == 1) {
+            var quad_x = 0;
+            var quad_y = -4;
+            var quad_z = 0;
+        }
+        else if (quadrant == 2) {
+            var quad_x = 20;
+            var quad_y = -1;
+            var quad_z = 0;
+        }
+        else if (quadrant == 3) {
+            var quad_x = 0;
+            var quad_y = -1;
+            var quad_z = 20;
+        }
+        else if (quadrant == 4) {
+            var quad_x = 20;
+            var quad_y = -1;
+            var quad_z = 20;
+        }
 
-            translate.push(...[-14 + quad_z + peg_z, 16 + quad_x + peg_x, 0 + quad_y]);
+        if (peg == 1) {
+            var peg_x = 0;
+            var peg_z = 0;
+        }
+        else if (peg == 2) {
+            var peg_x = 8;
+            var peg_z = 0;
+        }
+        else if (peg == 3) {
+            var peg_x = 0;
+            var peg_z = 8;
+        }
+        else if (peg == 4) {
+            var peg_x = 8;
+            var peg_z = 8;
+        }
 
-            var rotate = [0, 0, 0];
+        translate.push(...[-14 + quad_z + peg_z, 16 + quad_x + peg_x, -8 + quad_y]);
 
-            var scale = [];
-            scale.push(...[1, 1, 1]);
+        var rotate = [0, 0, 0];
 
-            var keyframe3 = new Keyframe(2);
-            keyframe3.addTranslate(translate);
-            keyframe3.addRotate(rotate);
-            keyframe3.addScale(scale);
+        var scale = [];
+        scale.push(...[1, 1, 1]);
 
-            keyframes.push(keyframe3);
-            
-            //animation
+        var keyframe3 = new Keyframe(2);
+        keyframe3.addTranslate(translate);
+        keyframe3.addRotate(rotate);
+        keyframe3.addScale(scale);
 
-            var animation = new KeyframeAnimation(10, keyframes);
-            this.animations[10] = animation;
+        keyframes.push(keyframe3);
 
-            this.components[piece].animation = 10;
+        //animation
 
-            this.animations[this.components[piece].animation].apply(this.scene);
+        var animation = new KeyframeAnimation(10, keyframes);
+        this.animations[10] = animation;
+
+        this.components[piece].animation = 10;
+
+        this.animations[this.components[piece].animation].apply(this.scene);
 
     }
 
-
-
-    checkKeys(){
-        if (this.scene.interface.isKeyPressed("KeyM")) { 
-            this.movePieceTo("piece",3,2);
+    checkKeys() {
+        if (this.scene.interface.isKeyPressed("KeyM")) {
+            this.movePieceTo("piece", 3, 2);
 
         }
     }
 
-    updateAnimations(t){
-        for (var key in this.animations){
+    updateAnimations(t) {
+        for (var key in this.animations) {
             this.animations[key].update(t);
         }
     }
@@ -1613,11 +1625,15 @@ class MySceneGraph {
      * Displays the scene, processing each node, starting in the root node.
      */
     displayScene() {
-        if(this.components[this.idRoot] == null){
+        if (this.components[this.idRoot] == null) {
             console.log("Root component is null");
             return null;
         }
 
-        this.parseNode(this.idRoot, "none", "none", 0, 0);
+        this.parseNode(this.idRoot, "none", "none", 0, 0);    
+
+        this.scene.pushMatrix();
+        this.game.display();
+        this.scene.popMatrix();
     }
 }

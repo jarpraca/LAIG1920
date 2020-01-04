@@ -22,10 +22,10 @@ class XMLscene extends CGFscene {
         super.init(application);
 
         this.sceneInited = false;
-        this.gameMode =  "Player vs Player";
-        this.modeIDs = [ "Player vs Player", "Player vs Bot", "Bot vs Bot" ];
-        this.gameDifficulty =  "Easy";
-        this.difficultyIDs = [ "Easy", "Hard"];
+        this.gameMode = "Player vs Player";
+        this.modeIDs = ["Player vs Player", "Player vs Bot", "Bot vs Bot"];
+        this.gameDifficulty = "Easy";
+        this.difficultyIDs = ["Easy", "Hard"];
         this.selectedTheme = 'Room';
         this.themeIDs = ['Bar', 'Room'];
 
@@ -45,46 +45,42 @@ class XMLscene extends CGFscene {
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(50);
 
-        
-		this.objects = [
-			new CGFplane(this)
-		];
-		this.setPickEnabled(true);
+
+        this.objects = [
+            new CGFplane(this)
+        ];
+        this.setPickEnabled(true);
 
     }
 
-//functions portotypes for interface
+    //functions portotypes for interface
 
 
-    startGame(){
+    startGame() {
 
         console.log("GAME STARTED");
 
     }
 
-    undo(){
+    undo() {
 
         console.log("MOVE UNDONE");
 
     }
 
-    quitGame(){
+    quitGame() {
 
         console.log("GAME QUITTED");
 
     }
-
-
-
-
 
     /**
      * Initializes the scene cameras.
      */
     initCameras() {
         var i = 0;
-        if(this.sceneInited){
-            for(var key in this.graph.views){
+        if (this.sceneInited) {
+            for (var key in this.graph.views) {
                 this.cameras[i] = this.graph.views[key];
                 this.camerasIDs[key] = i;
                 i++;
@@ -126,11 +122,11 @@ class XMLscene extends CGFscene {
                 }
 
                 this.lights[i].setVisible(true);
-                if (light[0]){
+                if (light[0]) {
                     this.lights[i].enable();
                     this.lightToggles[i] = true;
                 }
-                else{
+                else {
                     this.lights[i].disable();
                     this.lightToggles[i] = false;
                 }
@@ -154,7 +150,8 @@ class XMLscene extends CGFscene {
     onGraphLoaded() {
         this.axis = new CGFaxis(this, this.graph.referenceLength);
 
-        this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
+        //this.gl.clearColor(this.graph.background[0], this.graph.background[1], this.graph.background[2], this.graph.background[3]);
+        this.gl.clearColor(0, 0, 0, 1);
 
         this.setGlobalAmbientLight(this.graph.ambient[0], this.graph.ambient[1], this.graph.ambient[2], this.graph.ambient[3]);
 
@@ -169,7 +166,7 @@ class XMLscene extends CGFscene {
     /**
      * Updates the main camera to the one selected in the interface and sets it as the active camera
      */
-    updateCamera(){
+    updateCamera() {
         this.camera = this.cameras[this.selectedCamera];
         this.interface.setActiveCamera(this.camera);
     }
@@ -177,53 +174,53 @@ class XMLscene extends CGFscene {
     /**
      * Updates the lights state (on/off)
      */
-    updateLights(){
-        for(var key in this.lights){
-            if(this.lights.hasOwnProperty(key)){
-                if(this.lightToggles[key])
+    updateLights() {
+        for (var key in this.lights) {
+            if (this.lights.hasOwnProperty(key)) {
+                if (this.lightToggles[key])
                     this.lights[key].enable();
                 else
                     this.lights[key].disable();
-                
+
                 this.lights[key].update();
             }
         }
     }
 
-    update(t){
+    update(t) {
         this.graph.checkKeys();
-        this.graph.updateAnimations(t/1000);
+        this.graph.updateAnimations(t / 1000);
     }
 
     logPicking() {
-		if (this.pickMode == false) {
-			if (this.pickResults != null && this.pickResults.length > 0) {
-				for (var i = 0; i < this.pickResults.length; i++) {
-					var obj = this.pickResults[i][0];
-					if (obj) {
+        if (this.pickMode == false) {
+            if (this.pickResults != null && this.pickResults.length > 0) {
+                for (var i = 0; i < this.pickResults.length; i++) {
+                    var obj = this.pickResults[i][0];
+                    if (obj) {
                         var customId = this.pickResults[i][1];
 
-                        if(obj.id == "cylinder")
-                            this.graph.movePieceTo('piece',2,2);
+                        if (obj.id == "cylinder")
+                            this.graph.movePieceTo('piece', 2, 2);
 
-                        if(obj.id == "sphere")
-                            this.graph.movePieceTo('piece_sphere',2,2);
-                        
-						console.log("Picked object: " + obj.id + ", with pick id " + customId);						
-					}
-				}
-				this.pickResults.splice(0, this.pickResults.length);
-			}
-		}
+                        if (obj.id == "sphere")
+                            this.graph.movePieceTo('piece_sphere', 2, 2);
+
+                        console.log("Picked object: " + obj.id + ", with pick id " + customId);
+                    }
+                }
+                this.pickResults.splice(0, this.pickResults.length);
+            }
+        }
     }
-    
-    
+
+
 
     /**
      * Renders and displays the main camera
      */
-    display(){
-        if(this.sceneInited){
+    display() {
+        if (this.sceneInited) {
             // Displays scene
             this.render(this.camera);
         }
@@ -234,9 +231,9 @@ class XMLscene extends CGFscene {
      * Renders the scene in 'camera' perspective.
      */
     render(camera) {
-        
-		this.logPicking();
-		this.clearPickRegistration();
+
+        this.logPicking();
+        this.clearPickRegistration();
         // ---- BEGIN Background, camera and axis setup
         this.camera = camera;
 
@@ -247,7 +244,7 @@ class XMLscene extends CGFscene {
         // Initialize Model-View matrix as identity (no transformation
         this.updateProjectionMatrix();
         this.loadIdentity();
-        
+
         // Apply transformations corresponding to the camera position relative to the origin
         this.applyViewMatrix();
 
@@ -259,26 +256,23 @@ class XMLscene extends CGFscene {
             this.lights[i].enable();
         }
 
-         // draw objects
-		//for (var i = 0; i < this.objects.length; i++) {
-			//this.pushMatrix();
-          //  this.registerForPick(i + 1,  this.graph.primitives[this.graph.components['piece'].primitives[i]]);
-            //this.registerForPick(i + 1,  this.graph.primitives[this.graph.components['piece_sphere'].primitives[i]]);
-            
-            /*for(var i=0; i < this.graph.components['piece'].primitives.length; i++){
-                //console.log("animation: " + this.graph.components['piece'].animation);
-                this.graph.primitives[this.graph.components['piece'].primitives[i]].display();
-            }*/
+        // draw objects
+        //for (var i = 0; i < this.objects.length; i++) {
+        //this.pushMatrix();
+        //  this.registerForPick(i + 1,  this.graph.primitives[this.graph.components['piece'].primitives[i]]);
+        //this.registerForPick(i + 1,  this.graph.primitives[this.graph.components['piece_sphere'].primitives[i]]);
 
-			//this.popMatrix();
+        /*for(var i=0; i < this.graph.components['piece'].primitives.length; i++){
+            //console.log("animation: " + this.graph.components['piece'].animation);
+            this.graph.primitives[this.graph.components['piece'].primitives[i]].display();
+        }*/
+
+        //this.popMatrix();
         //}
-        
-        
-        this.registerForPick(1,  this.graph.primitives[this.graph.components['piece'].primitives[0]]);
-        this.registerForPick(1,  this.graph.primitives[this.graph.components['piece_sphere'].primitives[0]]);
 
-        
 
+        //this.registerForPick(1, this.graph.primitives[this.graph.components['piece'].primitives[0]]);
+        //this.registerForPick(1, this.graph.primitives[this.graph.components['piece_sphere'].primitives[0]]);
 
         if (this.sceneInited) {
             // Draw axis
@@ -290,9 +284,6 @@ class XMLscene extends CGFscene {
 
         this.popMatrix();
 
-       
-
-        
         // ---- END Background, camera and axis setup
     }
 }

@@ -1,30 +1,20 @@
 <lxs>
     <scene root="scene" axis_length="5"/>
 
-    <views default="defaultCamera">
+    <views default="secondCamera">
         <perspective id="defaultCamera" near="0.1" far="800" angle="30">
             <from x="250" y="200" z="0" />
             <to x="10" y="40" z="0" />
         </perspective>
 
         <perspective id="secondCamera" near="0.1" far="500" angle="30">
-            <from x="0" y="50" z="100" />
-            <to x="0" y="0" z="0" />
+            <from x="80" y="80" z="0" />
+            <to x="5" y="0" z="0" />
         </perspective>
 
         <perspective id="upCamera" near="0.1" far="800" angle="30">
-            <from x="10" y="600" z="10" />
+            <from x="1" y="200" z="0" />
             <to x="0" y="0" z="0" />
-        </perspective>
-
-        <ortho id="orthoCamera"  near="0.1" far="500" left="-95" right="95" top="45" bottom="-45" >
-            <from x="0" y="50" z="100" />
-            <to x="0" y="0" z="0" />
-        </ortho>
-        
-        <perspective id="securityCamera" near="0.1" far="500" angle="30">
-            <from x="120" y="60" z="0" />
-            <to x="10" y="0" z="0" />
         </perspective>
     </views>
 
@@ -61,6 +51,7 @@
         <texture id="alt_side" file="scenes/images/alt_side.jpg" />
         <texture id="alt_back" file="scenes/images/alt_back.jpg" />
         <texture id="alt_floor_tex" file="scenes/images/alt_floor.jpg" />
+        <texture id="velvet" file="scenes/images/velvet.jpg" />
     </textures>
 
     <materials>
@@ -71,7 +62,7 @@
             <specular r="0.4" g="0.4" b="0.4" a="1.0" />
         </material>
 
-        
+
         <material id="stone_wall" shininess="10">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.15" g="0.15" b="0.15" a="1.0" />
@@ -79,14 +70,14 @@
             <specular r="0.2" g="0.2" b="0.2" a="1.0" />
         </material>
 
-        
+
         <material id="selected_piece" shininess="10">
             <emission r="0.0" g="0.0" b="0.0" a="1.0" />
             <ambient r="0.15" g="0" b="0" a="1.0" />
             <diffuse r="0.7" g="0" b="0" a="1.0" />
             <specular r="0" g="0" b="0" a="1.0" />
         </material>
-        
+
     </materials>
 
     <transformations>
@@ -106,7 +97,7 @@
         <primitive id="strip">
             <rectangle x1="0" y1="0" x2="20" y2="4" />
         </primitive>
-        
+
         <primitive id="thin_strip">
             <rectangle x1="-20" y1="0" x2="0" y2="2" />
         </primitive>
@@ -114,19 +105,19 @@
         <primitive id="flipped_strip">
             <rectangle x1="0" y1="0" x2="20" y2="2" />
         </primitive>
-        
+
         <primitive id="flipped_thin_strip">
             <rectangle x1="-20" y1="0" x2="0" y2="4" />
         </primitive>
-        
+
         <primitive id="rectangle">
             <rectangle x1="-20" y1="-20" x2="20" y2="20" />
         </primitive>
-        
+
         <primitive id="peg">
             <cylinder slices="20" stacks="10" base="2" top="2" height="1"/>
         </primitive>
-        
+
         <primitive id="cylinder">
             <cylinder slices="40" stacks="10" base="4" top="4" height="8"/>
         </primitive>
@@ -142,10 +133,8 @@
     </primitives>
 
     <components>
-    
 
         <!-- BOARD -->
-        
         <component id="flipped_strip">
             <transformation>
                 <translate x="10" y="1" z="0" />
@@ -160,8 +149,6 @@
                 <primitiveref id="plane_prim" />
             </children>
         </component>
-
-
 
         <component id="flipped_thin_strip">
             <transformation>
@@ -193,8 +180,7 @@
             </children>
         </component>
 
-
-         <component id="strip">
+        <component id="strip">
             <transformation>
                 <translate x="10" y="2" z="0" />
                 <scale x="20" y="4" z="0" />
@@ -208,7 +194,6 @@
                 <primitiveref id="plane_prim" />
             </children>
         </component>
-
 
         <component id="quadrant">
             <transformation>
@@ -226,7 +211,7 @@
             </children>
         </component>
 
-         <component id="cylinder_top">
+        <component id="cylinder_top">
             <transformation>
                 <translate x="0" y="0" z="8" />
                 <scale x="1" y="1" z="0.01" />
@@ -270,14 +255,11 @@
             </children>
         </component>
 
-        
-    
-    <component id="peg_4_3">
+        <component id="peg_4_3">
             <transformation>
                 <translate x="6" y="3" z="-6" />
                 <rotate axis="x" angle="90" />
                 <scale x="0.5" y="0.5" z="0.5" />
-                
             </transformation>
             <materials>
                 <material id="quadrant_grey" />
@@ -286,14 +268,13 @@
             <children>
                 <componentref id="cylinder" />
             </children>
-    </component> 
+        </component>
 
-    <component id="peg_4_4">
+        <component id="peg_4_4">
             <transformation>
                 <translate x="14" y="3" z="-6" />
                 <rotate axis="x" angle="90" />
                 <scale x="0.5" y="0.5" z="0.5" />
-                
             </transformation>
             <materials>
                 <material id="quadrant_grey" />
@@ -302,15 +283,13 @@
             <children>
                 <componentref id="cylinder" />
             </children>
-    </component> 
+        </component>
 
-
-    <component id="peg_4_2">
+        <component id="peg_4_2">
             <transformation>
                 <translate x="6" y="3" z="-14" />
                 <rotate axis="x" angle="90" />
                 <scale x="0.5" y="0.5" z="0.5" />
-                
             </transformation>
             <materials>
                 <material id="quadrant_grey" />
@@ -319,15 +298,13 @@
             <children>
                 <componentref id="cylinder" />
             </children>
-    </component> 
+        </component>
 
-
-    <component id="peg_4_1">
+        <component id="peg_4_1">
             <transformation>
                 <translate x="14" y="3" z="-14" />
                 <rotate axis="x" angle="90" />
                 <scale x="0.5" y="0.5" z="0.5" />
-                
             </transformation>
             <materials>
                 <material id="quadrant_grey" />
@@ -336,16 +313,15 @@
             <children>
                 <componentref id="cylinder" />
             </children>
-    </component> 
-    
+        </component>
 
 
-    <component id="peg_3_3">
+
+        <component id="peg_3_3">
             <transformation>
                 <translate x="-6" y="5" z="-6" />
                 <rotate axis="x" angle="90" />
                 <scale x="0.5" y="0.5" z="0.5" />
-                
             </transformation>
             <materials>
                 <material id="quadrant_grey" />
@@ -354,14 +330,13 @@
             <children>
                 <componentref id="cylinder" />
             </children>
-    </component> 
+        </component>
 
-    <component id="peg_3_4">
+        <component id="peg_3_4">
             <transformation>
                 <translate x="-14" y="5" z="-6" />
                 <rotate axis="x" angle="90" />
                 <scale x="0.5" y="0.5" z="0.5" />
-                
             </transformation>
             <materials>
                 <material id="quadrant_grey" />
@@ -370,15 +345,14 @@
             <children>
                 <componentref id="cylinder" />
             </children>
-    </component> 
+        </component>
 
 
-    <component id="peg_3_2">
+        <component id="peg_3_2">
             <transformation>
                 <translate x="-6" y="5" z="-14" />
                 <rotate axis="x" angle="90" />
                 <scale x="0.5" y="0.5" z="0.5" />
-                
             </transformation>
             <materials>
                 <material id="quadrant_grey" />
@@ -387,15 +361,14 @@
             <children>
                 <componentref id="cylinder" />
             </children>
-    </component> 
+        </component>
 
 
-    <component id="peg_3_1">
+        <component id="peg_3_1">
             <transformation>
                 <translate x="-14" y="5" z="-14" />
                 <rotate axis="x" angle="90" />
                 <scale x="0.5" y="0.5" z="0.5" />
-                
             </transformation>
             <materials>
                 <material id="quadrant_grey" />
@@ -404,16 +377,13 @@
             <children>
                 <componentref id="cylinder" />
             </children>
-    </component> 
+        </component>
 
-
-
-    <component id="peg_2_3">
+        <component id="peg_2_3">
             <transformation>
                 <translate x="-6" y="3" z="6" />
                 <rotate axis="x" angle="90" />
                 <scale x="0.5" y="0.5" z="0.5" />
-                
             </transformation>
             <materials>
                 <material id="quadrant_grey" />
@@ -422,14 +392,13 @@
             <children>
                 <componentref id="cylinder" />
             </children>
-    </component> 
+        </component>
 
-    <component id="peg_2_4">
+        <component id="peg_2_4">
             <transformation>
                 <translate x="-14" y="3" z="6" />
                 <rotate axis="x" angle="90" />
                 <scale x="0.5" y="0.5" z="0.5" />
-                
             </transformation>
             <materials>
                 <material id="quadrant_grey" />
@@ -438,15 +407,14 @@
             <children>
                 <componentref id="cylinder" />
             </children>
-    </component> 
+        </component>
 
 
-    <component id="peg_2_2">
+        <component id="peg_2_2">
             <transformation>
                 <translate x="-6" y="3" z="14" />
                 <rotate axis="x" angle="90" />
                 <scale x="0.5" y="0.5" z="0.5" />
-                
             </transformation>
             <materials>
                 <material id="quadrant_grey" />
@@ -455,15 +423,14 @@
             <children>
                 <componentref id="cylinder" />
             </children>
-    </component> 
+        </component>
 
 
-    <component id="peg_2_1">
+        <component id="peg_2_1">
             <transformation>
                 <translate x="-14" y="3" z="14" />
                 <rotate axis="x" angle="90" />
                 <scale x="0.5" y="0.5" z="0.5" />
-                
             </transformation>
             <materials>
                 <material id="quadrant_grey" />
@@ -472,15 +439,13 @@
             <children>
                 <componentref id="cylinder" />
             </children>
-    </component> 
+        </component>
 
-
-    <component id="peg_1_3">
+        <component id="peg_1_3">
             <transformation>
                 <translate x="6" y="5" z="6" />
                 <rotate axis="x" angle="90" />
                 <scale x="0.5" y="0.5" z="0.5" />
-                
             </transformation>
             <materials>
                 <material id="quadrant_grey" />
@@ -489,14 +454,13 @@
             <children>
                 <componentref id="cylinder" />
             </children>
-    </component> 
+        </component>
 
-    <component id="peg_1_4">
+        <component id="peg_1_4">
             <transformation>
                 <translate x="14" y="5" z="6" />
                 <rotate axis="x" angle="90" />
                 <scale x="0.5" y="0.5" z="0.5" />
-                
             </transformation>
             <materials>
                 <material id="quadrant_grey" />
@@ -505,15 +469,13 @@
             <children>
                 <componentref id="cylinder" />
             </children>
-    </component> 
+        </component>
 
-
-    <component id="peg_1_2">
+        <component id="peg_1_2">
             <transformation>
                 <translate x="6" y="5" z="14" />
                 <rotate axis="x" angle="90" />
                 <scale x="0.5" y="0.5" z="0.5" />
-                
             </transformation>
             <materials>
                 <material id="quadrant_grey" />
@@ -522,15 +484,13 @@
             <children>
                 <componentref id="cylinder" />
             </children>
-    </component> 
+        </component>
 
-
-    <component id="peg_1_1">
+        <component id="peg_1_1">
             <transformation>
                 <translate x="14" y="5" z="14" />
                 <rotate axis="x" angle="90" />
                 <scale x="0.5" y="0.5" z="0.5" />
-                
             </transformation>
             <materials>
                 <material id="quadrant_grey" />
@@ -539,9 +499,9 @@
             <children>
                 <componentref id="cylinder" />
             </children>
-    </component> 
+        </component>
 
-    <component id="bottom">
+        <component id="bottom">
             <transformation>
                 <rotate axis="x" angle="-180" />
                 <scale x="40" y="1" z="40" />
@@ -553,9 +513,9 @@
             <children>
                 <primitiveref id="plane_prim" />
             </children>
-    </component> 
+        </component>
 
-    <component id="side_4_1">
+        <component id="side_4_1">
             <transformation>
                 <rotate axis="y" angle="-90" />
                 <translate x="0" y="0" z="20" />
@@ -568,9 +528,9 @@
                 <componentref id="flipped_strip" />
                 <componentref id="flipped_thin_strip" />
             </children>
-    </component> 
+        </component>
 
-    <component id="side_2_3">
+        <component id="side_2_3">
             <transformation>
                 <rotate axis="y" angle="90" />
                 <translate x="0" y="0" z="20" />
@@ -583,10 +543,9 @@
                 <componentref id="flipped_strip" />
                 <componentref id="flipped_thin_strip" />
             </children>
-    </component> 
+        </component>
 
-
-    <component id="side_1_2">
+        <component id="side_1_2">
             <transformation>
                 <translate x="0" y="0" z="20" />
             </transformation>
@@ -598,9 +557,9 @@
                 <componentref id="strip" />
                 <componentref id="thin_strip" />
             </children>
-    </component> 
+        </component>
 
-    <component id="side_3_4">
+        <component id="side_3_4">
             <transformation>
                 <rotate axis="y" angle="180" />
                 <translate x="0" y="0" z="20" />
@@ -613,9 +572,9 @@
                 <componentref id="strip" />
                 <componentref id="thin_strip" />
             </children>
-    </component> 
+        </component>
 
-    <component id="strip_4_to_1">
+        <component id="strip_4_to_1">
             <transformation>
                 <translate x="-20" y="0" z="0" />
             </transformation>
@@ -626,9 +585,9 @@
             <children>
                 <componentref id="strip" />
             </children>
-    </component> 
+        </component>
 
-    <component id="strip_3_to_4">
+        <component id="strip_3_to_4">
             <transformation>
                 <rotate axis="y" angle="90" />
             </transformation>
@@ -639,9 +598,9 @@
             <children>
                 <componentref id="strip" />
             </children>
-    </component> 
+        </component>
 
-    <component id="strip_2_to_3">
+        <component id="strip_2_to_3">
             <transformation>
                 <translate x="0" y="4" z="0" />
                 <scale x="1" y="-1" z="1" />
@@ -654,9 +613,9 @@
             <children>
                 <componentref id="strip" />
             </children>
-    </component> 
+        </component>
 
-    <component id="strip_1_to_2">
+        <component id="strip_1_to_2">
             <transformation>
                 <rotate axis="y" angle="-90" />
             </transformation>
@@ -667,9 +626,9 @@
             <children>
                 <componentref id="strip" />
             </children>
-    </component> 
+        </component>
 
-    <component id="first_quadrant">
+        <component id="first_quadrant">
             <transformation>
                 <rotate axis="x" angle="-90" />
                 <translate x="0" y="0" z="2" />
@@ -681,10 +640,9 @@
             <children>
                 <componentref id="quadrant" />
             </children>
-    </component> 
+        </component>
 
-
-    <component id="second_quadrant">
+        <component id="second_quadrant">
             <transformation>
                 <rotate axis="x" angle="-90" />
                 <translate x="20" y="0" z="4" />
@@ -696,9 +654,9 @@
             <children>
                 <componentref id="quadrant" />
             </children>
-    </component> 
-    
-    <component id="third_quadrant">
+        </component>
+
+        <component id="third_quadrant">
             <transformation>
                 <rotate axis="x" angle="-90" />
                 <translate x="0" y="20" z="4" />
@@ -710,10 +668,10 @@
             <children>
                 <componentref id="quadrant" />
             </children>
-    </component> 
+        </component>
 
 
-    <component id="fourth_quadrant">
+        <component id="fourth_quadrant">
             <transformation>
                 <rotate axis="x" angle="-90" />
                 <translate x="20" y="20" z="2" />
@@ -725,9 +683,9 @@
             <children>
                 <componentref id="quadrant" />
             </children>
-    </component> 
+        </component>
 
-    <component id="board">
+        <component id="board">
             <transformation>
                 <rotate axis="x" angle="0" />
             </transformation>
@@ -765,16 +723,11 @@
                 <componentref id="peg_4_2" />
                 <componentref id="peg_4_3" />
                 <componentref id="peg_4_4" />
-
-
-
             </children>
-    </component> 
+        </component>
 
-    
-    <!-- TABLE -->
-
-    <component id="leg_back">
+        <!-- TABLE -->
+        <component id="leg_back">
             <transformation>
                 <rotate axis="z" angle="-90" />
                 <scale x="70" y="1" z="7" />
@@ -786,9 +739,9 @@
             <children>
                 <primitiveref id="plane_prim" />
             </children>
-    </component> 
+        </component>
 
-    <component id="leg_front">
+        <component id="leg_front">
             <transformation>
                 <translate x="-3.5" y="0" z="0" />
                 <rotate axis="y" angle="-180" />
@@ -802,9 +755,9 @@
             <children>
                 <primitiveref id="plane_prim" />
             </children>
-    </component> 
+        </component>
 
-    <component id="leg_left">
+        <component id="leg_left">
             <transformation>
                 <translate x="-3.5" y="0" z="3.5" />
                 <rotate axis="y" angle="-90" />
@@ -818,9 +771,9 @@
             <children>
                 <primitiveref id="plane_prim" />
             </children>
-    </component> 
+        </component>
 
-    <component id="leg_right">
+        <component id="leg_right">
             <transformation>
                 <translate x="-3.5" y="0" z="-3.5" />
                 <rotate axis="y" angle="90" />
@@ -834,9 +787,9 @@
             <children>
                 <primitiveref id="plane_prim" />
             </children>
-    </component> 
+        </component>
 
-    <component id="leg">
+        <component id="leg">
             <transformation>
                 <translate x="0" y="0" z="0" />
             </transformation>
@@ -850,9 +803,9 @@
                 <componentref id="leg_left" />
                 <componentref id="leg_front" />
             </children>
-    </component> 
+        </component>
 
-    <component id="leg_4">
+        <component id="leg_4">
             <transformation>
                 <translate x="-27.25" y="-38.5" z="-65" />
             </transformation>
@@ -863,9 +816,9 @@
             <children>
                 <componentref id="leg" />
             </children>
-    </component> 
+        </component>
 
-    <component id="leg_3">
+        <component id="leg_3">
             <transformation>
                 <translate x="27.25" y="-38.5" z="-65" />
             </transformation>
@@ -876,9 +829,9 @@
             <children>
                 <componentref id="leg" />
             </children>
-    </component> 
+        </component>
 
-    <component id="leg_2">
+        <component id="leg_2">
             <transformation>
                 <translate x="-27.25" y="-38.5" z="65" />
             </transformation>
@@ -889,10 +842,10 @@
             <children>
                 <componentref id="leg" />
             </children>
-    </component> 
+        </component>
 
 
-    <component id="leg_1">
+        <component id="leg_1">
             <transformation>
                 <translate x="27.25" y="-38.5" z="65" />
             </transformation>
@@ -903,9 +856,9 @@
             <children>
                 <componentref id="leg" />
             </children>
-    </component> 
+        </component>
 
-    <component id="top">
+        <component id="top">
             <transformation>
                 <scale x="75" y="1" z="150" />
             </transformation>
@@ -916,9 +869,9 @@
             <children>
                 <primitiveref id="plane_prim" />
             </children>
-    </component> 
+        </component>
 
-     <component id="side_close">
+        <component id="side_close">
             <transformation>
                 <translate x="37.25" y="-3.5" z="0" />
                 <rotate axis="z" angle="-90" />
@@ -931,9 +884,9 @@
             <children>
                 <primitiveref id="plane_prim" />
             </children>
-    </component> 
+        </component>
 
-    <component id="side_far">
+        <component id="side_far">
             <transformation>
                 <scale x="-1" y="1" z="-1" />
                 <translate x="37.25" y="-3.5" z="0" />
@@ -947,9 +900,9 @@
             <children>
                 <primitiveref id="plane_prim" />
             </children>
-    </component> 
+        </component>
 
-    <component id="side_right">
+        <component id="side_right">
             <transformation>
                 <rotate axis="y" angle="90" />
                 <translate x="75" y="-3.5" z="0" />
@@ -963,9 +916,9 @@
             <children>
                 <primitiveref id="plane_prim" />
             </children>
-    </component> 
+        </component>
 
-    <component id="side_left">
+        <component id="side_left">
             <transformation>
                 <rotate axis="y" angle="-90" />
                 <translate x="75" y="-3.5" z="0" />
@@ -979,9 +932,26 @@
             <children>
                 <primitiveref id="plane_prim" />
             </children>
-    </component> 
+        </component>
 
-    <component id="table">
+        <component id="table_top">
+            <transformation>
+                <translate x="0" y="0" z="0" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="top" />
+                <componentref id="side_close" />
+                <componentref id="side_far" />
+                <componentref id="side_right" />
+                <componentref id="side_left" />
+            </children>
+        </component>
+        
+        <component id="table">
             <transformation>
                 <translate x="0" y="0" z="0" />
             </transformation>
@@ -990,7 +960,7 @@
             </materials>
             <texture id="wood"/>
             <children>
-                <componentref id="top" />
+                <componentref id="table_top" />
                 <componentref id="side_close" />
                 <componentref id="side_far" />
                 <componentref id="side_right" />
@@ -1000,11 +970,10 @@
                 <componentref id="leg_3" />
                 <componentref id="leg_4" />
             </children>
-    </component> 
-    
-    <!-- CHAIR -->
+        </component>
 
-    <component id="chair_bottom">
+        <!-- CHAIR -->
+        <component id="chair_bottom">
             <transformation>
                 <translate x="-50" y="-20" z="0" />
                 <scale x="0.5" y="0.5" z="0.25" />
@@ -1020,9 +989,9 @@
                 <componentref id="side_right" />
                 <componentref id="side_left" />
             </children>
-    </component> 
+        </component>
 
-    <component id="chair_back">
+        <component id="chair_back">
             <transformation>
                 <translate x="-65" y="-5" z="0" />
                 <rotate axis="z" angle="-90" />
@@ -1039,10 +1008,9 @@
                 <componentref id="side_right" />
                 <componentref id="side_left" />
             </children>
-    </component> 
+        </component>
 
-    
-    <component id="chair_leg_4">
+        <component id="chair_leg_4">
             <transformation>
                 <translate x="-35" y="-50" z="15" />
                 <scale x="0.5" y="0.75" z="0.5" />
@@ -1054,10 +1022,9 @@
             <children>
                 <componentref id="leg" />
             </children>
-    </component> 
+        </component>
 
-
-    <component id="chair_leg_3">
+        <component id="chair_leg_3">
             <transformation>
                 <translate x="-35" y="-50" z="-15" />
                 <scale x="0.5" y="0.75" z="0.5" />
@@ -1069,10 +1036,9 @@
             <children>
                 <componentref id="leg" />
             </children>
-    </component> 
+        </component>
 
-
-    <component id="chair_leg_2">
+        <component id="chair_leg_2">
             <transformation>
                 <translate x="-65" y="-50" z="15" />
                 <scale x="0.5" y="0.75" z="0.5" />
@@ -1084,10 +1050,9 @@
             <children>
                 <componentref id="leg" />
             </children>
-    </component> 
+        </component>
 
-
-    <component id="chair_leg_1">
+        <component id="chair_leg_1">
             <transformation>
                 <translate x="-65" y="-50" z="-15" />
                 <scale x="0.5" y="0.75" z="0.5" />
@@ -1099,9 +1064,9 @@
             <children>
                 <componentref id="leg" />
             </children>
-    </component> 
+        </component>
 
-    <component id="chair">
+        <component id="chair">
             <transformation>
                 <translate x="0" y="0" z="0" />
             </transformation>
@@ -1117,11 +1082,9 @@
                 <componentref id="chair_leg_3" />
                 <componentref id="chair_leg_4" />
             </children>
-    </component> 
+        </component>
 
-    <!-- VIEWBOX -->
-
-
+        <!-- VIEWBOX -->
         <component id="view_back">
             <transformation>
                 <translate x="-200" y="0" z="0" />
@@ -1136,9 +1099,9 @@
             <children>
                 <primitiveref id="plane_prim" />
             </children>
-    </component> 
+        </component>
 
-    <component id="view_left">
+        <component id="view_left">
             <transformation>
                 <rotate axis="y" angle="45" />
                 <translate x="-200" y="0" z="0" />
@@ -1153,9 +1116,9 @@
             <children>
                 <primitiveref id="plane_prim" />
             </children>
-    </component> 
+        </component>
 
-    <component id="view_right">
+        <component id="view_right">
             <transformation>
                 <rotate axis="y" angle="-45" />
                 <translate x="-200" y="0" z="0" />
@@ -1170,9 +1133,9 @@
             <children>
                 <primitiveref id="plane_prim" />
             </children>
-    </component> 
+        </component>
 
-    <component id="floor">
+        <component id="floor">
             <transformation>
                 <translate x="0" y="-100" z="0" />
                 <scale x="500" y="0" z="500" />
@@ -1184,9 +1147,9 @@
             <children>
                 <primitiveref id="plane_prim" />
             </children>
-    </component> 
+        </component>
 
-    <component id="viewbox">
+        <component id="viewbox">
             <transformation>
                 <translate x="0" y="25" z="0" />
             </transformation>
@@ -1200,40 +1163,9 @@
                 <componentref id="view_right" />
                 <componentref id="floor" />
             </children>
-    </component> 
+        </component>
 
-
-    <component id="piece">
-            <transformation>
-                <translate x="0" y="15" z="30" />
-                <rotate axis="x" angle="-90" />
-            </transformation>
-            <materials>
-                <material id="stone_wall" />
-            </materials>
-            <texture id="stone_side"/>
-            <children>
-                <primitiveref id="cylinder" />
-            </children>
-    </component> 
-
-    <component id="piece_sphere">
-            <transformation>
-                <translate x="0" y="15" z="40" />
-                <rotate axis="x" angle="-90" />
-            </transformation>
-            <materials>
-                <material id="stone_wall" />
-            </materials>
-            <texture id="stone_side"/>
-            <children>
-                <primitiveref id="sphere" />
-            </children>
-    </component> 
-
-
-
-    <!-- SCENE -->
+        <!-- SCENE -->
         <component id="scene">
             <transformation>
                 <translate x="0" y="0" z="0" />
@@ -1243,14 +1175,14 @@
             </materials>
             <texture id="none"/>
             <children>
-                <componentref id="board" />
+                <!-- <componentref id="board" /> -->
                 <componentref id="table" />
                 <componentref id="viewbox" />
                 <componentref id="chair" />
-                <componentref id="piece" />
-                <componentref id="piece_sphere" />
+                <!-- <componentref id="piece" /> -->
+                <!-- <componentref id="piece_sphere" /> -->
             </children>
         </component>
-    
+
     </components>
 </lxs>

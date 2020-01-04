@@ -11,7 +11,10 @@ function getUrlVars() {
     return vars;
 }	 
 //Include additional files here
-serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'MyInterface.js', 'MyRectangle.js', 'MyTriangle.js', 'MyCylinder.js', 'MySphere.js', 'MyTorus.js', 'MyComponent.js', 'Animation.js', 'KeyframeAnimation.js', 'Keyframe.js', 'Plane.js', 'Patch.js', 'MyCylinder2.js', 
+serialInclude(['../lib/CGF.js', 'XMLscene.js', 'MySceneGraph.js', 'MyInterface.js', 'MyRectangle.js', 'MyTriangle.js', 
+'MyCylinder.js', 'MySphere.js', 'MyTorus.js', 'MyComponent.js', 'Animation.js', 'KeyframeAnimation.js', 'Keyframe.js', 
+'Plane.js', 'Patch.js', 'MyCylinder2.js', 'MyCube.js', 'MyPiece.js', 'MyCylinderPiece.js', 'MySpherePiece.js',
+'MyTile.js', 'MyGameboard.js', 'MyAuxiliarBoard.js', 'MyGameOrchestrator.js',
 
 main=function()
 {
@@ -34,10 +37,10 @@ main=function()
     var filename=getUrlVars()['file'] || "LAIG_TP3_XML_T7_G04_v01.xml";
 
 	// create and load graph, and associate it to scene. 
-	// Check console for loading errors
+    // Check console for loading errors    
     var myGraph = new MySceneGraph(filename, myScene);
-	
-	// start
+
+    // start
     app.run();
 }
 
