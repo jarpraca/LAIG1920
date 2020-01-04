@@ -39,9 +39,9 @@ movePiece(p, Board, NewBoard, Level) :-
  * Returns resulting board as NewBoard
  * If Level is 1 or 2, sleeps for 1sec for readability purposes
  */
-movePiece(c, Board, NewBoard, 2) :-
+movePiece(c, Board, NewBoard, 3) :-
 	write('Thinking...'),
-	choose_move(Board, 2, Move),
+	choose_move(Board, 3, Move),
 	move(Move, Board, NewBoard),
 	nl.
 

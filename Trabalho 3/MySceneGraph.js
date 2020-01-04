@@ -30,17 +30,6 @@ class MySceneGraph {
 
         this.materialCount = 0;
 
-        // this.cube = new MyPiece(this.scene, 'WC1');
-        // this.cone = new MyPiece(this.scene, 'WC2');
-        // this.cylinder = new MyPiece(this.scene, 'BY');
-        // this.sphere = new MyPiece(this.scene, 'WS');
-        //this.gameboard = new MyGameboard(this.scene, 'gameboard');
-        // this.gameboard.addPieceToTileByID(this.cube, '1a');
-        // this.gameboard.addPieceToTileByID(this.cone, '2a');
-        // this.gameboard.addPieceToTileByID(this.cylinder, '3a');
-        // this.gameboard.addPieceToTileByID(this.sphere, '4a');
-        // this.gameboard.movePiece('WS', '3c');
-
         // The id of the root element.
         this.idRoot = null;
 
@@ -51,8 +40,6 @@ class MySceneGraph {
 
         // File reading 
         this.reader = new CGFXMLreader();
-
-        this.game = new MyGameOrchestrator(this.scene, this.filename);
 
         /*
          * Read the contents of the xml file, and refer to this class for loading and error handlers.
@@ -1630,10 +1617,6 @@ class MySceneGraph {
             return null;
         }
 
-        this.parseNode(this.idRoot, "none", "none", 0, 0);    
-
-        this.scene.pushMatrix();
-        this.game.display();
-        this.scene.popMatrix();
+        this.parseNode(this.idRoot, "none", "none", 0, 0);
     }
 }

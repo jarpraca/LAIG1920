@@ -1,7 +1,6 @@
 :-use_module(library(sockets)).
 :-use_module(library(lists)).
 :-use_module(library(codesio)).
-:- consult('quantik.pl').
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%                                        Server                                                   %%%%
@@ -103,12 +102,14 @@ print_header_line(_).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Require your Prolog Files here
+:- consult('quantik.pl').
 
 parse_input(handshake, handshake).
 parse_input(test(C,N), Res) :- test(C,Res,N).
 parse_input(quit, goodbye).
 parse_input([L1,L2],L) :- append(L1, L2, L).
-parse_input(getQuad(Row,Col),Quad) :- getQuad(Row, Col, Quad).
+parse_input([1,Row,Col],Quad) :- getQuad(Row, Col, Quad).
+parse_input(switch(board(CurrentPlayer, PiecesBoard, PiecesPlayer1, PiecesPlayer2)), NB) :- switchPlayer(board(CurrentPlayer, PiecesBoard, PiecesPlayer1, PiecesPlayer2), NB).
 
 test(_,[],N) :- N =< 0.
 test(A,[A|Bs],N) :- N1 is N-1, test(A,Bs,N1).

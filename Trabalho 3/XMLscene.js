@@ -22,18 +22,24 @@ class XMLscene extends CGFscene {
         super.init(application);
 
         this.sceneInited = false;
-        this.gameMode = "Player vs Player";
-        this.modeIDs = ["Player vs Player", "Player vs Bot", "Bot vs Bot"];
-        this.gameDifficulty = "Easy";
-        this.difficultyIDs = ["Easy", "Hard"];
-        this.selectedTheme = 'Room';
-        this.themeIDs = ['Bar', 'Room'];
 
         this.cameras = [];
         this.camerasIDs = {};
         this.lightToggles = [];
-
         this.initCameras();
+
+        this.gameMode = "Player vs Player";
+        this.modeIDs = ["Player vs Player", "Player vs Bot", "Bot vs Bot"];
+        this.difficultyBot = "Easy";
+        this.difficultyBot1 = "Easy";
+        this.difficultyBot2 = "Easy";
+        this.gameDifficulty = "Easy";
+        this.difficultyIDs = ["Easy", "Medium", "Hard"];
+        this.selectedTheme = 'Room';
+        this.themeIDs = ['Bar', 'Room'];
+        this.game = null;
+        this.filename = getUrlVars()['file'] || "LAIG_TP3_XML_T7_G04_v01.xml";
+
 
         this.enableTextures(true);
 
@@ -53,23 +59,43 @@ class XMLscene extends CGFscene {
 
     }
 
-    //functions portotypes for interface
-
+    difficultyOptions() {
+        this.interface.diffOptions(this.gameMode);
+    }
 
     startGame() {
-
         console.log("GAME STARTED");
+
+        switch (this.gameMode) {
+            case "Player vs Player": {
+                this.gameOrchestrator.startGame(this, this.filename, 'p1', 'p2', 0, 0);
+                break;
+            }
+            case "Player vs Bot": {
+                let level = this.difficultyIDs.indexOf(this.difficultyBot) + 1;
+                this.gameOrchestrator.startGame(this, this.filename, 'p', 'c', 0, level);
+                break;
+            }
+            case "Bot vs Bot": {
+                let levelC1 = this.difficultyIDs.indexOf(this.difficultyBot1) + 1;
+                let levelC2 = this.difficultyIDs.indexOf(this.difficultyBot2) + 1;
+                this.gameOrchestrator.startGame(this, this.filename, 'c1', 'c2', levelC1, levelC2);
+                break;
+            }
+        }
 
     }
 
     undo() {
 
         console.log("MOVE UNDONE");
+        //this.interface.gui.add(this, 'startGame').name('New');
 
     }
 
     quitGame() {
 
+        this.game = null;
         console.log("GAME QUITTED");
 
     }
@@ -190,6 +216,7 @@ class XMLscene extends CGFscene {
     update(t) {
         this.graph.checkKeys();
         this.graph.updateAnimations(t / 1000);
+        this.gameOrchestrator.update(t);
     }
 
     logPicking() {
@@ -214,8 +241,6 @@ class XMLscene extends CGFscene {
         }
     }
 
-
-
     /**
      * Renders and displays the main camera
      */
@@ -225,7 +250,6 @@ class XMLscene extends CGFscene {
             this.render(this.camera);
         }
     }
-
 
     /**
      * Renders the scene in 'camera' perspective.
@@ -279,7 +303,7 @@ class XMLscene extends CGFscene {
             this.setDefaultAppearance();
 
             // Displays the scene (MySceneGraph function).
-            this.graph.displayScene();
+            this.gameOrchestrator.display();
         }
 
         this.popMatrix();

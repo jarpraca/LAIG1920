@@ -41,6 +41,8 @@ class MyPiece extends CGFobject {
                 this.shape = 'cube';
                 break;
         }
+
+        this.type = this.id.substr(0,1);
     }
 
     initMaterial() {
@@ -66,10 +68,10 @@ class MyPiece extends CGFobject {
     initPiece() {
         switch (this.shape) {
             case 'cylinder':
-                this.piece = new MyCylinderPiece(this.scene, this.id, 30, 30, 3, 3, 6);
+                this.piece = new MyCylinderPiece(this.scene, this.id, 30, 30, 3, 3, 5.5);
                 break;
             case 'cube':
-                this.piece = new MyCube(this.scene, this.id, 6);
+                this.piece = new MyCube(this.scene, this.id, 5.5);
                 break;
             case 'cone':
                 this.piece = new MyCylinderPiece(this.scene, this.id, 30, 30, 3, 0, 6);
@@ -81,12 +83,35 @@ class MyPiece extends CGFobject {
     }
 
     getType() {
-        return this.color + ' ' + this.shape;
+        return this.type;
     }
 
-    setType(shape, color) {
-        this.shape = shape;
-        this.color = color;
+    setType(type) {
+        this.type = type;
+
+        switch (type.codeAt(0)) {
+            case 'W':
+                this.color = 'white';
+                break;
+            case 'B':
+                this.color = 'black';
+                break;
+        }
+
+        switch (type.codeAt(1)) {
+            case 'O':
+                this.shape = 'cone';
+                break;
+            case 'Y':
+                this.shape = 'cylinder';
+                break;
+            case 'S':
+                this.shape = 'sphere';
+                break;
+            case 'C':
+                this.shape = 'cube';
+                break;
+        }
     }
 
     getTile() {
