@@ -225,7 +225,7 @@ class MyGameboard extends CGFobject {
     }
 
     getAllPlayerPieceTypes(player) {
-        switch(player){
+        switch (player) {
             case 1:
                 return this.auxBoard1.getAllPieceTypes();
             case 2:
@@ -237,7 +237,7 @@ class MyGameboard extends CGFobject {
 
     getAllBoardPieceTypes() {
         let pieces = [];
-        for(var key in this.tiles){
+        for (var key in this.tiles) {
             pieces.push(this.tiles[key].getPrologCell());
         }
 
@@ -247,14 +247,30 @@ class MyGameboard extends CGFobject {
     playerHasPiece1(pieceType) {
         let aux1 = this.auxBoard1.getTileWithPieceByID(pieceType + '1');
 
-        if(aux1 != null)
+        if (aux1 != null)
             return true;
 
         let aux2 = this.auxBoard2.getTileWithPieceByID(pieceType + '1');
 
-        if(aux2 != null)
+        if (aux2 != null)
             return true;
 
+        return false;
+    }
+
+    belongsToPlayer(pieceID, player) {
+        switch (player) {
+            case 1: {
+                let aux = this.auxBoard1.getTileWithPieceByID(pieceID);
+
+                return (aux != null);
+            }
+            case 2: {
+                let aux = this.auxBoard2.getTileWithPieceByID(pieceID);
+
+                return (aux != null);
+            }
+        }
         return false;
     }
 

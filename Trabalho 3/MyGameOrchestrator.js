@@ -239,7 +239,13 @@ class MyGameOrchestrator {
     }
 
     onObjectSelected(obj, uniqueId) {
-        if (obj instanceof MyPiece && this.state == 'selectPiece') {
+        let currPlayer;
+        if (this.currentPlayer == this.player1)
+            currPlayer = 1;
+        else if (this.currentPlayer == this.player2)
+            currPlayer = 2;
+
+        if (obj instanceof MyPiece && this.state == 'selectPiece' && this.gameboard.belongsToPlayer(obj.id, currPlayer)) {
             obj.enableSelected();
             this.currentMove.piece = obj.id;
             this.state = 'selectTile';
