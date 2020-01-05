@@ -40,7 +40,6 @@ class XMLscene extends CGFscene {
         this.game = null;
         this.filename = getUrlVars()['file'] || "LAIG_TP3_XML_T7_G04_v01.xml";
 
-
         this.enableTextures(true);
 
         this.gl.clearDepth(100.0);
@@ -51,53 +50,11 @@ class XMLscene extends CGFscene {
         this.axis = new CGFaxis(this);
         this.setUpdatePeriod(50);
 
+        // this.objects = [
+        //     new CGFplane(this)
+        // ];
 
-        this.objects = [
-            new CGFplane(this)
-        ];
         this.setPickEnabled(true);
-
-    }
-
-    difficultyOptions() {
-        this.interface.diffOptions(this.gameMode);
-    }
-
-    startGame() {
-        console.log("GAME STARTED");
-
-        switch (this.gameMode) {
-            case "Player vs Player": {
-                this.gameOrchestrator.startGame(this, this.filename, 'p1', 'p2', 0, 0);
-                break;
-            }
-            case "Player vs Bot": {
-                let level = this.difficultyIDs.indexOf(this.difficultyBot) + 1;
-                this.gameOrchestrator.startGame(this, this.filename, 'p', 'c', 0, level);
-                break;
-            }
-            case "Bot vs Bot": {
-                let levelC1 = this.difficultyIDs.indexOf(this.difficultyBot1) + 1;
-                let levelC2 = this.difficultyIDs.indexOf(this.difficultyBot2) + 1;
-                this.gameOrchestrator.startGame(this, this.filename, 'c1', 'c2', levelC1, levelC2);
-                break;
-            }
-        }
-
-    }
-
-    undo() {
-
-        console.log("MOVE UNDONE");
-        //this.interface.gui.add(this, 'startGame').name('New');
-
-    }
-
-    quitGame() {
-
-        this.game = null;
-        console.log("GAME QUITTED");
-
     }
 
     /**
@@ -185,8 +142,9 @@ class XMLscene extends CGFscene {
 
         this.sceneInited = true;
         this.initCameras();
-        this.interface.addCamerasInterface();
         this.interface.addLightsInterface();
+        this.interface.addCamerasInterface();
+        this.interface.addGameButtons();
     }
 
     /**
@@ -219,26 +177,44 @@ class XMLscene extends CGFscene {
         this.gameOrchestrator.update(t);
     }
 
-    logPicking() {
-        if (this.pickMode == false) {
-            if (this.pickResults != null && this.pickResults.length > 0) {
-                for (var i = 0; i < this.pickResults.length; i++) {
-                    var obj = this.pickResults[i][0];
-                    if (obj) {
-                        var customId = this.pickResults[i][1];
+    difficultyOptions() {
+        this.interface.diffOptions(this.gameMode);
+    }
 
-                        if (obj.id == "cylinder")
-                            this.graph.movePieceTo('piece', 2, 2);
+    startGame() {
+        console.log("GAME STARTED");
 
-                        if (obj.id == "sphere")
-                            this.graph.movePieceTo('piece_sphere', 2, 2);
-
-                        console.log("Picked object: " + obj.id + ", with pick id " + customId);
-                    }
-                }
-                this.pickResults.splice(0, this.pickResults.length);
+        switch (this.gameMode) {
+            case "Player vs Player": {
+                this.gameOrchestrator.startGame('p1', 'p2', 0, 0);
+                break;
+            }
+            case "Player vs Bot": {
+                let level = this.difficultyIDs.indexOf(this.difficultyBot) + 1;
+                this.gameOrchestrator.startGame('p', 'c', 0, level);
+                break;
+            }
+            case "Bot vs Bot": {
+                let levelC1 = this.difficultyIDs.indexOf(this.difficultyBot1) + 1;
+                let levelC2 = this.difficultyIDs.indexOf(this.difficultyBot2) + 1;
+                this.gameOrchestrator.startGame('c1', 'c2', levelC1, levelC2);
+                break;
             }
         }
+
+    }
+
+    undo() {
+
+        console.log("MOVE UNDONE");
+        //this.interface.gui.add(this, 'startGame').name('New');
+
+    }
+
+    quitGame() {
+
+        console.log("GAME QUITTED");
+
     }
 
     /**
@@ -246,6 +222,10 @@ class XMLscene extends CGFscene {
      */
     display() {
         if (this.sceneInited) {
+            // Picking objects
+            this.gameOrchestrator.managePick(this.pickMode, this.pickResults);
+            this.clearPickRegistration();
+
             // Displays scene
             this.render(this.camera);
         }
@@ -256,8 +236,8 @@ class XMLscene extends CGFscene {
      */
     render(camera) {
 
-        this.logPicking();
-        this.clearPickRegistration();
+        // this.logPicking();
+        // this.clearPickRegistration();
         // ---- BEGIN Background, camera and axis setup
         this.camera = camera;
 
@@ -279,24 +259,6 @@ class XMLscene extends CGFscene {
             this.lights[i].setVisible(true);
             this.lights[i].enable();
         }
-
-        // draw objects
-        //for (var i = 0; i < this.objects.length; i++) {
-        //this.pushMatrix();
-        //  this.registerForPick(i + 1,  this.graph.primitives[this.graph.components['piece'].primitives[i]]);
-        //this.registerForPick(i + 1,  this.graph.primitives[this.graph.components['piece_sphere'].primitives[i]]);
-
-        /*for(var i=0; i < this.graph.components['piece'].primitives.length; i++){
-            //console.log("animation: " + this.graph.components['piece'].animation);
-            this.graph.primitives[this.graph.components['piece'].primitives[i]].display();
-        }*/
-
-        //this.popMatrix();
-        //}
-
-
-        //this.registerForPick(1, this.graph.primitives[this.graph.components['piece'].primitives[0]]);
-        //this.registerForPick(1, this.graph.primitives[this.graph.components['piece_sphere'].primitives[0]]);
 
         if (this.sceneInited) {
             // Draw axis

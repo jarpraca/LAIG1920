@@ -13,8 +13,12 @@ class MyTile extends CGFobject {
         this.id = id;
         this.row = row;
         this.col = col;
-        this.calcQuad();
-        this.calcPosition();
+        if (this.id.length == 2) {
+            this.calcQuad();
+            this.calcPosition();
+        }
+        this.selectable = true;
+        this.createUniqueID();
         this.gameboard = gameboard;
         this.piece = null;
         this.tile = new MyCylinderPiece(this.scene, this.id, 30, 30, 2, 2, 1);
@@ -37,6 +41,21 @@ class MyTile extends CGFobject {
         this.material.setTexture(this.texture);
     }
 
+    disableSelectable() {
+        this.selectable = false;
+    }
+
+    createUniqueID() {
+        this.uniqueId = 0;
+        for (let i = 0; i < this.id.length; i++) {
+            this.uniqueId += this.id.charCodeAt(i);
+        }
+        this.uniqueId *= this.col.charCodeAt(0);
+        this.uniqueId *= this.row.charCodeAt(0);
+        if (this.id.length == 2)
+            this.uniqueId *= this.quad;
+    }
+
     getPiece() {
         return this.piece;
     }
@@ -47,6 +66,16 @@ class MyTile extends CGFobject {
 
     removePiece() {
         this.piece = null;
+    }
+
+    getPrologCell() {
+        let piece;
+        if(this.piece == null)
+            piece = 'e';
+        else
+            piece = this.piece.getType().toLowerCase();
+
+        return 'cell(' + this.row + ',' + this.col + ',' + piece + ')';
     }
 
     calcQuad() {
@@ -111,18 +140,24 @@ class MyTile extends CGFobject {
         }
     }
 
-    translate(scene){
-        scene.translate(this.x, this.y, this.z);
+    translate() {
+        this.scene.translate(this.x, this.y, this.z);
     }
 
     display() {
+        if (this.selectable)
+            this.scene.registerForPick(this.uniqueId, this);
+
         this.scene.pushMatrix();
-        //this.scene.translate(this.x, this.y, this.z);
         this.material.apply();
         this.tile.display();
-        if(this.piece != null)
-            this.piece.display();
         this.scene.popMatrix();
+
+        if (this.selectable)
+            this.scene.clearPickRegistration();
+
+        if (this.piece != null)
+            this.piece.display();
     }
 }
 

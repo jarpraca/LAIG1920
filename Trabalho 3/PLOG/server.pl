@@ -109,7 +109,20 @@ parse_input(test(C,N), Res) :- test(C,Res,N).
 parse_input(quit, goodbye).
 parse_input([L1,L2],L) :- append(L1, L2, L).
 parse_input([1,Row,Col],Quad) :- getQuad(Row, Col, Quad).
-parse_input(switch(board(CurrentPlayer, PiecesBoard, PiecesPlayer1, PiecesPlayer2)), NB) :- switchPlayer(board(CurrentPlayer, PiecesBoard, PiecesPlayer1, PiecesPlayer2), NB).
+parse_input(game_over(Board), Player) :- 
+	(game_over(Board, Winner) ->
+		Player = Winner;
+		Player = 0
+	).
+
+parse_input(verifyMove(Board, Row, Col, Piece), Res) :-
+	(verifyMoveError(Board, Row, Col, Piece) ->
+		Res = true;
+		Res = false
+	).
+
+parse_input(chooseMove(Board, Level), Move) :-
+	choose_move(Board, Level, Move).
 
 test(_,[],N) :- N =< 0.
 test(A,[A|Bs],N) :- N1 is N-1, test(A,Bs,N1).

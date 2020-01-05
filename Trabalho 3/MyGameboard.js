@@ -14,6 +14,7 @@ class MyGameboard extends CGFobject {
         this.auxBoard2 = new MyAuxiliarBoard(this.scene, 'aux2', 'a');
 
         this.initTiles();
+        this.initPieces();
         this.initMaterial();
         this.addTexture();
     }
@@ -24,6 +25,11 @@ class MyGameboard extends CGFobject {
                 this.tiles.push(new MyTile(this.scene, String.fromCharCode(row) + String.fromCharCode(col), String.fromCharCode(row), String.fromCharCode(col), this));
             }
         }
+    }
+
+    initPieces() {
+        this.auxBoard1.initPieces();
+        this.auxBoard2.initPieces();
     }
 
     initMaterial() {
@@ -44,7 +50,7 @@ class MyGameboard extends CGFobject {
         for (let key in this.tiles) {
             if (this.tiles[key] == tile && this.tiles[key].getPiece() == null) {
                 this.tiles[key].setPiece(piece);
-                //piece.setTile(this.tiles[key]);
+                this.tiles[key].disableSelectable();
                 return true;
             }
         }
@@ -64,7 +70,7 @@ class MyGameboard extends CGFobject {
         for (let key in this.tiles) {
             if (this.tiles[key].id == tile && this.tiles[key].getPiece() == null) {
                 this.tiles[key].setPiece(piece);
-                //piece.setTile(this.tiles[key]);
+                this.tiles[key].disableSelectable();
                 return true;
             }
         }
@@ -198,12 +204,33 @@ class MyGameboard extends CGFobject {
         return null;
     }
 
+    getAllPlayerPieceTypes(player) {
+        switch(player){
+            case 1:
+                return this.auxBoard1.getAllPieceTypes();
+            case 2:
+                return this.auxBoard2.getAllPieceTypes();
+        }
+
+        return [];
+    }
+
+    getAllBoardPieceTypes() {
+        let pieces = [];
+        for(var key in this.tiles){
+            pieces.push(this.tiles[key].getPrologCell());
+        }
+
+        return pieces;
+    }
+
     movePiece(pieceID, finalTileID) {
         // animation
 
         let initialTileID = this.getTileWithPieceByID(pieceID).id;
         let piece = this.getPieceOnTileByID(initialTileID);
         this.removePieceFromTileByID(initialTileID);
+        piece.disableSelectable();
         this.addPieceToTileByID(piece, finalTileID);
     }
 
@@ -239,7 +266,7 @@ class MyGameboard extends CGFobject {
         //Tiles
         for (let key in this.tiles) {
             this.scene.pushMatrix();
-            this.tiles[key].translate(this.scene);
+            this.tiles[key].translate();
             this.tiles[key].display();
             this.scene.popMatrix();
         }

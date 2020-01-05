@@ -14,14 +14,14 @@ class MyAuxiliarBoard extends CGFobject {
         this.quad = new MyCube(this.scene, 'quad', 20);
 
         this.initTiles();
-        this.initPieces();
+        //this.initPieces();
         this.initMaterial();
         this.addTexture();
     }
 
     initTiles() {
         for (let col = this.tileID.charCodeAt(0); col <= this.tileID.charCodeAt(0) + 7; col++) {
-            this.tiles.push(new MyTile(this.scene, String.fromCharCode(col), 0, String.fromCharCode(col), this));
+            this.tiles.push(new MyTile(this.scene, String.fromCharCode(col), '0', String.fromCharCode(col), this));
         }
     }
 
@@ -70,6 +70,7 @@ class MyAuxiliarBoard extends CGFobject {
             if (this.tiles[key] == tile && this.tiles[key].getPiece() == null) {
                 this.tiles[key].setPiece(piece);
                 piece.setTile(this.tiles[key]);
+                this.tiles[key].disableSelectable();
                 return true;
             }
         }
@@ -80,7 +81,7 @@ class MyAuxiliarBoard extends CGFobject {
         for (let key in this.tiles) {
             if (this.tiles[key].id == tile && this.tiles[key].getPiece() == null) {
                 this.tiles[key].setPiece(piece);
-                //piece.setTile(this.tiles[key]);
+                this.tiles[key].disableSelectable();
                 return true;
             }
         }
@@ -145,6 +146,17 @@ class MyAuxiliarBoard extends CGFobject {
         }
 
         return null;
+    }
+
+    getAllPieceTypes() {
+        let pieces = [];
+        for(let key in this.tiles){
+            let piece = this.tiles[key].getPiece();
+            if(piece != null)
+                pieces.push(piece.getType().toLowerCase());
+        }
+
+        return pieces;
     }
 
     movePiece(pieceID, finalTileID) {

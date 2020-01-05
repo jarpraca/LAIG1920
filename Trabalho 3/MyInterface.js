@@ -24,6 +24,14 @@ class MyInterface extends CGFinterface {
 
         this.initKeys();
 
+        
+        // this.gui.add(this.scene, "undo").name("Undo");
+        // this.gui.add(this.scene, "quitGame").name("Quit Game");
+
+        return true;
+    }
+
+    addGameButtons() {
         this.settings = this.gui.addFolder("Settings");
         this.settings.open();
         this.settings.add(this.scene, 'selectedTheme', this.scene.themeIDs).name('Theme');
@@ -32,11 +40,19 @@ class MyInterface extends CGFinterface {
         this.diffBot1 = null;
         this.diffBot2 = null;
 
-        this.gui.add(this.scene, "startGame").name("Start Game");
-        this.gui.add(this.scene, "undo").name("Undo");
-        this.gui.add(this.scene, "quitGame").name("Quit Game");
+        this.startButton = this.gui.add(this.scene, "startGame").name("Start Game").onChange(this.startGameButtons.bind(this));
+    }
 
-        return true;
+    startGameButtons() {
+        this.startButton.remove();
+        this.undoButton = this.gui.add(this.scene, "undo").name("Undo");
+        this.quitButton = this.gui.add(this.scene, "quitGame").name("Quit Game").onChange(this.endGameButtons.bind(this));
+    }
+
+    endGameButtons() {
+        this.startButton = this.gui.add(this.scene, "startGame").name("Start Game");
+        this.undoButton.remove();
+        this.quitButton.remove();
     }
 
     diffOptions(mode) {

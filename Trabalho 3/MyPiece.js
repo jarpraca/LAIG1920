@@ -10,7 +10,9 @@ class MyPiece extends CGFobject {
     constructor(scene, id) {
         super(scene);
         this.id = id;
+        this.selectable = true;
         this.parseID();
+        this.createUniqueID();
         this.setTile(null);
         this.initMaterial();
         this.addTexture();
@@ -42,7 +44,8 @@ class MyPiece extends CGFobject {
                 break;
         }
 
-        this.type = this.id.substr(0,1);
+        this.type = this.id.substring(0,2);
+        console.log(this.id + ' ' + this.type);
     }
 
     initMaterial() {
@@ -79,6 +82,20 @@ class MyPiece extends CGFobject {
             case 'sphere':
                 this.piece = new MySpherePiece(this.scene, this.id, 30, 30, 3);
                 break;
+        }
+    }
+
+    disableSelectable() {
+        this.selectable = false;
+    }
+
+    createUniqueID() {
+        this.uniqueId = 0;
+        for(let i = 0; i < this.id.length; i++){
+            this.uniqueId += this.id.charCodeAt(i);
+        }
+        for(let i = 0; i < this.color.length; i++){
+            this.uniqueId += this.color.charCodeAt(i);
         }
     }
 
@@ -123,10 +140,16 @@ class MyPiece extends CGFobject {
     }
 
     display() {
+        if(this.selectable)
+            this.scene.registerForPick(this.uniqueId, this);
+
         this.scene.pushMatrix();
         this.material.apply();
         this.piece.display();
         this.scene.popMatrix();
+
+        if(this.selectable)
+            this.scene.clearPickRegistration();
     }
 }
 
