@@ -26,15 +26,14 @@ class MyTile extends CGFobject {
 
         this.setPiece(null);
         this.initMaterial();
-        this.addTexture();
     }
 
     initMaterial() {
-        this.defaultAmbient = 0.05;
+        this.defaultAmbient = 0.0;
         this.material = new CGFappearance(this.scene);
         this.material.setEmission(0, 0, 0, 1);
         this.material.setAmbient(this.defaultAmbient, this.defaultAmbient, this.defaultAmbient, 1);
-        this.material.setDiffuse(0.8, 0.8, 0.8, 1);
+        this.material.setDiffuse(0.2, 0.2, 0.2, 1);
         this.material.setSpecular(0.4, 0.4, 0.4, 1);
     }
 
