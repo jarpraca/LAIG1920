@@ -11,6 +11,7 @@ class MyPiece extends CGFobject {
         super(scene);
         this.id = id;
         this.selectable = true;
+        this.selected = false;
         this.parseID();
         this.createUniqueID();
         this.setTile(null);
@@ -45,13 +46,13 @@ class MyPiece extends CGFobject {
         }
 
         this.type = this.id.substring(0,2);
-        console.log(this.id + ' ' + this.type);
     }
 
     initMaterial() {
+        this.defaultAmbient = 0.3;
         this.material = new CGFappearance(this.scene);
         this.material.setEmission(0, 0, 0, 1);
-        this.material.setAmbient(0.3, 0.3, 0.3, 1);
+        this.material.setAmbient(this.defaultAmbient, this.defaultAmbient, this.defaultAmbient, 1);
         this.material.setDiffuse(0.3, 0.3, 0.3, 1);
         this.material.setSpecular(0.8, 0.8, 0.8, 1);
     }
@@ -87,6 +88,16 @@ class MyPiece extends CGFobject {
 
     disableSelectable() {
         this.selectable = false;
+    }
+
+    enableSelected() {
+        this.selected = true;
+        this.material.setAmbient(0, 1, 0, 1);
+    }
+
+    disableSelected() {
+        this.selected = false;
+        this.material.setAmbient(this.defaultAmbient, this.defaultAmbient, this.defaultAmbient, 1);
     }
 
     createUniqueID() {

@@ -108,6 +108,16 @@ class MyAuxiliarBoard extends CGFobject {
         return false;
     }
 
+    getPieceByID(piece) {
+        for (let key in this.tiles) {
+            if (this.tiles[key].getPiece() != null && this.tiles[key].getPiece().id == piece) {
+                return this.tiles[key].getPiece();
+            }
+        }
+
+        return null;
+    }
+
     getPieceOnTileByID(tile) {
         for (let key in this.tiles) {
             if (this.tiles[key].id == tile) {

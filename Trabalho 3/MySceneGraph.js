@@ -1483,13 +1483,11 @@ class MySceneGraph {
 
         console.log("INICIA ANIMATION");
 
-
         //var default_mat = this.components["piece"].materials[0];
         this.components[piece].materials[0] = "selected_piece";
         var transfMatrix = mat4.create();
         transfMatrix = this.components[piece].transformations;
         //console.log(this.components['piece'].transformations);
-
 
         var keyframes = [];
 

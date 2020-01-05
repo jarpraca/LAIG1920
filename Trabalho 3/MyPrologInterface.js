@@ -1,15 +1,18 @@
 /**
  * MyPrologInterface
  * @constructor
- * @param scene - Reference to MyScene object
- * @param filename - name of XML scene
- * @param piece - piece moved
- * @param originTile - origin tile
- * @param destinationTile - destination tile
- * @param initialGameboard - gameboard before move
 */
 class MyPrologInterface {
     constructor() {
+        this.setReplyNull();
+    }
+
+    getReply() {
+        return this.reply;
+    }
+
+    setReplyNull() {
+        this.reply = null;
     }
 
     convertGameboardToProlog(currentPlayer, gameboard) {
@@ -40,9 +43,6 @@ class MyPrologInterface {
         let request = new XMLHttpRequest();
         var requestPort = port || 8081;
 
-        // request.addEventListener("load", this.parseStartPrologReply);
-        // request.addEventListener("error", this.startPrologGameError);
-        //request.onload = onSuccess || this.parseStartPrologReply(data);
         request.onload = onSuccess || function (data) { console.log("Request successful. Reply: " + data.target.response); };
         request.onerror = onError || function () { console.log("Error waiting for response"); };
 
@@ -60,7 +60,6 @@ class MyPrologInterface {
     }
 
     handleReply(data) {
-        console.log('data');
         console.log(data);
         return data.target.response;
     }
@@ -74,8 +73,9 @@ class MyPrologInterface {
         this.sendRequest('game_over(' + board + ')', this.gameOverReply);
     }
 
-    gameOverReply(data) {
-        console.log(data.target.response);
+    gameOverReply = (data) => {
+        console.log('Reply: ' + data.target.response);
+        this.reply = data.target.response;
     }
 
     verifyMoveRequest(currentPlayer, gameboard, row, col, piece) {
@@ -84,8 +84,18 @@ class MyPrologInterface {
         this.sendRequest('verifyMove(' + board + ',' + row + ',' + col + ',' + piecetype + ')', this.verifyMoveReply);
     }
 
-    verifyMoveReply(data) {
-        console.log(data.target.response);
+    verifyMoveReply = (data) => {
+        console.log('Reply: ' + data.target.response);
+        switch(data.target.response){
+            case 'true':{
+                this.reply = true;
+                break;
+            }
+            case 'false':{
+                this.reply = false;
+                break;
+            }
+        }
     }
 
     chooseMoveRequest(currentPlayer, gameboard, level) {
@@ -93,8 +103,22 @@ class MyPrologInterface {
         this.sendRequest('chooseMove(' + board + ',' + level + ')', this.chooseMoveReply);
     }
 
-    chooseMoveReply(data) {
-        console.log(data.target.response);
+    chooseMoveReply = (data) => {
+        console.log('Reply: ' + data.target.response);
+        this.reply = {
+            piece: data.target.response.substring(5, 7).toUpperCase(),
+            row: data.target.response.substring(1, 2),
+            col: data.target.response.substring(3, 4)
+        }
+    }
+
+    quitRequest() {
+        this.sendRequest('quit', this.quitReply);
+    }
+
+    quitReply(data) {
+        console.log('Reply: ' + data.target.response);
+        this.reply = data.target.response;
     }
 
     update(t) {

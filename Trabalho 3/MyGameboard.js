@@ -124,6 +124,26 @@ class MyGameboard extends CGFobject {
         return false;
     }
 
+    getPieceByID(piece) {
+        for (let key in this.tiles) {
+            if (this.tiles[key].getPiece() != null && this.tiles[key].getPiece().id == piece) {
+                return this.tiles[key].getPiece();
+            }
+        }
+
+        // Auxiliar Board 1
+        let aux1 = this.auxBoard1.getPieceByID(piece);
+        if (aux1 != null)
+            return aux1;
+
+        // Auxiliar Board 2
+        let aux2 = this.auxBoard2.getPieceByID(piece);
+        if (aux2 != null)
+            return aux2;
+
+        return null;
+    }
+
     getPieceOnTileByID(tile) {
         for (let key in this.tiles) {
             if (this.tiles[key].id == tile) {
@@ -224,13 +244,28 @@ class MyGameboard extends CGFobject {
         return pieces;
     }
 
+    playerHasPiece1(pieceType) {
+        let aux1 = this.auxBoard1.getTileWithPieceByID(pieceType + '1');
+
+        if(aux1 != null)
+            return true;
+
+        let aux2 = this.auxBoard2.getTileWithPieceByID(pieceType + '1');
+
+        if(aux2 != null)
+            return true;
+
+        return false;
+    }
+
     movePiece(pieceID, finalTileID) {
         // animation
-
         let initialTileID = this.getTileWithPieceByID(pieceID).id;
         let piece = this.getPieceOnTileByID(initialTileID);
         this.removePieceFromTileByID(initialTileID);
+        this.getTileByID(initialTileID).disableSelected();
         piece.disableSelectable();
+        piece.disableSelected();
         this.addPieceToTileByID(piece, finalTileID);
     }
 

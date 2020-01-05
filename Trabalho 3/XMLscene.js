@@ -37,7 +37,7 @@ class XMLscene extends CGFscene {
         this.difficultyIDs = ["Easy", "Medium", "Hard"];
         this.selectedTheme = 'Room';
         this.themeIDs = ['Bar', 'Room'];
-        this.game = null;
+        this.gameOrchestrator = null;
         this.filename = getUrlVars()['file'] || "LAIG_TP3_XML_T7_G04_v01.xml";
 
         this.enableTextures(true);
@@ -155,6 +155,11 @@ class XMLscene extends CGFscene {
         this.interface.setActiveCamera(this.camera);
     }
 
+    setCameraPlayer(player) {
+        this.selectedCamera = player;
+        this.updateCamera();
+    }
+
     /**
      * Updates the lights state (on/off)
      */
@@ -205,16 +210,18 @@ class XMLscene extends CGFscene {
     }
 
     undo() {
-
         console.log("MOVE UNDONE");
-        //this.interface.gui.add(this, 'startGame').name('New');
 
     }
 
+    endGame() {
+        console.log("GAME ENDED");
+        this.gameOrchestrator.endGame();
+    }
+
     quitGame() {
-
         console.log("GAME QUITTED");
-
+        this.gameOrchestrator.quitGame();
     }
 
     /**
@@ -222,6 +229,8 @@ class XMLscene extends CGFscene {
      */
     display() {
         if (this.sceneInited) {
+            this.gameOrchestrator.orchestrate();
+
             // Picking objects
             this.gameOrchestrator.managePick(this.pickMode, this.pickResults);
             this.clearPickRegistration();
@@ -264,7 +273,7 @@ class XMLscene extends CGFscene {
             // Draw axis
             this.setDefaultAppearance();
 
-            // Displays the scene (MySceneGraph function).
+            // Displays the game
             this.gameOrchestrator.display();
         }
 

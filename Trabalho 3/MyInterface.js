@@ -24,10 +24,6 @@ class MyInterface extends CGFinterface {
 
         this.initKeys();
 
-        
-        // this.gui.add(this.scene, "undo").name("Undo");
-        // this.gui.add(this.scene, "quitGame").name("Quit Game");
-
         return true;
     }
 
@@ -40,50 +36,83 @@ class MyInterface extends CGFinterface {
         this.diffBot1 = null;
         this.diffBot2 = null;
 
-        this.startButton = this.gui.add(this.scene, "startGame").name("Start Game").onChange(this.startGameButtons.bind(this));
+        this.startButton = this.gui.add(this.scene, "startGame").name("Start").onChange(this.startGameButtons.bind(this));
+        this.quitButton = this.gui.add(this.scene, "quitGame").name("Quit").onChange(this.quitGameButtons.bind(this));
     }
 
     startGameButtons() {
+        this.settings.close();
         this.startButton.remove();
+        this.startButton = null;
         this.undoButton = this.gui.add(this.scene, "undo").name("Undo");
-        this.quitButton = this.gui.add(this.scene, "quitGame").name("Quit Game").onChange(this.endGameButtons.bind(this));
+        this.endButton = this.gui.add(this.scene, "endGame").name("End").onChange(this.endGameButtons.bind(this));
+        this.quitButton.remove();
+        this.quitButton = this.gui.add(this.scene, "quitGame").name("Quit").onChange(this.quitGameButtons.bind(this));
     }
 
     endGameButtons() {
-        this.startButton = this.gui.add(this.scene, "startGame").name("Start Game");
-        this.undoButton.remove();
+        this.settings.open();
+        if (this.startButton == null)
+            this.startButton = this.gui.add(this.scene, "startGame").name("Start").onChange(this.startGameButtons.bind(this));
+        if (this.undoButton != null) {
+            this.undoButton.remove();
+            this.undoButton = null;
+        }
+        if (this.endButton != null) {
+            this.endButton.remove();
+            this.endButton = null;
+        }
         this.quitButton.remove();
+        this.quitButton = this.gui.add(this.scene, "quitGame").name("Quit").onChange(this.quitGameButtons.bind(this));
+    }
+
+    quitGameButtons() {
+        this.settings.close();
+        if (this.startButton != null) {
+            this.startButton.remove();
+            this.startButton = null;
+        }
+
+        if (this.undoButton != null) {
+            this.undoButton.remove();
+            this.undoButton = null;
+        }
+
+        if (this.endButton != null) {
+            this.endButton.remove();
+            this.endButton = null;
+        }
     }
 
     diffOptions(mode) {
         switch (mode) {
             case "Player vs Player":
-                if (this.diffBot != null){
+                if (this.diffBot != null) {
                     this.settings.remove(this.diffBot);
                     this.diffBot = null;
                 }
-                if (this.diffBot1 != null){
+                if (this.diffBot1 != null) {
                     this.settings.remove(this.diffBot1);
                     this.diffBot1 = null;
                 }
-                if (this.diffBot2 != null){
+                if (this.diffBot2 != null) {
                     this.settings.remove(this.diffBot2);
                     this.diffBot2 = null;
                 }
                 break;
             case "Player vs Bot":
-                if (this.diffBot1 != null){
+                if (this.diffBot1 != null) {
                     this.settings.remove(this.diffBot1);
                     this.diffBot1 = null;
                 }
-                if (this.diffBot2 != null){
+                if (this.diffBot2 != null) {
                     this.settings.remove(this.diffBot2);
                     this.diffBot2 = null;
                 }
                 this.diffBot = this.settings.add(this.scene, "difficultyBot", this.scene.difficultyIDs).name("Difficulty Bot");
                 break;
             case "Bot vs Bot":
-                if (this.diffBot != null){
+                if (this.diffBot != null) {
                     this.settings.remove(this.diffBot);
                     this.diffBot = null;
                 }
@@ -139,23 +168,6 @@ class MyInterface extends CGFinterface {
         this.activeKeys[event.code] = false;
 
     };
-    /*
-        processMouseDown(event) {
-            this.activeKeys["mouse"]=true;
-        };
-    
-        processMouseUp(event) {
-            this.activeKeys["mouse"]=false;
-        };
-    */
-
-    /*processMouseMove(event){
-
-        console.log(event.code);
-
-    }*/
-
-
 
     isKeyPressed(keyCode) {
         return this.activeKeys[keyCode] || false;
