@@ -1472,8 +1472,9 @@ class MySceneGraph {
             if (newTextureID != "none" && (this.primitives[this.components[componentID].primitives[i]] instanceof MyRectangle || this.primitives[this.components[componentID].primitives[i]] instanceof MyTriangle)) {
                 this.primitives[this.components[componentID].primitives[i]].updateTexCoords(newLength_s, newLength_t);
             }
-
-            this.primitives[this.components[componentID].primitives[i]].display();
+            if ((componentID != "top_phone" && componentID != "bottom_phone" && componentID != "right_phone" && componentID != "left_phone" && componentID != "screen") || (this.scene.selectedTheme == 'Bar')) {
+                this.primitives[this.components[componentID].primitives[i]].display();
+            }
         }
 
         this.scene.popMatrix();

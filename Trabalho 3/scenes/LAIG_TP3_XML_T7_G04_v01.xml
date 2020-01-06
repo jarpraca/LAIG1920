@@ -56,6 +56,11 @@
         <texture id="alt_back" file="scenes/images/alt_back.jpg" />
         <texture id="alt_floor_tex" file="scenes/images/alt_floor.jpg" />
         <texture id="velvet" file="scenes/images/velvet.jpg" />
+        <texture id="phone_top_tex" file="scenes/images/phone_top.jpg" />
+        <texture id="phone_bottom_tex" file="scenes/images/phone_bottom.jpg" />
+        <texture id="phone_side_tex" file="scenes/images/phone_side.jpg" />
+        <texture id="phone_screen_tex" file="scenes/images/top_phone.jpg" />
+
     </textures>
 
     <materials>
@@ -80,6 +85,14 @@
             <ambient r="0.15" g="0" b="0" a="1.0" />
             <diffuse r="0.7" g="0" b="0" a="1.0" />
             <specular r="0" g="0" b="0" a="1.0" />
+        </material>
+
+        
+        <material id="phone_material" shininess="10">
+            <emission r="0.0" g="0.0" b="0.0" a="1.0" />
+            <ambient r="0.15" g="0.15" b="0.15" a="1.0" />
+            <diffuse r="0.5" g="0.5" b="0.5" a="1.0" />
+            <specular r="0.8" g="0.8" b="0.8" a="1.0" />
         </material>
 
     </materials>
@@ -346,6 +359,100 @@
             </children>
         </component>
 
+        <component id="screen">
+            <transformation>
+                <scale x="21" y="1" z="9" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="phone_screen_tex"/>
+            <children>
+                <primitiveref id="plane_prim" />
+            </children>
+        </component>
+
+        <component id="right_phone">
+            <transformation>
+                <rotate axis="x" angle="-90" />
+                <scale x="21" y="1" z="1.5" />
+                <translate x="0" y="4.5" z="-0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="phone_side_tex"/>
+            <children>
+                <primitiveref id="plane_prim" />
+            </children>
+        </component>
+
+        <component id="left_phone">
+            <transformation>
+                <rotate axis="x" angle="90" />
+                <scale x="21" y="1" z="1.5" />
+                <translate x="0" y="4.5" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="phone_side_tex"/>
+            <children>
+                <primitiveref id="plane_prim" />
+            </children>
+        </component>
+
+        <component id="bottom_phone">
+            <transformation>
+                <rotate axis="y" angle="90" />
+                <rotate axis="x" angle="90" />
+                <scale x="9" y="1" z="1.5" />
+                <translate x="0" y="10.5" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="phone_bottom_tex"/>
+            <children>
+                <primitiveref id="plane_prim" />
+            </children>
+        </component>
+
+        <component id="top_phone">
+            <transformation>
+                <rotate axis="y" angle="-90" />
+                <rotate axis="x" angle="90" />
+                <scale x="9" y="1" z="1.5" />
+                <translate x="0" y="10.5" z="0.5" />
+            </transformation>
+            <materials>
+                <material id="inherit" />
+            </materials>
+            <texture id="phone_top_tex"/>
+            <children>
+                <primitiveref id="plane_prim" />
+            </children>
+        </component>
+
+        <component id="phone">
+            <transformation>
+                <rotate axis="y" angle="-15" />
+                <translate x="10" y="1.5" z="37" />
+            </transformation>
+            <materials>
+                <material id="phone_material" />
+            </materials>
+            <texture id="inherit"/>
+            <children>
+                <componentref id="screen" />
+                <componentref id="right_phone" />
+                <componentref id="left_phone" />
+                <componentref id="bottom_phone" />
+                <componentref id="top_phone" />
+            </children>
+        </component>
+
+
         <component id="table_top">
             <transformation>
                 <translate x="0" y="0" z="0" />
@@ -381,6 +488,7 @@
                 <componentref id="leg_2" />
                 <componentref id="leg_3" />
                 <componentref id="leg_4" />
+                <componentref id="phone" />
             </children>
         </component>
 
