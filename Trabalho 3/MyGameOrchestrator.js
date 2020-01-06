@@ -245,10 +245,17 @@ class MyGameOrchestrator {
         else if (this.currentPlayer == this.player2)
             currPlayer = 2;
 
-        if (obj instanceof MyPiece && this.state == 'selectPiece' && this.gameboard.belongsToPlayer(obj.id, currPlayer)) {
-            obj.enableSelected();
-            this.currentMove.piece = obj.id;
-            this.state = 'selectTile';
+        if (obj instanceof MyPiece) {
+            if (this.state == 'selectPiece' && this.gameboard.belongsToPlayer(obj.id, currPlayer)) {
+                obj.enableSelected();
+                this.currentMove.piece = obj.id;
+                this.state = 'selectTile';
+            }
+            else if(obj.selected && this.state == 'selectTile'){
+                obj.disableSelected();
+                this.currentMove.piece = null;
+                this.state = 'selectPiece';
+            }
         }
         else if (obj instanceof MyTile && this.state == 'selectTile') {
             obj.enableSelected();
