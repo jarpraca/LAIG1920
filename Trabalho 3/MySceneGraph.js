@@ -1465,16 +1465,16 @@ class MySceneGraph {
 
         // Children
         for (var i = 0; i < this.components[componentID].components.length; i++) {
-            this.parseNode(this.components[componentID].components[i], newTextureID, newMaterialID, newLength_s, newLength_t);
+            if (this.components[componentID].components[i] != "phone" || (this.components[componentID].components[i] == "phone" && this.scene.selectedTheme == "Bar"))
+                this.parseNode(this.components[componentID].components[i], newTextureID, newMaterialID, newLength_s, newLength_t);
         }
 
         for (var i = 0; i < this.components[componentID].primitives.length; i++) {
             if (newTextureID != "none" && (this.primitives[this.components[componentID].primitives[i]] instanceof MyRectangle || this.primitives[this.components[componentID].primitives[i]] instanceof MyTriangle)) {
                 this.primitives[this.components[componentID].primitives[i]].updateTexCoords(newLength_s, newLength_t);
             }
-            if ((componentID != "top_phone" && componentID != "bottom_phone" && componentID != "right_phone" && componentID != "left_phone" && componentID != "screen") || (this.scene.selectedTheme == 'Bar')) {
-                this.primitives[this.components[componentID].primitives[i]].display();
-            }
+
+            this.primitives[this.components[componentID].primitives[i]].display();
         }
 
         this.scene.popMatrix();
