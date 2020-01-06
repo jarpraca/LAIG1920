@@ -211,7 +211,7 @@ class XMLscene extends CGFscene {
 
     undo() {
         console.log("MOVE UNDONE");
-
+        this.gameOrchestrator.undo();
     }
 
     endGame() {

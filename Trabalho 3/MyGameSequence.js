@@ -13,12 +13,17 @@ class MyGameSequence extends CGFobject {
         this.sequence.push(move);
     }
 
-    undo() {
+    getLast() {
+        // console.log(this.sequence[this.sequence.length - 1]);
+        return this.sequence[this.sequence.length - 1];
+    }
 
+    undo() {
+        this.sequence.pop();
     }
 
     replay() {
-        
+
     }
 }
 

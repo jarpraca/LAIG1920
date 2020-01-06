@@ -118,7 +118,7 @@ class MyPrologInterface {
 
     quitReply(data) {
         console.log('Reply: ' + data.target.response);
-        this.reply = data.target.response;
+        this.reply = (data.target.response == 'goodbye');
     }
 
     update(t) {

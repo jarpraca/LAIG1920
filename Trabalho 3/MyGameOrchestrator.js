@@ -22,6 +22,7 @@ class MyGameOrchestrator {
 
         this.theme = new MySceneGraph(filename, scene);
         this.gameboard = null;
+        this.sequence = new MyGameSequence(this.scene);
         this.prolog = new MyPrologInterface();
 
         this.state = 'menu';
@@ -146,6 +147,7 @@ class MyGameOrchestrator {
                 else if (this.currentMove.piece.length == 3)
                     this.currentMove.piece = this.currentMove.piece;
 
+                this.addToGameSequence();
                 this.gameboard.movePiece(this.currentMove.piece, this.currentMove.row + this.currentMove.col);
                 this.resetCurrentMove();
                 this.state = 'checkGameOver';
@@ -192,11 +194,13 @@ class MyGameOrchestrator {
             }
             case 'quitReply': {
                 if (this.prolog.getReply() != null) {
-                    if (this.prolog.getReply() == 'goodbye') {
+                    if (this.prolog.getReply()) {
                         alert("Game server has been closed! If you'd like to play again, please refresh the page!");
                     }
                     this.prolog.setReplyNull();
+                    this.state = 'menu';
                 }
+                break;
             }
         }
     }
@@ -216,7 +220,29 @@ class MyGameOrchestrator {
     }
 
     quitGame() {
+        this.state = 'quit';
+    }
 
+    undoMovePiece(piece, originTile, destinationTile) {
+        this.gameboard.movePiece(piece, originTile);
+        this.gameboard.getTileByID(destinationTile).enableSelectable();
+        this.gameboard.getPieceByID(piece).enableSelectable();
+    }
+
+    undo() {
+        let last = this.sequence.getLast();
+        this.gameboard = last.initialGameboard;
+        this.undoMovePiece(last.piece, last.originTile, last.destinationTile);
+        this.sequence.undo();
+        this.state = 'switchPlayer';
+    }
+
+    addToGameSequence() {
+        let piece = this.currentMove.piece;
+        let initialTile = this.gameboard.getTileWithPieceByID(piece).id;
+        let destinationTile = this.currentMove.row + this.currentMove.col;
+
+        this.sequence.addGameMove(new MyGameMove(this.scene, piece, initialTile, destinationTile, this.gameboard));
     }
 
     update(t) {
@@ -251,7 +277,7 @@ class MyGameOrchestrator {
                 this.currentMove.piece = obj.id;
                 this.state = 'selectTile';
             }
-            else if(obj.selected && this.state == 'selectTile'){
+            else if (obj.selected && this.state == 'selectTile') {
                 obj.disableSelected();
                 this.currentMove.piece = null;
                 this.state = 'selectPiece';
@@ -277,13 +303,13 @@ class MyGameOrchestrator {
             row: null,
             col: null
         };
-
     }
 
     display() {
         this.theme.displayScene();
-        if (this.gameboard != null)
+        if (this.gameboard != null){
             this.gameboard.display();
+        }
         //this.animator.display();
     }
 

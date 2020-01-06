@@ -278,11 +278,11 @@ class MyGameboard extends CGFobject {
         // animation
         let initialTileID = this.getTileWithPieceByID(pieceID).id;
         let piece = this.getPieceOnTileByID(initialTileID);
-        this.removePieceFromTileByID(initialTileID);
         this.getTileByID(initialTileID).disableSelected();
         piece.disableSelectable();
         piece.disableSelected();
         this.addPieceToTileByID(piece, finalTileID);
+        this.removePieceFromTileByID(initialTileID);
     }
 
     display() {
