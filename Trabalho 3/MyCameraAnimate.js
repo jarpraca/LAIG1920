@@ -42,4 +42,8 @@ class MyCameraAnimate {
         this.scene.interface.setActiveCamera(camera);
         this.scene.camera = camera;
     }
+
+    display() {
+        
+    }
 }

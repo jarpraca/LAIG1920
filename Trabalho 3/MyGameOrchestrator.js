@@ -31,7 +31,6 @@ class MyGameOrchestrator {
     }
 
     orchestrate() {
-        // console.log(this.state);
         switch (this.state) {
             case 'menu': {
 
@@ -43,7 +42,7 @@ class MyGameOrchestrator {
                 this.resetCurrentMove();
 
                 this.animation = new MyCameraAnimate(this.scene, this.scene.cameras[0], this.scene.cameras[1], 1);
-                this.state = 'cameraAnimation';
+                this.state = 'animation';
                 this.nextState = this.player1;
                 break;
             }
@@ -87,11 +86,11 @@ class MyGameOrchestrator {
                     this.animation = new MyCameraAnimate(this.scene, this.scene.cameras[2], this.scene.cameras[1], 1);
                 }
 
-                this.state = 'cameraAnimation';
+                this.state = 'animation';
                 this.nextState = this.currentPlayer;
                 break;
             }
-            case 'cameraAnimation': {
+            case 'animation': {
                 if (this.animation.finished) {
                     this.animation = null;
                     this.state = this.nextState;
@@ -114,7 +113,7 @@ class MyGameOrchestrator {
             case 'checkMoveReply': {
                 if (this.prolog.getReply() != null) {
                     if (this.prolog.getReply()) {
-                        this.state = 'movePiece';
+                        this.state = 'movePiece1';
                     }
                     else {
                         alert('This move is not valid! Choose again!');
@@ -149,11 +148,11 @@ class MyGameOrchestrator {
                 if (this.prolog.getReply() != null) {
                     this.currentMove = this.prolog.getReply();
                     this.prolog.setReplyNull();
-                    this.state = 'movePiece';
+                    this.state = 'movePiece1';
                 }
                 break;
             }
-            case 'movePiece': {
+            case 'movePiece1': {
                 if (this.currentMove.piece.length == 2) {
                     if (this.gameboard.playerHasPiece1(this.currentMove.piece))
                         this.currentMove.piece = this.currentMove.piece + '1';
@@ -164,7 +163,43 @@ class MyGameOrchestrator {
                     this.currentMove.piece = this.currentMove.piece;
 
                 this.addToGameSequence();
-                this.gameboard.movePiece(this.currentMove.piece, this.currentMove.row + this.currentMove.col);
+                // this.gameboard.movePiece(this.currentMove.piece, this.currentMove.row + this.currentMove.col);
+                let pieceID = this.currentMove.piece;
+                let finalTileID = this.currentMove.row + this.currentMove.col;
+                let initialTile = this.gameboard.getTileWithPieceByID(pieceID);
+                let finalTile = this.gameboard.getTileByID(finalTileID);
+                let piece = this.gameboard.getPieceOnTileByID(initialTile.id);
+                this.gameboard.removePieceFromTileByID(initialTile.id);
+                this.gameboard.getTileByID(initialTile.id).disableSelected();
+                piece.disableSelectable();
+                piece.disableSelected();
+
+                this.middle = [(initialTile.x + finalTile.x)/2, 10, (initialTile.z + finalTile.z)/2];
+
+                this.animation = new MyPieceAnimation(this.scene, piece, [initialTile.x, initialTile.y, initialTile.z], this.middle, 0.5);
+
+                this.currentMove.piece = piece;
+               
+                this.nextState = 'movePiece2';
+                this.state = 'animation';
+                break;
+            }
+            case 'movePiece2': {
+                let finalTileID = this.currentMove.row + this.currentMove.col;
+                let finalTile = this.gameboard.getTileByID(finalTileID);
+                let piece = this.currentMove.piece;
+
+                this.animation = new MyPieceAnimation(this.scene, piece, this.middle, [finalTile.x, finalTile.y, finalTile.z], 0.5);
+
+                this.nextState = 'endMovePiece';
+                this.state = 'animation';
+                break;
+            }
+            case 'endMovePiece': {
+                let finalTileID = this.currentMove.row + this.currentMove.col;
+                this.gameboard.addPieceToTileByID(this.currentMove.piece, finalTileID);
+
+                this.currentMove.piece = this.currentMove.piece.id;
                 this.resetCurrentMove();
                 this.state = 'checkGameOver';
                 break;
@@ -201,7 +236,7 @@ class MyGameOrchestrator {
                     this.scene.interface.endGameButtons();
 
                 this.animation = new MyCameraAnimate(this.scene, this.scene.camera, this.scene.cameras[0], 1);
-                this.state = 'cameraAnimation';
+                this.state = 'animation';
                 this.nextState = 'menu';
                 break;
             }
@@ -328,6 +363,9 @@ class MyGameOrchestrator {
         this.theme.displayScene();
         if (this.gameboard != null) {
             this.gameboard.display();
+        }
+        if(this.animation != null){
+            this.animation.display();
         }
         //this.animator.display();
     }

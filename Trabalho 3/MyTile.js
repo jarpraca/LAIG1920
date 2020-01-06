@@ -15,8 +15,8 @@ class MyTile extends CGFobject {
         this.col = col;
         if (this.id.length == 2) {
             this.calcQuad();
-            this.calcPosition();
         }
+        this.calcPosition();
         this.selectable = true;
         this.selected = false;
         this.createUniqueID();
@@ -45,7 +45,7 @@ class MyTile extends CGFobject {
     enableSelectable() {
         this.selectable = true;
     }
-    
+
     disableSelectable() {
         this.selectable = false;
     }
@@ -85,7 +85,7 @@ class MyTile extends CGFobject {
 
     getPrologCell() {
         let piece;
-        if(this.piece == null)
+        if (this.piece == null)
             piece = 'e';
         else
             piece = this.piece.getType().toLowerCase();
@@ -109,6 +109,20 @@ class MyTile extends CGFobject {
     }
 
     calcPosition() {
+        if (this.id.length == 1) {
+            if (this.id >= 'a' && this.id <= 'h') {
+                this.x = -30;
+                this.z = 24 - (this.id.charCodeAt(0) - 'a'.charCodeAt(0)) * 7;
+            }
+            else if (this.id >= '1' && this.id <= '8') {
+                this.x = 30;
+                this.z = 24 - (this.id.charCodeAt(0) - '1'.charCodeAt(0)) * 7;
+            }
+
+            this.y = 2;
+            return;
+        }
+
         switch (this.row) {
             case '1':
                 this.x = -6 - 8;

@@ -14,7 +14,6 @@ class MyGameSequence extends CGFobject {
     }
 
     getLast() {
-        // console.log(this.sequence[this.sequence.length - 1]);
         return this.sequence[this.sequence.length - 1];
     }
 
