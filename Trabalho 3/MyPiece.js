@@ -86,6 +86,10 @@ class MyPiece extends CGFobject {
         }
     }
 
+    enableSelectable() {
+        this.selectable = true;
+    }
+
     disableSelectable() {
         this.selectable = false;
     }

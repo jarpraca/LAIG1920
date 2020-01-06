@@ -42,6 +42,10 @@ class MyTile extends CGFobject {
         this.material.setTexture(this.texture);
     }
 
+    enableSelectable() {
+        this.selectable = true;
+    }
+    
     disableSelectable() {
         this.selectable = false;
     }

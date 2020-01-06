@@ -9,9 +9,8 @@
  * @param initialGameboard - gameboard before move
 */
 class MyGameMove extends CGFobject {
-    constructor(scene, id, piece, originTile, destinationTile, initialGameboard) {
+    constructor(scene, piece, originTile, destinationTile, initialGameboard) {
         super(scene);
-        this.id = id;
         this.piece = piece;
         this.originTile = originTile;
         this.destinationTile = destinationTile;
