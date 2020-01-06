@@ -171,7 +171,6 @@ class MyAuxiliarBoard extends CGFobject {
 
     movePiece(pieceID, finalTileID) {
         // animation
-
         let initialTileID = this.getTileWithPieceByID(pieceID).id;
         let piece = this.getPieceOnTileByID(initialTileID);
         this.removePieceFromTileByID(initialTileID);
