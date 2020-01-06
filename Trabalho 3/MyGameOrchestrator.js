@@ -19,11 +19,13 @@ class MyGameOrchestrator {
         this.levelPlayer2 = null;
         this.currentPlayer = null;
         this.currentMove = null;
+        this.animation = null;
 
         this.theme = new MySceneGraph(filename, scene);
         this.gameboard = null;
-        this.sequence = new MyGameSequence(this.scene);
+        this.gameSequence = new MyGameSequence(this.scene);
         this.prolog = new MyPrologInterface();
+        // this.animator = new MyAnimator(this.scene);
 
         this.state = 'menu';
     }
@@ -40,7 +42,9 @@ class MyGameOrchestrator {
                 this.currentMove = null;
                 this.resetCurrentMove();
 
-                this.state = this.player1;
+                this.animation = new MyCameraAnimate(this.scene, this.scene.cameras[0], this.scene.cameras[1], 1);
+                this.state = 'cameraAnimation';
+                this.nextState = this.player1;
                 break;
             }
             case 'p1': {
@@ -74,12 +78,24 @@ class MyGameOrchestrator {
                 break;
             }
             case 'switchPlayer': {
-                if (this.currentPlayer == this.player1)
+                if (this.currentPlayer == this.player1) {
                     this.currentPlayer = this.player2;
-                else if (this.currentPlayer == this.player2)
+                    this.animation = new MyCameraAnimate(this.scene, this.scene.cameras[1], this.scene.cameras[2], 1);
+                }
+                else if (this.currentPlayer == this.player2) {
                     this.currentPlayer = this.player1;
+                    this.animation = new MyCameraAnimate(this.scene, this.scene.cameras[2], this.scene.cameras[1], 1);
+                }
 
-                this.state = this.currentPlayer;
+                this.state = 'cameraAnimation';
+                this.nextState = this.currentPlayer;
+                break;
+            }
+            case 'cameraAnimation': {
+                if (this.animation.finished) {
+                    this.animation = null;
+                    this.state = this.nextState;
+                }
                 break;
             }
             case 'selectPiece': {
@@ -184,7 +200,9 @@ class MyGameOrchestrator {
                 if (this.scene.interface.startButton == null)
                     this.scene.interface.endGameButtons();
 
-                this.state = 'menu';
+                this.animation = new MyCameraAnimate(this.scene, this.scene.camera, this.scene.cameras[0], 1);
+                this.state = 'cameraAnimation';
+                this.nextState = 'menu';
                 break;
             }
             case 'quit': {
@@ -230,10 +248,10 @@ class MyGameOrchestrator {
     }
 
     undo() {
-        let last = this.sequence.getLast();
+        let last = this.gameSequence.getLast();
         this.gameboard = last.initialGameboard;
         this.undoMovePiece(last.piece, last.originTile, last.destinationTile);
-        this.sequence.undo();
+        this.gameSequence.undo();
         this.state = 'switchPlayer';
     }
 
@@ -242,11 +260,12 @@ class MyGameOrchestrator {
         let initialTile = this.gameboard.getTileWithPieceByID(piece).id;
         let destinationTile = this.currentMove.row + this.currentMove.col;
 
-        this.sequence.addGameMove(new MyGameMove(this.scene, piece, initialTile, destinationTile, this.gameboard));
+        this.gameSequence.addGameMove(new MyGameMove(this.scene, piece, initialTile, destinationTile, this.gameboard));
     }
 
     update(t) {
-        // this.animator.update(t);
+        if (this.animation != null)
+            this.animation.update(t);
     }
 
     managePick(mode, results) {
@@ -307,7 +326,7 @@ class MyGameOrchestrator {
 
     display() {
         this.theme.displayScene();
-        if (this.gameboard != null){
+        if (this.gameboard != null) {
             this.gameboard.display();
         }
         //this.animator.display();

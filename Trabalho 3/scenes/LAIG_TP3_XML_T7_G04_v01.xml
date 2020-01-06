@@ -1,7 +1,7 @@
 <lxs>
     <scene root="scene" axis_length="5"/>
 
-    <views default="player1Camera">
+    <views default="defaultCamera">
         <perspective id="defaultCamera" near="0.1" far="800" angle="30">
             <from x="250" y="200" z="0" />
             <to x="10" y="40" z="0" />
