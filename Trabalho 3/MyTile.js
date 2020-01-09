@@ -112,7 +112,7 @@ class MyTile extends CGFobject {
         if (this.id.length == 1) {
             if (this.id >= 'a' && this.id <= 'h') {
                 this.x = -30;
-                this.z = 24 - (this.id.charCodeAt(0) - 'a'.charCodeAt(0)) * 7;
+                this.z = -24 + (this.id.charCodeAt(0) - 'a'.charCodeAt(0)) * 7;
             }
             else if (this.id >= '1' && this.id <= '8') {
                 this.x = 30;

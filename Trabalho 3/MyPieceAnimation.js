@@ -38,14 +38,15 @@ class MyPieceAnimation {
         let translate_z = (this.final[2] - this.initial[2])*delta/this.duration;
         
         let coordinates = [translate_x, translate_y, translate_z];
-        mat4.translate(this.matrix, this.matrix, [this.initial.x, this.initial.y, this.initial.z]);
+        mat4.translate(this.matrix, this.matrix, this.initial);
         mat4.translate(this.matrix, this.matrix, coordinates);
     }
 
     display() {
         this.scene.pushMatrix();
         this.scene.multMatrix(this.matrix);
-        this.piece.display();
+        if(this.initial_time != 0)
+            this.piece.display();
         this.scene.popMatrix();
     }
 }
